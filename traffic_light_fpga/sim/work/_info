@@ -1,0 +1,274 @@
+m255
+K4
+z2
+!s11e vcom 2020.1 2020.02, Feb 28 2020
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 dC:/Users/handa/OneDrive/Documents/Projects/DoAn2/traffic_light_fpga/sim
+Eclk_divider
+Z1 w1790876637
+Z2 DPx4 ieee 11 numeric_std 0 22 aU^R8eGcicLcUFIaBQSL>3
+Z3 DPx3 std 6 textio 0 22 zE1`LPoLg^DX3Oz^4Fj1K3
+Z4 DPx4 ieee 14 std_logic_1164 0 22 cVAk:aDinOX8^VGI1ekP<3
+!i122 0
+R0
+Z5 8../rtl/clk_divider.vhd
+Z6 F../rtl/clk_divider.vhd
+l0
+L17 1
+VB?jj`OdIzEWDFjKF76H`40
+!s100 >^4d?BDKlReL[adk7ehT31
+Z7 OV;C;2020.1;71
+31
+Z8 !s110 1790928980
+!i10b 1
+Z9 !s108 1790928980.000000
+Z10 !s90 -reportprogress|300|-93|-work|work|../rtl/clk_divider.vhd|
+Z11 !s107 ../rtl/clk_divider.vhd|
+!i113 1
+Z12 o-93 -work work
+Z13 tExplicit 1 CvgOpt 0
+Artl
+R2
+R3
+R4
+Z14 DEx4 work 11 clk_divider 0 22 B?jj`OdIzEWDFjKF76H`40
+!i122 0
+l63
+L29 62
+V=jJP0<R5f6?_`:bL4kB4m3
+!s100 @NmTFnKP]ggHRaRA=M7FW3
+R7
+31
+R8
+!i10b 1
+R9
+R10
+R11
+!i113 1
+R12
+R13
+Efsm_controller
+Z15 w1790876654
+R2
+R3
+R4
+!i122 3
+R0
+Z16 8../rtl/fsm_controller.vhd
+Z17 F../rtl/fsm_controller.vhd
+l0
+L24 1
+VH3fOYO<aaFY7gdXfcPUWB0
+!s100 Wel^aE@SIb@?3<0S>Obib1
+R7
+31
+R8
+!i10b 1
+R9
+Z18 !s90 -reportprogress|300|-93|-work|work|../rtl/fsm_controller.vhd|
+Z19 !s107 ../rtl/fsm_controller.vhd|
+!i113 1
+R12
+R13
+Artl
+R2
+R3
+R4
+Z20 DEx4 work 14 fsm_controller 0 22 H3fOYO<aaFY7gdXfcPUWB0
+!i122 3
+l52
+L45 127
+VbjROFzLRET5?B9H=VaSK^3
+!s100 =>i3jTWoBRGC>daTGBm5j3
+R7
+31
+R8
+!i10b 1
+R9
+R18
+R19
+!i113 1
+R12
+R13
+Eseg7_decoder
+Z21 w1790876660
+R2
+R3
+R4
+!i122 1
+R0
+Z22 8../rtl/seg7_decoder.vhd
+Z23 F../rtl/seg7_decoder.vhd
+l0
+L18 1
+VKG4JXBF4eeEoc=7NDKkOj2
+!s100 `[SR;SRcC1B8NA=1BFjZP0
+R7
+31
+R8
+!i10b 1
+R9
+Z24 !s90 -reportprogress|300|-93|-work|work|../rtl/seg7_decoder.vhd|
+Z25 !s107 ../rtl/seg7_decoder.vhd|
+!i113 1
+R12
+R13
+Artl
+R2
+R3
+R4
+Z26 DEx4 work 12 seg7_decoder 0 22 KG4JXBF4eeEoc=7NDKkOj2
+!i122 1
+l27
+L26 25
+VOUlXQSTbenDaR^3GWZ4R]1
+!s100 KTZ9K9Pz4R7LI9X2iN<P@1
+R7
+31
+R8
+!i10b 1
+R9
+R24
+R25
+!i113 1
+R12
+R13
+Etb_traffic_light_top
+Z27 w1790879159
+R2
+R3
+R4
+!i122 5
+R0
+Z28 8../tb/tb_traffic_light_top.vhd
+Z29 F../tb/tb_traffic_light_top.vhd
+l0
+L23 1
+VBoYi9mZ@QgZ0DDb>X572K2
+!s100 eWzzz>8VERZ`3bG[QP5=11
+R7
+31
+Z30 !s110 1790928981
+!i10b 1
+Z31 !s108 1790928981.000000
+Z32 !s90 -reportprogress|300|-93|-work|work|../tb/tb_traffic_light_top.vhd|
+!s107 ../tb/tb_traffic_light_top.vhd|
+!i113 1
+R12
+R13
+Asim
+Z33 DEx4 work 17 traffic_light_top 0 22 Jm71no`dQ=9@zIi1`n]a50
+R2
+R3
+R4
+DEx4 work 20 tb_traffic_light_top 0 22 BoYi9mZ@QgZ0DDb>X572K2
+!i122 5
+l57
+L26 600
+V=JbVzYlF:ZN0oiR83Z:zd0
+!s100 `Z?6iWN`Ya1m<RzIeZhaK2
+R7
+31
+R30
+!i10b 1
+R31
+R32
+Z34 !s107 ../tb/tb_traffic_light_top.vhd|
+!i113 1
+R12
+R13
+Etimer_counter
+Z35 w1790877189
+R2
+R3
+R4
+!i122 2
+R0
+Z36 8../rtl/timer_counter.vhd
+Z37 F../rtl/timer_counter.vhd
+l0
+Z38 L22 1
+VcTMBH1l@jj?8FlAYKQI^>1
+!s100 nE[_CN4ZCC@b>^1JZ?O9_0
+R7
+31
+R8
+!i10b 1
+R9
+Z39 !s90 -reportprogress|300|-93|-work|work|../rtl/timer_counter.vhd|
+Z40 !s107 ../rtl/timer_counter.vhd|
+!i113 1
+R12
+R13
+Artl
+R2
+R3
+R4
+Z41 DEx4 work 13 timer_counter 0 22 cTMBH1l@jj?8FlAYKQI^>1
+!i122 2
+l74
+L38 115
+VQk8;T9kSME26dN5Xi`WAK0
+!s100 >DV8;l>HCi`ag`80zeAkV2
+R7
+31
+R8
+!i10b 1
+R9
+R39
+R40
+!i113 1
+R12
+R13
+Etraffic_light_top
+Z42 w1790876668
+R2
+R3
+R4
+!i122 4
+R0
+Z43 8../rtl/traffic_light_top.vhd
+Z44 F../rtl/traffic_light_top.vhd
+l0
+R38
+VJm71no`dQ=9@zIi1`n]a50
+!s100 WYNzVc4g69^O<fal>O]130
+R7
+31
+R30
+!i10b 1
+R31
+Z45 !s90 -reportprogress|300|-93|-work|work|../rtl/traffic_light_top.vhd|
+Z46 !s107 ../rtl/traffic_light_top.vhd|
+!i113 1
+R12
+R13
+Astructural
+R26
+R41
+R20
+R14
+R2
+R3
+R4
+R33
+!i122 4
+l62
+L39 130
+VX6JnPBKgGJ5AZznV;YO2[0
+!s100 Je`Ja3iMW104HaP^XjLRS2
+R7
+31
+R30
+!i10b 1
+R31
+R45
+R46
+!i113 1
+R12
+R13

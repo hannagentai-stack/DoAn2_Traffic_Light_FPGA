@@ -1,0 +1,201 @@
+# do run_sim.do
+# .
+# Model Technology ModelSim - Intel FPGA Edition vmap 2020.1 Lib Mapping Utility 2020.02 Feb 28 2020
+# vmap work work 
+# Modifying modelsim.ini
+# Model Technology ModelSim - Intel FPGA Edition vcom 2020.1 Compiler 2020.02 Feb 28 2020
+# Start time: 01:36:32 on Oct 02,2026
+# vcom -93 -work work ../rtl/clk_divider.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity clk_divider
+# -- Compiling architecture rtl of clk_divider
+# End time: 01:36:33 on Oct 02,2026, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vcom 2020.1 Compiler 2020.02 Feb 28 2020
+# Start time: 01:36:33 on Oct 02,2026
+# vcom -93 -work work ../rtl/seg7_decoder.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity seg7_decoder
+# -- Compiling architecture rtl of seg7_decoder
+# End time: 01:36:33 on Oct 02,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vcom 2020.1 Compiler 2020.02 Feb 28 2020
+# Start time: 01:36:33 on Oct 02,2026
+# vcom -93 -work work ../rtl/timer_counter.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity timer_counter
+# -- Compiling architecture rtl of timer_counter
+# End time: 01:36:33 on Oct 02,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vcom 2020.1 Compiler 2020.02 Feb 28 2020
+# Start time: 01:36:33 on Oct 02,2026
+# vcom -93 -work work ../rtl/fsm_controller.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity fsm_controller
+# -- Compiling architecture rtl of fsm_controller
+# End time: 01:36:33 on Oct 02,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vcom 2020.1 Compiler 2020.02 Feb 28 2020
+# Start time: 01:36:33 on Oct 02,2026
+# vcom -93 -work work ../rtl/traffic_light_top.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity traffic_light_top
+# -- Compiling architecture structural of traffic_light_top
+# -- Loading entity clk_divider
+# -- Loading entity fsm_controller
+# -- Loading entity timer_counter
+# -- Loading entity seg7_decoder
+# End time: 01:36:33 on Oct 02,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vcom 2020.1 Compiler 2020.02 Feb 28 2020
+# Start time: 01:36:33 on Oct 02,2026
+# vcom -93 -work work ../tb/tb_traffic_light_top.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity tb_traffic_light_top
+# -- Compiling architecture sim of tb_traffic_light_top
+# -- Loading entity traffic_light_top
+# End time: 01:36:33 on Oct 02,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# vsim -t 1ns -voptargs=""+acc"" work.tb_traffic_light_top 
+# Start time: 01:36:34 on Oct 02,2026
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.numeric_std(body)
+# Loading work.tb_traffic_light_top(sim)
+# Loading work.traffic_light_top(structural)
+# Loading work.clk_divider(rtl)
+# Loading work.fsm_controller(rtl)
+# Loading work.timer_counter(rtl)
+# Loading work.seg7_decoder(rtl)
+# 0
+# 0
+# configure wave not supported in batch mode
+# 0
+# configure wave not supported in batch mode
+# 0
+# configure wave not supported in batch mode
+# 0
+# configure wave not supported in batch mode
+# 0
+# configure wave not supported in batch mode
+# 0
+# configure wave not supported in batch mode
+# 0
+# configure wave not supported in batch mode
+# 0
+# configure wave not supported in batch mode
+# 0
+# ** Note: ================================================================
+#    Time: 0 ns  Iteration: 0  Instance: /tb_traffic_light_top
+# ** Note:   STARTING DE2-115 TRAFFIC LIGHT CONTROLLER TESTBENCH
+#    Time: 0 ns  Iteration: 0  Instance: /tb_traffic_light_top
+# ** Note: ================================================================
+#    Time: 0 ns  Iteration: 0  Instance: /tb_traffic_light_top
+# ** Note: [INIT] Applying Hardware Reset (KEY(0) = '0')...
+#    Time: 40 ns  Iteration: 0  Instance: /tb_traffic_light_top
+# ** Note: [INIT] PASS: Reset successfully initialized system to Phase 1 (25s Green A / 28s Red B).
+#    Time: 180 ns  Iteration: 0  Instance: /tb_traffic_light_top
+# ** Note: ----------------------------------------------------------------
+#    Time: 180 ns  Iteration: 0  Instance: /tb_traffic_light_top
+# ** Note: [SCENARIO 1] Commencing 2 Full Consecutive Normal Cycles (122 us)...
+#    Time: 180 ns  Iteration: 0  Instance: /tb_traffic_light_top
+# ** Note: ----------------------------------------------------------------
+#    Time: 180 ns  Iteration: 0  Instance: /tb_traffic_light_top
+# ** Note:   [Cycle 1 - Phase 1] Route A Green (25s), Route B Red (28s)
+#    Time: 180 ns  Iteration: 0  Instance: /tb_traffic_light_top
+# ** Note:   [Cycle 1 - Phase 2] Route A Yellow (3s), Route B Red (3s)
+#    Time: 25210 ns  Iteration: 1  Instance: /tb_traffic_light_top
+# ** Note:   [Cycle 1 - Phase 3] Route A Red (33s), Route B Green (30s)
+#    Time: 28210 ns  Iteration: 1  Instance: /tb_traffic_light_top
+# ** Note:   [Cycle 1 - Phase 4] Route A Red (3s), Route B Yellow (3s)
+#    Time: 58210 ns  Iteration: 1  Instance: /tb_traffic_light_top
+# ** Note:   -> Cycle 1 Complete (61 us). Commencing Cycle 2...
+#    Time: 61210 ns  Iteration: 1  Instance: /tb_traffic_light_top
+# ** Note:   [Cycle 2 - Phase 1] Route A Green (25s), Route B Red (28s)
+#    Time: 61210 ns  Iteration: 1  Instance: /tb_traffic_light_top
+# ** Note:   [Cycle 2 - Phase 2] Route A Yellow (3s), Route B Red (3s)
+#    Time: 86210 ns  Iteration: 1  Instance: /tb_traffic_light_top
+# ** Note:   [Cycle 2 - Phase 3] Route A Red (33s), Route B Green (30s)
+#    Time: 89210 ns  Iteration: 1  Instance: /tb_traffic_light_top
+# ** Note:   [Cycle 2 - Phase 4] Route A Red (3s), Route B Yellow (3s)
+#    Time: 119210 ns  Iteration: 1  Instance: /tb_traffic_light_top
+# ** Note: [SCENARIO 1] PASS: 2 full consecutive normal cycles (122 us) verified successfully.
+#    Time: 122210 ns  Iteration: 1  Instance: /tb_traffic_light_top
+# ** Note: ----------------------------------------------------------------
+#    Time: 122210 ns  Iteration: 1  Instance: /tb_traffic_light_top
+# ** Note: [SCENARIO 2] Commencing Night Mode Verification (SW(0) = '1')...
+#    Time: 122210 ns  Iteration: 1  Instance: /tb_traffic_light_top
+# ** Note: ----------------------------------------------------------------
+#    Time: 122210 ns  Iteration: 1  Instance: /tb_traffic_light_top
+# ** Note:   [Night Mode Cycle 1] HIGH pulse = 500 ns, LOW pulse = 500 ns
+#    Time: 124150 ns  Iteration: 1  Instance: /tb_traffic_light_top
+# ** Note:   [Night Mode Cycle 2] HIGH pulse = 500 ns, LOW pulse = 500 ns
+#    Time: 125150 ns  Iteration: 1  Instance: /tb_traffic_light_top
+# ** Note:   -> Deasserting Night Mode (SW(0) = '0')...
+#    Time: 125150 ns  Iteration: 1  Instance: /tb_traffic_light_top
+# ** Note: [SCENARIO 2] PASS: Night Mode (1 Hz flash, 500 ns pulse / 50% duty cycle, 7-seg blanking, clean recovery) verified.
+#    Time: 125350 ns  Iteration: 0  Instance: /tb_traffic_light_top
+# ** Note: ----------------------------------------------------------------
+#    Time: 125350 ns  Iteration: 0  Instance: /tb_traffic_light_top
+# ** Note: [SCENARIO 3] Commencing Pause / Hold Verification (SW(1) = '1')...
+#    Time: 125350 ns  Iteration: 0  Instance: /tb_traffic_light_top
+# ** Note: ----------------------------------------------------------------
+#    Time: 125350 ns  Iteration: 0  Instance: /tb_traffic_light_top
+# ** Note:   -> Activating Pause (SW(1) = '1')...
+#    Time: 130350 ns  Iteration: 0  Instance: /tb_traffic_light_top
+# ** Note:   -> Deasserting Pause (SW(1) = '0')...
+#    Time: 134450 ns  Iteration: 0  Instance: /tb_traffic_light_top
+# ** Note: [SCENARIO 3] PASS: Pause / Hold Mode (frozen countdown, smooth resumption) verified.
+#    Time: 136450 ns  Iteration: 0  Instance: /tb_traffic_light_top
+# ** Note: ----------------------------------------------------------------
+#    Time: 136450 ns  Iteration: 0  Instance: /tb_traffic_light_top
+# ** Note: [SCENARIO 4] Commencing Emergency Force Verification (KEY(1) = '0')...
+#    Time: 136450 ns  Iteration: 0  Instance: /tb_traffic_light_top
+# ** Note: ----------------------------------------------------------------
+#    Time: 136450 ns  Iteration: 0  Instance: /tb_traffic_light_top
+# ** Note:   -> Waiting for Phase 3 (Route B Green, Route A Red)...
+#    Time: 136450 ns  Iteration: 0  Instance: /tb_traffic_light_top
+# ** Note:   -> Confirmed Phase 3 active. Route B has Green, Route A has Red.
+#    Time: 157190 ns  Iteration: 1  Instance: /tb_traffic_light_top
+# ** Note:   -> Pressing Emergency Pushbutton (KEY(1) = '0')...
+#    Time: 159190 ns  Iteration: 0  Instance: /tb_traffic_light_top
+# ** Note:   -> Holding Emergency corridor for 5.0 us and tracking countdown state...
+#    Time: 159290 ns  Iteration: 0  Instance: /tb_traffic_light_top
+# ** Note:   -> Confirmed active countdown during Emergency: Route A = 20, Route B = 23.
+#    Time: 164290 ns  Iteration: 0  Instance: /tb_traffic_light_top
+# ** Note:   -> Releasing Emergency Pushbutton (KEY(1) = '1')...
+#    Time: 164290 ns  Iteration: 0  Instance: /tb_traffic_light_top
+# ** Note: [SCENARIO 4] PASS: Emergency Force Mode (preemption, 5 us hold with countdown, safe release & reload) verified.
+#    Time: 166490 ns  Iteration: 0  Instance: /tb_traffic_light_top
+# ** Note: ================================================================
+#    Time: 168490 ns  Iteration: 0  Instance: /tb_traffic_light_top
+# ** Note:   ALL 4 TEST SCENARIOS COMPLETED SUCCESSFULLY!
+#    Time: 168490 ns  Iteration: 0  Instance: /tb_traffic_light_top
+# ** Note:   ZERO SAFETY ASSERTION VIOLATIONS DETECTED.
+#    Time: 168490 ns  Iteration: 0  Instance: /tb_traffic_light_top
+# ** Note: ================================================================
+#    Time: 168490 ns  Iteration: 0  Instance: /tb_traffic_light_top
+# wave zoomfull not supported in batch mode
+# 0
+#  quit -f
+# End time: 01:36:34 on Oct 02,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
