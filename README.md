@@ -61,29 +61,43 @@ Thiết kế tối ưu theo nguyên tắc **Zero-Crossing PCB Routing**: Toàn b
 
 ---
 
-## 📂 3. Cấu Trúc Dự Án (Toàn Bộ Tập Tin Nằm Trực Tiếp Tại Thư Mục Gốc)
+## 📂 3. Cấu Trúc Thư Mục Dự Án Chuẩn Công Nghiệp & Học Thuật
+
+Cấu trúc thư mục được quy hoạch khoa học, rõ ràng theo tiêu chuẩn dự án FPGA công nghiệp:
 
 ```
-.
-├── clk_divider.vhd                     # Module chia tần số (50MHz -> 1Hz, 1kHz, nhấp nháy)
-├── fsm_controller.vhd                  # Module máy trạng thái FSM Moore 4 pha
-├── timer_counter.vhd                   # Module bộ đếm lùi thời gian & giải mã BCD
-├── seg7_decoder.vhd                    # Module giải mã 7 đoạn cho IC đệm UL2803G
-├── traffic_light_top.vhd               # Top-level tích hợp toàn bộ hệ thống & mạch Fail-Safe
-├── tb_traffic_light_top.vhd            # Testbench kiểm thử toàn diện 7 kịch bản
-├── Chay_Mo_Phong_ModelSim.bat          # File kích hoạt tự động chạy mô phỏng ModelSim
-├── traffic_light_top.qpf               # Dự án Quartus Prime Lite
-├── traffic_light_top.qsf               # Cấu hình 29 chân I/O & chuẩn điện áp 3.3V
-├── traffic_light_top.sdc               # Ràng buộc thời gian Timing Constraint 50MHz
-├── traffic_light_top.sof               # File nạp trực tiếp vào RAM FPGA (Quartus)
-├── traffic_light_top.jic               # File nạp vào chip nhớ Flash EPCS4 (Chạy vĩnh viễn)
-├── Danh_Sach_Chan_IO_FPGA_...docx      # Tài liệu Word tra cứu 29 chân I/O & vẽ Altium
-├── Danh_Sach_Linh_Kien_Do_An_...docx   # Bảng tổng hợp linh kiện và dự toán mua sắm (BOM)
-├── Bao_Cao_Giai_Thich_Code_...docx     # Báo cáo kỹ thuật giải thích chi tiết từng module
-├── HUONG_DAN_CHAY_DU_AN_ANODE_CHUNG.txt# Hướng dẫn đấu nối linh kiện & nạp code nhanh
-├── sim/                                # Kịch bản mô phỏng ModelSim (run_sim.do, wave.do)
-├── DoAn2_Traffic_Light_Anode_Chung.zip # Gói nén toàn bộ dự án
-└── README.md                           # Hướng dẫn chi tiết dự án
+DoAn2_Traffic_Light_FPGA/
+├── rtl/                                    # Toàn bộ mã nguồn thiết kế phần cứng VHDL
+│   ├── clk_divider.vhd                     # Module chia tần số (50MHz -> 1Hz, 1kHz, nhấp nháy 1Hz)
+│   ├── fsm_controller.vhd                  # Module máy trạng thái FSM Moore 4 pha giao thông
+│   ├── timer_counter.vhd                   # Module bộ đếm lùi thời gian & giải mã BCD hàng chục/đơn vị
+│   ├── seg7_decoder.vhd                    # Module giải mã 7 đoạn quét động cho IC đệm UL2803G
+│   └── traffic_light_top.vhd               # Top-level tích hợp toàn bộ hệ thống & mạch Fail-Safe Interlock
+├── sim/                                    # Môi trường mô phỏng ModelSim / QuestaSim
+│   ├── modelsim.ini                        # Cấu hình ánh xạ thư viện ModelSim
+│   ├── run_modelsim.bat                    # Script khởi chạy môi trường ModelSim
+│   ├── Chay_Mo_Phong_ModelSim.bat          # File kích hoạt 1-click tự động chạy mô phỏng
+│   ├── run_sim.do                          # Macro tự động biên dịch, nạp wave và chạy kiểm thử
+│   ├── wave.do                             # Lưu định dạng hiển thị dạng sóng tín hiệu
+│   └── tb_traffic_light_top.vhd            # Testbench kiểm thử toàn diện 7 kịch bản tự động
+├── bitstream/                              # Tệp nạp cấu hình FPGA & chip nhớ Flash (EPCS)
+│   ├── traffic_light_top.sof               # File nạp trực tiếp qua JTAG (SRAM volatile)
+│   ├── traffic_light_top.jic               # File nạp bộ nhớ Flash EPCS4 (Non-volatile, lưu vĩnh viễn)
+│   └── traffic_light_top_epcs4.jic         # Bản sao lưu cấu hình chuẩn EPCS4 (Silicon ID 0x12)
+├── docs/                                   # Báo cáo kỹ thuật, sơ đồ chân và tài liệu dự án
+│   ├── Bao_Cao_Giai_Thich_Code_Va_Nguyen_Ly_Module.docx # Báo cáo kỹ thuật chi tiết từng module
+│   ├── Danh_Sach_Chan_IO_FPGA_Cyclone_IV_Anode_Chung.docx # Bảng tra cứu 29 chân I/O & vẽ Altium
+│   ├── Danh_Sach_Linh_Kien_Do_An_Traffic_Light_Anode_Chung.docx # Bảng tổng hợp linh kiện và BOM
+│   ├── HUONG_DAN_CHAY_DU_AN_ANODE_CHUNG.txt# Sổ tay hướng dẫn nhanh đấu nối phần cứng & nạp code
+│   └── DoAn2_Traffic_Light_Anode_Chung.zip # Gói lưu trữ nén toàn bộ dự án
+├── scripts/                                # Công cụ script tự động sinh tài liệu
+│   ├── generate_bom_doc.py                 # Script tự động xuất BOM sang định dạng Word (.docx)
+│   └── generate_pinout_doc.py              # Script tự động xuất bảng chân I/O sang Word (.docx)
+├── traffic_light_top.qpf                   # Quartus Prime Project File
+├── traffic_light_top.qsf                   # Quartus Settings File (29 Pin assignments & 3.3V LVTTL)
+├── traffic_light_top.sdc                   # Ràng buộc thời gian Timing Constraint 50MHz
+├── .gitignore                              # Cấu hình bỏ qua các file tạm thời, biên dịch, simulation
+└── README.md                               # Hướng dẫn chi tiết & tài liệu tổng quan dự án
 ```
 
 ---
@@ -94,11 +108,26 @@ Thiết kế tối ưu theo nguyên tắc **Zero-Crossing PCB Routing**: Toàn b
 2. Mở phần mềm **Quartus Prime** $\rightarrow$ chọn menu **Tools** $\rightarrow$ **Programmer**.
 3. Chọn **Hardware Setup...** $\rightarrow$ chọn **USB-Blaster**.
 4. **Nạp chạy ngay (RAM):**
-   * Nhấn **Add File...** $\rightarrow$ chọn `traffic_light_top.sof`.
-   * Tích chọn ô **Program/Configure** $\rightarrow$ nhấn **Start** (Mạch chạy ngay sau 2 giây).
+   * Nhấn **Add File...** $\rightarrow$ mở thư mục `bitstream/` $\rightarrow$ chọn `traffic_light_top.sof`.
+   * Tích chọn ô **Program/Configure** $\rightarrow$ nhấn **Start** (Mạch nạp chạy ngay sau 2 giây).
 5. **Nạp vĩnh viễn (Flash EPCS4):**
-   * Nhấn **Add File...** $\rightarrow$ chọn `traffic_light_top.jic`.
-   * Tích chọn ô **Program/Configure** ở dòng `EPCS4` $\rightarrow$ nhấn **Start** (Lưu vĩnh viễn không mất khi rút nguồn).
+   * Nhấn **Add File...** $\rightarrow$ mở thư mục `bitstream/` $\rightarrow$ chọn `traffic_light_top.jic`.
+   * Tích chọn ô **Program/Configure** ở dòng `EPCS4` $\rightarrow$ nhấn **Start** (Lưu vĩnh viễn vào ROM, không mất khi ngắt nguồn điện).
 
 ---
-*Tác giả: Nguyễn Huy Hân | Trường Đại học - Khoa Điện - Điện tử / Kỹ thuật Máy tính*
+
+## 🧪 5. Hướng Dẫn Chạy Mô Phỏng ModelSim
+
+1. Truy cập vào thư mục `sim/`.
+2. Nhấp đúp chuột vào file `Chay_Mo_Phong_ModelSim.bat` (hoặc mở ModelSim và gõ lệnh `do run_sim.do`).
+3. Hệ thống sẽ tự động biên dịch toàn bộ các file VHDL trong `rtl/` và testbench `sim/tb_traffic_light_top.vhd`, nạp dạng sóng đầy đủ màu sắc từ `wave.do`, và chạy qua 7 kịch bản kiểm thử:
+   - **Kịch bản 1:** Khởi động và Reset hệ thống.
+   - **Kịch bản 2:** Chu trình bình thường Vòng 1 (Đầy đủ 4 pha).
+   - **Kịch bản 3:** Kiểm tra độ ổn định chu trình Vòng 2.
+   - **Kịch bản 4:** Kích hoạt Chế độ Ban Đêm (Đèn vàng chớp 1Hz).
+   - **Kịch bản 5:** Kích hoạt Chế độ Tạm Dừng (Pause đóng băng bộ đếm).
+   - **Kịch bản 6:** Ưu tiên xe khẩn cấp Làn A (Ép đèn xanh Làn A).
+   - **Kịch bản 7:** Ưu tiên xe khẩn cấp Làn B (Ép đèn xanh Làn B).
+
+---
+*Tác giả: Nguyễn Huy Hân | Sinh viên Đồ Án Chuyên Ngành / Kỹ thuật Máy tính - Điện tử*

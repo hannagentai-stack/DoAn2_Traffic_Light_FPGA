@@ -1,5 +1,5 @@
 @echo off
-cd /d "%~dp0sim"
+cd /d "%~dp0"
 echo ==============================================================================
 echo   KHOI DONG MO PHONG MODELSIM - HE THONG DIEU KHIEN DEN GIAO THONG CYCLONE IV
 echo ==============================================================================

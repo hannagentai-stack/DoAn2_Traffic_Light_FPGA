@@ -15,7 +15,7 @@ if [file exists "../clk_divider.vhd"] {
     set sim_dir "sim"
 } elseif [file exists "../rtl/clk_divider.vhd"] {
     set rtl_dir "../rtl"
-    set tb_dir  "../tb"
+    set tb_dir  "."
     set sim_dir "."
 } elseif [file exists "rtl/clk_divider.vhd"] {
     set rtl_dir "rtl"

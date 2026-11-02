@@ -24,11 +24,11 @@ set_global_assignment -name NUM_PARALLEL_PROCESSORS ALL
 # Design Source Files & Constraints
 # ------------------------------------------------------------------------------
 set_global_assignment -name SDC_FILE traffic_light_top.sdc
-set_global_assignment -name VHDL_FILE clk_divider.vhd
-set_global_assignment -name VHDL_FILE seg7_decoder.vhd
-set_global_assignment -name VHDL_FILE timer_counter.vhd
-set_global_assignment -name VHDL_FILE fsm_controller.vhd
-set_global_assignment -name VHDL_FILE traffic_light_top.vhd
+set_global_assignment -name VHDL_FILE rtl/clk_divider.vhd
+set_global_assignment -name VHDL_FILE rtl/seg7_decoder.vhd
+set_global_assignment -name VHDL_FILE rtl/timer_counter.vhd
+set_global_assignment -name VHDL_FILE rtl/fsm_controller.vhd
+set_global_assignment -name VHDL_FILE rtl/traffic_light_top.vhd
 
 # ==============================================================================
 # 1. MASTER CLOCK 50 MHZ (ONBOARD ACTIVE CRYSTAL OSCILLATOR)
