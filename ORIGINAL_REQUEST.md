@@ -64,3 +64,37 @@ Integrity mode: development
 ### Constraints & Documentation
 - [ ] File `de2_115_pins.qsf` đầy đủ vị trí chân và I/O standard cho toàn bộ ports.
 - [ ] Tài liệu `docs/` cung cấp đầy đủ bảng chuyển trạng thái, sơ đồ mermaid và hướng dẫn triển khai thực tế.
+
+
+## 2026-10-06T06:09:15Z
+
+# Teamwork Project Prompt — Final
+
+> Status: Launched
+> Goal: Execute the prompt via teamwork_preview
+> Requested team: Full Team
+
+Tạo một phiên bản dự án Quartus mới độc lập (porting) từ dự án Đèn giao thông hiện tại, chuyển mục tiêu phần cứng từ board DE2-115 sang bo mạch mini ZCJ Cyclone IV EP4CE6E22C8N.
+
+Working directory: c:/Users/handa/OneDrive/Documents/Projects/DoAn2/traffic_light_mini
+Integrity mode: demo
+
+## Requirements
+
+### R1. Khởi tạo Dự án Mới & Clone Mã nguồn
+Tạo một Quartus project mới tại thư mục `traffic_light_mini` với target device là `EP4CE6E22C8N`. Sao chép toàn bộ mã nguồn VHDL và các script testbench liên quan từ dự án gốc (`traffic_light_fpga`) sang thư mục mới mà không làm thay đổi logic hoạt động.
+
+### R2. Gán chân hoàn toàn ra I/O Header (Module ngoài)
+Thực hiện Pin Mapping mới hoàn toàn cho chip `EP4CE6E22C8N` trong file `.qsf`. Tín hiệu Clock 50MHz nối vào thạch anh trên bo (thường là PIN_23). **Toàn bộ** các tín hiệu I/O còn lại (nút nhấn KEY, công tắc SW, đèn LED, và LED 7 đoạn HEX) bắt buộc phải được gán vào các chân trên hai hàng rào cắm (GPIO Headers) thay vì dùng ngoại vi trên bo. Mục đích để kết nối 100% ra module bên ngoài.
+
+### R3. Xác minh tính tương thích tài nguyên
+Kiểm chứng lại quá trình tổng hợp (Synthesis) trên Quartus để đảm bảo mã nguồn VHDL hoàn toàn vừa vặn với dung lượng tài nguyên (LEs, Pins) nhỏ hơn của con chip `EP4CE6`.
+
+## Acceptance Criteria
+
+### RTL & Constraints
+- [ ] File `traffic_light_top.qsf` phải cấu hình đúng thiết bị `EP4CE6E22C8N`.
+- [ ] Các tín hiệu KEY, SW, LED, HEX được gán chính xác vào các PIN_xx hợp lệ nằm trên I/O Header của mạch (không trùng lặp chân nguồn/ground, khác với các PIN dùng cho LED/Nút nhấn hàn sẵn trên bo).
+
+### Verification & Synthesis
+- [ ] Lệnh biên dịch Quartus (`quartus_map`, `quartus_fit`, `quartus_asm`) trên thư mục mới thành công xuất ra file `.sof` với 0 errors.

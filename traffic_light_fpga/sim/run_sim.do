@@ -5,7 +5,15 @@
 # ==============================================================================
 
 # Detect directory context (whether run from ./sim or project root)
-if [file exists "../rtl/clk_divider.vhd"] {
+if [file exists "../clk_divider.vhd"] {
+    set rtl_dir ".."
+    set tb_dir  ".."
+    set sim_dir "."
+} elseif [file exists "clk_divider.vhd"] {
+    set rtl_dir "."
+    set tb_dir  "."
+    set sim_dir "sim"
+} elseif [file exists "../rtl/clk_divider.vhd"] {
     set rtl_dir "../rtl"
     set tb_dir  "../tb"
     set sim_dir "."
@@ -14,9 +22,9 @@ if [file exists "../rtl/clk_divider.vhd"] {
     set tb_dir  "tb"
     set sim_dir "sim"
 } else {
-    set rtl_dir "rtl"
-    set tb_dir  "tb"
-    set sim_dir "sim"
+    set rtl_dir "."
+    set tb_dir  "."
+    set sim_dir "."
 }
 
 # 1. Clean and Create Work Library
@@ -50,9 +58,9 @@ if [file exists "$sim_dir/wave.do"] {
     do wave.do
 }
 
-# 6. Run Simulation for 200 us
-puts "--> Running simulation for 200 us..."
-run 200 us
+# 6. Run Simulation for 250 us (Covers all 5 test scenarios)
+puts "--> Running simulation for 250 us..."
+run 250 us
 
 # 7. Zoom full to view complete test results (GUI mode safe)
 catch { wave zoomfull }

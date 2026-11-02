@@ -1,0 +1,31 @@
+# Quartus temporary databases and intermediate files
+db/
+incremental_db/
+**/db/
+**/incremental_db/
+*.qws
+*.smsg
+*.jdi
+*.sld
+*.pin
+
+# ModelSim simulation artifacts
+work/
+**/work/
+*.wlf
+**/vsim.wlf
+wlft*
+**/wlft*
+transcript
+**/transcript
+
+# Temporary Python artifacts
+__pycache__/
+*.py[cod]
+
+# Antigravity agent internal logs
+.agents/
+
+# OS generated
+Thumbs.db
+Desktop.ini

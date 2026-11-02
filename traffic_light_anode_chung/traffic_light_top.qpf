@@ -1,0 +1,12 @@
+# -------------------------------------------------------------------------- #
+# Quartus Prime Project File (.qpf)
+# Target Device: Altera Cyclone IV E EP4CE6E22C8N (Mini Core Board)
+# Top-Level Entity: traffic_light_top
+# -------------------------------------------------------------------------- #
+
+QUARTUS_VERSION = "20.1"
+DATE = "06:30:00  October 06, 2026"
+
+# Revisions
+
+PROJECT_REVISION = "traffic_light_top"

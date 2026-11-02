@@ -1,0 +1,123 @@
+# ==============================================================================
+# Altera Quartus Prime Settings File (.qsf)
+# Project       : Cyclone IV EP4CE6E22C8N FPGA Traffic Light Controller
+# Target Device : Altera Cyclone IV E EP4CE6E22C8
+# Top Entity    : traffic_light_top
+# Note          : CAU HINH CHAN GIAO TIEP TOI UU CHO VE PCB (ZERO-CROSSING LAYOUT)
+#                 - Top Header   : Toan bo Cum Den Giao Thong & Nut Bam / Cong Tac
+#                 - Bottom Header: Toan bo Cum LED 7 Doan Quet Dong (Lan A & Lan B)
+#                 - KHONG DUNG BAT KY LED HOAC NUT BAM ONBOARD NAO!
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# Device & Family Configuration
+# ------------------------------------------------------------------------------
+set_global_assignment -name FAMILY "Cyclone IV E"
+set_global_assignment -name DEVICE EP4CE6E22C8
+set_global_assignment -name TOP_LEVEL_ENTITY traffic_light_top
+set_global_assignment -name STRATIX_DEVICE_IO_STANDARD "3.3-V LVTTL"
+set_global_assignment -name RESERVE_ALL_UNUSED_PINS_WEAK_PULLUP "AS INPUT TRI-STATED WITH WEAK PULL-UP"
+set_global_assignment -name CYCLONEII_RESERVE_NCEO_AFTER_CONFIGURATION "USE AS REGULAR IO"
+set_global_assignment -name NUM_PARALLEL_PROCESSORS ALL
+
+# ------------------------------------------------------------------------------
+# Design Source Files & Constraints
+# ------------------------------------------------------------------------------
+set_global_assignment -name SDC_FILE traffic_light_top.sdc
+set_global_assignment -name VHDL_FILE clk_divider.vhd
+set_global_assignment -name VHDL_FILE seg7_decoder.vhd
+set_global_assignment -name VHDL_FILE timer_counter.vhd
+set_global_assignment -name VHDL_FILE fsm_controller.vhd
+set_global_assignment -name VHDL_FILE traffic_light_top.vhd
+
+# ==============================================================================
+# 1. MASTER CLOCK 50 MHZ (ONBOARD ACTIVE CRYSTAL OSCILLATOR)
+# ==============================================================================
+set_location_assignment PIN_24 -to CLOCK_50
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to CLOCK_50
+
+# ==============================================================================
+# 2. TOP HEADER: TOAN BO DEN GIAO THONG & DIEU KHIEN (LIEN TIEP TU PIN_38 DEN 53)
+# ==============================================================================
+# --- 6 Den giao thong (Active-High: '1' la sang den) ---
+# Lan A: Xanh, Vang, Do
+set_location_assignment PIN_38 -to LEDG[0]
+set_location_assignment PIN_39 -to LEDR[0]
+set_location_assignment PIN_42 -to LEDR[1]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to LEDG[0]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to LEDR[0]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to LEDR[1]
+
+# Lan B: Xanh, Vang, Do
+set_location_assignment PIN_43 -to LEDG[1]
+set_location_assignment PIN_44 -to LEDR[2]
+set_location_assignment PIN_46 -to LEDR[3]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to LEDG[1]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to LEDR[2]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to LEDR[3]
+
+# --- 3 Nut nhan dieu khien ngoai (Active-Low: '0' la bam) ---
+# KEY0: Reset he thong | KEY1: Khan cap Lan A | KEY2: Khan cap Lan B
+set_location_assignment PIN_49 -to KEY[0]
+set_location_assignment PIN_50 -to KEY[1]
+set_location_assignment PIN_51 -to KEY[2]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to KEY[0]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to KEY[1]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to KEY[2]
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to KEY[0]
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to KEY[1]
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to KEY[2]
+
+# --- 2 Cong tac gat che do ngoai (Active-Low kem tro keo noi: '0' la bat, de ho '1' la tat) ---
+# SW0: Che do Ban dem (Chop vang 1Hz) | SW1: Tam dung Pause bo dem
+set_location_assignment PIN_52 -to SW[0]
+set_location_assignment PIN_53 -to SW[1]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to SW[0]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to SW[1]
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to SW[0]
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to SW[1]
+
+# ==============================================================================
+# 3. BOTTOM HEADER: TOAN BO HIEN THI LED 7 DOAN (LIEN TIEP TU PIN_110 DEN 136)
+# ==============================================================================
+# --- LED 7 doan quet dong Lan A (Active-Low) ---
+set_location_assignment PIN_110 -to HEX_A_SEG[0]
+set_location_assignment PIN_111 -to HEX_A_SEG[1]
+set_location_assignment PIN_112 -to HEX_A_SEG[2]
+set_location_assignment PIN_113 -to HEX_A_SEG[3]
+set_location_assignment PIN_115 -to HEX_A_SEG[4]
+set_location_assignment PIN_119 -to HEX_A_SEG[5]
+set_location_assignment PIN_120 -to HEX_A_SEG[6]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to HEX_A_SEG[*]
+
+# Chan chon vi tri LED Lan A: DIG0=Don vi, DIG1=Hang chuc
+set_location_assignment PIN_121 -to HEX_A_DIG[0]
+set_location_assignment PIN_124 -to HEX_A_DIG[1]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to HEX_A_DIG[*]
+
+# --- LED 7 doan quet dong Lan B (Active-Low) ---
+set_location_assignment PIN_125 -to HEX_B_SEG[0]
+set_location_assignment PIN_126 -to HEX_B_SEG[1]
+set_location_assignment PIN_127 -to HEX_B_SEG[2]
+set_location_assignment PIN_128 -to HEX_B_SEG[3]
+set_location_assignment PIN_129 -to HEX_B_SEG[4]
+set_location_assignment PIN_132 -to HEX_B_SEG[5]
+set_location_assignment PIN_133 -to HEX_B_SEG[6]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to HEX_B_SEG[*]
+
+# Chan chon vi tri LED Lan B: DIG0=Don vi, DIG1=Hang chuc
+set_location_assignment PIN_135 -to HEX_B_DIG[0]
+set_location_assignment PIN_136 -to HEX_B_DIG[1]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to HEX_B_DIG[*]
+
+# ------------------------------------------------------------------------------
+# Fitting & Partition Configuration
+# ------------------------------------------------------------------------------
+set_global_assignment -name LAST_QUARTUS_VERSION "20.1.0 Lite Edition"
+set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
+set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
+set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
+
+set_global_assignment -name MIN_CORE_JUNCTION_TEMP 0
+set_global_assignment -name MAX_CORE_JUNCTION_TEMP 85
+set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top

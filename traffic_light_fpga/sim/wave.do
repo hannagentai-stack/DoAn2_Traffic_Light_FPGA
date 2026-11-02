@@ -19,6 +19,7 @@ add wave -noupdate -divider {CONTROL INPUTS}
 add wave -noupdate -color Magenta -format Logic /tb_traffic_light_top/sw(0)
 add wave -noupdate -color Blue    -format Logic /tb_traffic_light_top/sw(1)
 add wave -noupdate -color Red     -format Logic /tb_traffic_light_top/key(1)
+add wave -noupdate -color Orange  -format Logic /tb_traffic_light_top/key(2)
 
 # --- GROUP 3: FSM STATE ---
 add wave -noupdate -divider {FSM STATE}
