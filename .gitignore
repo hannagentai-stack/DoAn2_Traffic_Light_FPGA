@@ -23,6 +23,9 @@ transcript
 __pycache__/
 *.py[cod]
 
+# Local editor workspace folder
+traffic_light_mini/
+
 # Antigravity agent internal logs
 .agents/
 

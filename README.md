@@ -61,24 +61,29 @@ Thiết kế tối ưu theo nguyên tắc **Zero-Crossing PCB Routing**: Toàn b
 
 ---
 
-## 📂 3. Cấu Trúc Thư Mục Dự Án
+## 📂 3. Cấu Trúc Dự Án (Toàn Bộ Tập Tin Nằm Trực Tiếp Tại Thư Mục Gốc)
 
 ```
-├── traffic_light_anode_chung/               # PHIÊN BẢN CHÍNH: Anode chung + IC UL2803G
-│   ├── clk_divider.vhd                     # Module chia tần số (50MHz -> 1Hz, 1kHz, nhấp nháy)
-│   ├── fsm_controller.vhd                  # Module máy trạng thái FSM Moore 4 pha
-│   ├── timer_counter.vhd                   # Module bộ đếm lùi thời gian & giải mã BCD
-│   ├── seg7_decoder.vhd                    # Module giải mã 7 đoạn cho IC đệm UL2803G
-│   ├── traffic_light_top.vhd               # Top-level tích hợp toàn bộ hệ thống & mạch Fail-Safe
-│   ├── tb_traffic_light_top.vhd            # Testbench kiểm thử toàn diện 7 kịch bản
-│   ├── traffic_light_top.sof               # Bitstream nạp trực tiếp vào RAM FPGA (Quartus)
-│   ├── traffic_light_top.jic               # Bitstream nạp vào chip Flash EPCS4 (Chạy vĩnh viễn)
-│   ├── Danh_Sach_Chan_IO_FPGA_...docx      # Tài liệu Word tra cứu 29 chân I/O & vẽ Altium
-│   ├── Danh_Sach_Linh_Kien_Do_An_...docx   # Bảng tổng hợp linh kiện và dự toán mua sắm (BOM)
-│   └── HUONG_DAN_CHAY_DU_AN_ANODE_CHUNG.txt# Hướng dẫn đấu nối & nạp code nhanh
-├── traffic_light_mini/                     # Bản gốc cấu hình Cathode chung
-├── DoAn2_Traffic_Light_Anode_Chung.zip     # Gói nén dự án hoàn chỉnh
-└── README.md                               # Hướng dẫn chi tiết dự án
+.
+├── clk_divider.vhd                     # Module chia tần số (50MHz -> 1Hz, 1kHz, nhấp nháy)
+├── fsm_controller.vhd                  # Module máy trạng thái FSM Moore 4 pha
+├── timer_counter.vhd                   # Module bộ đếm lùi thời gian & giải mã BCD
+├── seg7_decoder.vhd                    # Module giải mã 7 đoạn cho IC đệm UL2803G
+├── traffic_light_top.vhd               # Top-level tích hợp toàn bộ hệ thống & mạch Fail-Safe
+├── tb_traffic_light_top.vhd            # Testbench kiểm thử toàn diện 7 kịch bản
+├── Chay_Mo_Phong_ModelSim.bat          # File kích hoạt tự động chạy mô phỏng ModelSim
+├── traffic_light_top.qpf               # Dự án Quartus Prime Lite
+├── traffic_light_top.qsf               # Cấu hình 29 chân I/O & chuẩn điện áp 3.3V
+├── traffic_light_top.sdc               # Ràng buộc thời gian Timing Constraint 50MHz
+├── traffic_light_top.sof               # File nạp trực tiếp vào RAM FPGA (Quartus)
+├── traffic_light_top.jic               # File nạp vào chip nhớ Flash EPCS4 (Chạy vĩnh viễn)
+├── Danh_Sach_Chan_IO_FPGA_...docx      # Tài liệu Word tra cứu 29 chân I/O & vẽ Altium
+├── Danh_Sach_Linh_Kien_Do_An_...docx   # Bảng tổng hợp linh kiện và dự toán mua sắm (BOM)
+├── Bao_Cao_Giai_Thich_Code_...docx     # Báo cáo kỹ thuật giải thích chi tiết từng module
+├── HUONG_DAN_CHAY_DU_AN_ANODE_CHUNG.txt# Hướng dẫn đấu nối linh kiện & nạp code nhanh
+├── sim/                                # Kịch bản mô phỏng ModelSim (run_sim.do, wave.do)
+├── DoAn2_Traffic_Light_Anode_Chung.zip # Gói nén toàn bộ dự án
+└── README.md                           # Hướng dẫn chi tiết dự án
 ```
 
 ---
@@ -89,10 +94,10 @@ Thiết kế tối ưu theo nguyên tắc **Zero-Crossing PCB Routing**: Toàn b
 2. Mở phần mềm **Quartus Prime** $\rightarrow$ chọn menu **Tools** $\rightarrow$ **Programmer**.
 3. Chọn **Hardware Setup...** $\rightarrow$ chọn **USB-Blaster**.
 4. **Nạp chạy ngay (RAM):**
-   * Nhấn **Add File...** $\rightarrow$ chọn `traffic_light_anode_chung/traffic_light_top.sof`.
+   * Nhấn **Add File...** $\rightarrow$ chọn `traffic_light_top.sof`.
    * Tích chọn ô **Program/Configure** $\rightarrow$ nhấn **Start** (Mạch chạy ngay sau 2 giây).
 5. **Nạp vĩnh viễn (Flash EPCS4):**
-   * Nhấn **Add File...** $\rightarrow$ chọn `traffic_light_anode_chung/traffic_light_top.jic`.
+   * Nhấn **Add File...** $\rightarrow$ chọn `traffic_light_top.jic`.
    * Tích chọn ô **Program/Configure** ở dòng `EPCS4` $\rightarrow$ nhấn **Start** (Lưu vĩnh viễn không mất khi rút nguồn).
 
 ---
