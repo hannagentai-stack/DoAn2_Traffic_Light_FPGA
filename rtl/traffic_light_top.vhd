@@ -28,31 +28,35 @@ entity traffic_light_top is
         CLOCK_50  : in  std_logic;
 
         -- 2. Cac nut nhan dieu khien ngoai vi (Active-Low: Bam nut la muc '0')
-        --    KEY(0): Nut Reset toan he thong
-        --    KEY(1): Nut uu tien khan cap Lan A (Xe cuu thuong / cuu hoa)
-        --    KEY(2): Nut uu tien khan cap Lan B (Nhay thang sang Pha 3)
+        --    KEY(0): Nut Reset toan he thong (Altium: PIN_58)
+        --    KEY(1): Nut uu tien khan cap Lan A (Altium: PIN_60)
+        --    KEY(2): Nut uu tien khan cap Lan B (Altium: PIN_65)
         KEY       : in  std_logic_vector(2 downto 0);
 
-        -- 3. Cac cong tac gat che do hoat dong (Active-Low kem tro keo len noi: Noi GND la Bat, De ho la Tat)
-        --    SW(0): Cong tac che do ban dem (Noi GND '0' la bat chop vang 1 Hz; de ho mac dinh chay binh thuong)
-        --    SW(1): Cong tac tam dung bo dem thoi gian (Noi GND '0' la bat Pause; de ho mac dinh dem binh thuong)
+        -- 3. Cac cong tac gat che do hoat dong (Active-Low kem tro keo len noi)
+        --    SW(0): Cong tac che do ban dem (Altium: PIN_67 - MTS-103)
+        --    SW(1): Cong tac tam dung bo dem (Altium: PIN_69 - MTS-103)
         SW        : in  std_logic_vector(1 downto 0);
 
         -- 4. Tin hieu dieu khien den giao thong (Active-High: '1' la sang den)
-        --    LEDR(0): Den VANG Lan A   |   LEDR(1): Den DO Lan A
-        --    LEDR(2): Den VANG Lan B   |   LEDR(3): Den DO Lan B
+        --    LEDR(0): Den VANG Lan A (PIN_43)   |   LEDR(1): Den DO Lan A (PIN_46)
+        --    LEDR(2): Den VANG Lan B (PIN_52)   |   LEDR(3): Den DO Lan B (PIN_54)
         LEDR      : out std_logic_vector(3 downto 0);
 
-        --    LEDG(0): Den XANH Lan A   |   LEDG(1): Den XANH Lan B
+        --    LEDG(0): Den XANH Lan A (PIN_39)   |   LEDG(1): Den XANH Lan B (PIN_50)
         LEDG      : out std_logic_vector(1 downto 0);
 
-        -- 5. Cung cap tin hieu cho LED 7 doan Lan A
-        HEX_A_SEG : out std_logic_vector(6 downto 0); -- 7 thanh doan (a..g) Lan A (Active-Low)
-        HEX_A_DIG : out std_logic_vector(1 downto 0); -- Chan chon vi tri LED Don vi / Chuc Lan A
+        -- 5. Cung cap tin hieu cho LED 7 doan Lan A (qua ULN2803A)
+        --    HEX_A_SEG: 7 thanh doan a..g (PIN_129, 133, 136, 138, 142, 144, 143)
+        --    HEX_A_DIG: DIG(0)=Don vi (PIN_137), DIG(1)=Chuc (PIN_141)
+        HEX_A_SEG : out std_logic_vector(6 downto 0);
+        HEX_A_DIG : out std_logic_vector(1 downto 0);
 
-        -- 6. Cung cap tin hieu cho LED 7 doan Lan B
-        HEX_B_SEG : out std_logic_vector(6 downto 0); -- 7 thanh doan (a..g) Lan B (Active-Low)
-        HEX_B_DIG : out std_logic_vector(1 downto 0)  -- Chan chon vi tri LED Don vi / Chuc Lan B
+        -- 6. Cung cap tin hieu cho LED 7 doan Lan B (qua ULN2803A)
+        --    HEX_B_SEG: 7 thanh doan a..g (PIN_111, 113, 119, 121, 125, 127, 110)
+        --    HEX_B_DIG: DIG(0)=Don vi (PIN_112), DIG(1)=Chuc (PIN_115)
+        HEX_B_SEG : out std_logic_vector(6 downto 0);
+        HEX_B_DIG : out std_logic_vector(1 downto 0)
     );
 end entity traffic_light_top;
 

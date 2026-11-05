@@ -3,10 +3,7 @@
 # Project       : Cyclone IV EP4CE6E22C8N FPGA Traffic Light Controller
 # Target Device : Altera Cyclone IV E EP4CE6E22C8
 # Top Entity    : traffic_light_top
-# Note          : CAU HINH CHAN GIAO TIEP TOI UU CHO VE PCB (ZERO-CROSSING LAYOUT)
-#                 - Top Header   : Toan bo Cum Den Giao Thong & Nut Bam / Cong Tac
-#                 - Bottom Header: Toan bo Cum LED 7 Doan Quet Dong (Lan A & Lan B)
-#                 - KHONG DUNG BAT KY LED HOAC NUT BAM ONBOARD NAO!
+# Note          : DONG BO 100% VOI SO DO NGUYEN LY & PCB ALTIUM DESIGNER (SCHMACHCHINH)
 # ==============================================================================
 
 # ------------------------------------------------------------------------------
@@ -30,33 +27,6 @@ set_global_assignment -name VHDL_FILE rtl/timer_counter.vhd
 set_global_assignment -name VHDL_FILE rtl/fsm_controller.vhd
 set_global_assignment -name VHDL_FILE rtl/traffic_light_top.vhd
 
-# ==============================================================================
-# 1. MASTER CLOCK 50 MHZ (ONBOARD ACTIVE CRYSTAL OSCILLATOR)
-# ==============================================================================
-
-# ==============================================================================
-# 2. TOP HEADER: TOAN BO DEN GIAO THONG & DIEU KHIEN (LIEN TIEP TU PIN_38 DEN 53)
-# ==============================================================================
-# --- 6 Den giao thong (Active-High: '1' la sang den) ---
-# Lan A: Xanh, Vang, Do
-
-# Lan B: Xanh, Vang, Do
-
-# --- 3 Nut nhan dieu khien ngoai (Active-Low: '0' la bam) ---
-
-# --- 2 Cong tac gat che do ngoai (Active-Low kem tro keo noi: '0' la bat, de ho '1' la tat) ---
-
-# ==============================================================================
-# 3. BOTTOM HEADER: TOAN BO HIEN THI LED 7 DOAN (LIEN TIEP TU PIN_110 DEN 136)
-# ==============================================================================
-# --- LED 7 doan quet dong Lan A (Active-Low) ---
-
-# Chan chon vi tri LED Lan A: DIG0=Don vi, DIG1=Hang chuc
-
-# --- LED 7 doan quet dong Lan B (Active-Low) ---
-
-# Chan chon vi tri LED Lan B: DIG0=Don vi, DIG1=Hang chuc
-
 # ------------------------------------------------------------------------------
 # Fitting & Partition Configuration
 # ------------------------------------------------------------------------------
@@ -64,19 +34,19 @@ set_global_assignment -name LAST_QUARTUS_VERSION "20.1.0 Lite Edition"
 set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
 set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
 set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
-
 set_global_assignment -name MIN_CORE_JUNCTION_TEMP 0
 set_global_assignment -name MAX_CORE_JUNCTION_TEMP 85
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
 
 # ==============================================================================
-# PIN ASSIGNMENTS - CUSTOM USER CONFIGURATION
+# PIN ASSIGNMENTS - DONG BO CHUAN 100% THEO ALTIUM DESIGNER
 # ==============================================================================
-# Clock 50MHz
+
+# 1. Master Clock 50MHz (Onboard Crystal Oscillator)
 set_location_assignment PIN_24 -to CLOCK_50
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to CLOCK_50
 
-# Traffic LEDs Lane A
+# 2. Cụm Đèn Giao Thông Làn A (Header lan_a: xanh_a, vang_a, do_a)
 set_location_assignment PIN_39 -to LEDG[0]
 set_location_assignment PIN_43 -to LEDR[0]
 set_location_assignment PIN_46 -to LEDR[1]
@@ -84,49 +54,58 @@ set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to LEDG[0]
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to LEDR[0]
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to LEDR[1]
 
-# Traffic LEDs Lane B
-set_location_assignment PIN_71 -to LEDG[1]
-set_location_assignment PIN_69 -to LEDR[2]
-set_location_assignment PIN_67 -to LEDR[3]
+# 3. Cụm Đèn Giao Thông Làn B (Header lan_b: xanh_b, vang_b, do_b)
+set_location_assignment PIN_50 -to LEDG[1]
+set_location_assignment PIN_52 -to LEDR[2]
+set_location_assignment PIN_54 -to LEDR[3]
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to LEDG[1]
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to LEDR[2]
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to LEDR[3]
 
-# Inputs (Buttons & Switches)
-set_location_assignment PIN_50 -to KEY[0]
-set_location_assignment PIN_52 -to KEY[1]
-set_location_assignment PIN_54 -to KEY[2]
-set_location_assignment PIN_58 -to SW[0]
-set_location_assignment PIN_60 -to SW[1]
+# 4. Ngõ Vào Điều Khiển: Nút Bấm & Công Tắc (Active-Low kèm Weak Pull-up)
+#    KEY0 (Reset)         : PIN_58
+#    KEY1 (Khan cap Lan A): PIN_60
+#    KEY2 (Khan cap Lan B): PIN_65
+#    SW0  (Che do Ban dem): PIN_67
+#    SW1  (Che do Tam dung):PIN_69
+set_location_assignment PIN_58 -to KEY[0]
+set_location_assignment PIN_60 -to KEY[1]
+set_location_assignment PIN_65 -to KEY[2]
+set_location_assignment PIN_67 -to SW[0]
+set_location_assignment PIN_69 -to SW[1]
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to KEY[*]
 set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to KEY[*]
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to SW[*]
 set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to SW[*]
 
-# 7-Segment Lane A (144, 142, 138, 136, 133, 129, 143, 141, 137)
-set_location_assignment PIN_144 -to HEX_A_SEG[0]
-set_location_assignment PIN_142 -to HEX_A_SEG[1]
-set_location_assignment PIN_138 -to HEX_A_SEG[2]
-set_location_assignment PIN_136 -to HEX_A_SEG[3]
-set_location_assignment PIN_133 -to HEX_A_SEG[4]
-set_location_assignment PIN_129 -to HEX_A_SEG[5]
+# 5. Cặp LED 7 Đoạn Đôi Làn A (Anode Chung qua Đệm ULN2803A)
+#    Segments a..g: a=129, b=133, c=136, d=138, e=142, f=144, g=143
+set_location_assignment PIN_129 -to HEX_A_SEG[0]
+set_location_assignment PIN_133 -to HEX_A_SEG[1]
+set_location_assignment PIN_136 -to HEX_A_SEG[2]
+set_location_assignment PIN_138 -to HEX_A_SEG[3]
+set_location_assignment PIN_142 -to HEX_A_SEG[4]
+set_location_assignment PIN_144 -to HEX_A_SEG[5]
 set_location_assignment PIN_143 -to HEX_A_SEG[6]
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to HEX_A_SEG[*]
 
+#    Digits: dig2_a (Don vi) = PIN_137, dig1_a (Chuc) = PIN_141
 set_location_assignment PIN_137 -to HEX_A_DIG[0]
 set_location_assignment PIN_141 -to HEX_A_DIG[1]
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to HEX_A_DIG[*]
 
-# 7-Segment Lane B (127, 125, 121, 119, 113, 111, 115, 112, 110)
-set_location_assignment PIN_127 -to HEX_B_SEG[0]
-set_location_assignment PIN_125 -to HEX_B_SEG[1]
-set_location_assignment PIN_121 -to HEX_B_SEG[2]
-set_location_assignment PIN_119 -to HEX_B_SEG[3]
-set_location_assignment PIN_113 -to HEX_B_SEG[4]
-set_location_assignment PIN_111 -to HEX_B_SEG[5]
-set_location_assignment PIN_115 -to HEX_B_SEG[6]
+# 6. Cặp LED 7 Đoạn Đôi Làn B (Anode Chung qua Đệm ULN2803A)
+#    Segments a..g: a=111, b=113, c=119, d=121, e=125, f=127, g=110
+set_location_assignment PIN_111 -to HEX_B_SEG[0]
+set_location_assignment PIN_113 -to HEX_B_SEG[1]
+set_location_assignment PIN_119 -to HEX_B_SEG[2]
+set_location_assignment PIN_121 -to HEX_B_SEG[3]
+set_location_assignment PIN_125 -to HEX_B_SEG[4]
+set_location_assignment PIN_127 -to HEX_B_SEG[5]
+set_location_assignment PIN_110 -to HEX_B_SEG[6]
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to HEX_B_SEG[*]
 
-set_location_assignment PIN_110 -to HEX_B_DIG[0]
-set_location_assignment PIN_112 -to HEX_B_DIG[1]
+#    Digits: dig2_b (Don vi) = PIN_112, dig1_b (Chuc) = PIN_115
+set_location_assignment PIN_112 -to HEX_B_DIG[0]
+set_location_assignment PIN_115 -to HEX_B_DIG[1]
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to HEX_B_DIG[*]

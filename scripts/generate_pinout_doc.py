@@ -336,51 +336,46 @@ def build_pinout_document(file_path):
         set_cell_margins(c, 100, 100, 120, 120)
         
     project_pins = [
-        # 1. Master Clock 50MHz
         ("CLOCK_50", "IN", "PIN_24", "3.3V LVTTL", "Xung vuông", "Thạch anh 50MHz tích hợp trên bo (GCLK0)."),
-        
-        # 2. TOP HEADER (CỤM ĐÈN GIAO THÔNG & ĐIỀU KHIỂN - TẤT CẢ NẰM HÀNG NGOÀI)
-        # Đèn giao thông Làn A
-        ("LEDG[0]", "OUT", "PIN_39", "3.3V LVTTL", "Active-High (1)", "Đèn XANH Làn A (Top Header - Hàng ngoài)."),
-        ("LEDR[0]", "OUT", "PIN_43", "3.3V LVTTL", "Active-High (1)", "Đèn VÀNG Làn A (Top Header - Hàng ngoài)."),
-        ("LEDR[1]", "OUT", "PIN_46", "3.3V LVTTL", "Active-High (1)", "Đèn ĐỎ Làn A (Top Header - Hàng ngoài)."),
-        
-        # Đèn giao thông Làn B
-        ("LEDG[1]", "OUT", "PIN_71", "3.3V LVTTL", "Active-High (1)", "Đèn XANH Làn B (Top Header - Hàng ngoài)."),
-        ("LEDR[2]", "OUT", "PIN_69", "3.3V LVTTL", "Active-High (1)", "Đèn VÀNG Làn B (Top Header - Hàng ngoài)."),
-        ("LEDR[3]", "OUT", "PIN_67", "3.3V LVTTL", "Active-High (1)", "Đèn ĐỎ Làn B (Top Header - Hàng ngoài)."),
+        # 2. CỤM ĐÈN GIAO THÔNG VÀ ĐIỀU KHIỂN (KHỚP ALTIUM)
+        ("LEDG[0]", "OUT", "PIN_39", "3.3V LVTTL", "Active-High (1)", "Đèn XANH Làn A (xanh_a trên Altium)."),
+        ("LEDR[0]", "OUT", "PIN_43", "3.3V LVTTL", "Active-High (1)", "Đèn VÀNG Làn A (vang_a trên Altium)."),
+        ("LEDR[1]", "OUT", "PIN_46", "3.3V LVTTL", "Active-High (1)", "Đèn ĐỎ Làn A (do_a trên Altium)."),
+        ("LEDG[1]", "OUT", "PIN_50", "3.3V LVTTL", "Active-High (1)", "Đèn XANH Làn B (xanh_b trên Altium)."),
+        ("LEDR[2]", "OUT", "PIN_52", "3.3V LVTTL", "Active-High (1)", "Đèn VÀNG Làn B (vang_b trên Altium)."),
+        ("LEDR[3]", "OUT", "PIN_54", "3.3V LVTTL", "Active-High (1)", "Đèn ĐỎ Làn B (do_b trên Altium)."),
         
         # Nút nhấn ngoại vi
-        ("KEY[0]", "IN", "PIN_50", "3.3V LVTTL", "Active-Low (0)", "Nút Reset toàn hệ thống (Top Header - Hàng ngoài)."),
-        ("KEY[1]", "IN", "PIN_52", "3.3V LVTTL", "Active-Low (0)", "Nút Khẩn cấp Làn A (Top Header - Hàng ngoài)."),
-        ("KEY[2]", "IN", "PIN_54", "3.3V LVTTL", "Active-Low (0)", "Nút Khẩn cấp Làn B (Top Header - Hàng ngoài)."),
+        ("KEY[0]", "IN", "PIN_58", "3.3V LVTTL", "Active-Low (0)", "Nút Reset toàn hệ thống (KEY0 trên Altium)."),
+        ("KEY[1]", "IN", "PIN_60", "3.3V LVTTL", "Active-Low (0)", "Nút Khẩn cấp Làn A (KEY1 trên Altium)."),
+        ("KEY[2]", "IN", "PIN_65", "3.3V LVTTL", "Active-Low (0)", "Nút Khẩn cấp Làn B (KEY2 trên Altium)."),
         
-        # Công tắc cần gạt 3 vị trí ON-OFF-ON
-        ("SW[0]", "IN", "PIN_58", "3.3V LVTTL", "Active-Low (0)", "Chân 1 công tắc 3 nấc: Gạt nối GND là Bật Chế độ Ban đêm (Chớp vàng 1Hz)."),
-        ("SW[1]", "IN", "PIN_60", "3.3V LVTTL", "Active-Low (0)", "Chân 3 công tắc 3 nấc: Gạt nối GND là Bật Tạm dừng Pause. (Giữa = Tự động)."),
+        # Công tắc cần gạt 3 vị trí ON-OFF-ON (MTS-103)
+        ("SW[0]", "IN", "PIN_67", "3.3V LVTTL", "Active-Low (0)", "Chân 1 công tắc 3 nấc: Chế độ Ban đêm SW0 (Chớp vàng 1Hz)."),
+        ("SW[1]", "IN", "PIN_69", "3.3V LVTTL", "Active-Low (0)", "Chân 3 công tắc 3 nấc: Chế độ Tạm dừng Pause SW1."),
         
-        # 3. BOTTOM HEADER (CỤM HIỂN THỊ LED 7 ĐOẠN ANODE CHUNG)
-        # LED 7 đoạn Làn A (144, 142, 138, 136, 133, 129, 143, 141, 137)
-        ("HEX_A_SEG[0]", "OUT", "PIN_144", "3.3V LVTTL", "Active-High (1)", "Thanh đoạn a (Làn A) - Vào In 1B ULN2803G -> Qua trở 330Ω vào Chân 10 của LED."),
-        ("HEX_A_SEG[1]", "OUT", "PIN_142", "3.3V LVTTL", "Active-High (1)", "Thanh đoạn b (Làn A) - Vào In 2B ULN2803G -> Qua trở 330Ω vào Chân 9 của LED."),
-        ("HEX_A_SEG[2]", "OUT", "PIN_138", "3.3V LVTTL", "Active-High (1)", "Thanh đoạn c (Làn A) - Vào In 3B ULN2803G -> Qua trở 330Ω vào Chân 1 của LED."),
-        ("HEX_A_SEG[3]", "OUT", "PIN_136", "3.3V LVTTL", "Active-High (1)", "Thanh đoạn d (Làn A) - Vào In 4B ULN2803G -> Qua trở 330Ω vào Chân 4 của LED."),
-        ("HEX_A_SEG[4]", "OUT", "PIN_133", "3.3V LVTTL", "Active-High (1)", "Thanh đoạn e (Làn A) - Vào In 5B ULN2803G -> Qua trở 330Ω vào Chân 3 của LED."),
-        ("HEX_A_SEG[5]", "OUT", "PIN_129", "3.3V LVTTL", "Active-High (1)", "Thanh đoạn f (Làn A) - Vào In 6B ULN2803G -> Qua trở 330Ω vào Chân 6 của LED."),
-        ("HEX_A_SEG[6]", "OUT", "PIN_143", "3.3V LVTTL", "Active-High (1)", "Thanh đoạn g (Làn A) - Vào In 7B ULN2803G -> Qua trở 330Ω vào Chân 5 của LED."),
-        ("HEX_A_DIG[0]", "OUT", "PIN_137", "3.3V LVTTL", "Active-High (1)", "Cấp nguồn 3.3V (Mức 1) vào Chân 7 (DIG2 Đơn vị) của LED Làn A."),
-        ("HEX_A_DIG[1]", "OUT", "PIN_141", "3.3V LVTTL", "Active-High (1)", "Cấp nguồn 3.3V (Mức 1) vào Chân 8 (DIG1 Chục) của LED Làn A."),
+        # 3. CỤM HIỂN THỊ LED 7 ĐOẠN ANODE CHUNG (ĐỒNG BỘ ALTIUM)
+        # LED 7 đoạn Làn A (129, 133, 136, 138, 142, 144, 143; DIG: 141, 137)
+        ("HEX_A_SEG[0]", "OUT", "PIN_129", "3.3V LVTTL", "Active-High (1)", "Thanh đoạn a_a -> In 1B ULN2803A -> Qua trở R1 vào Chân 1 LED A."),
+        ("HEX_A_SEG[1]", "OUT", "PIN_133", "3.3V LVTTL", "Active-High (1)", "Thanh đoạn b_a -> In 2B ULN2803A -> Qua trở R2 vào Chân 2 LED A."),
+        ("HEX_A_SEG[2]", "OUT", "PIN_136", "3.3V LVTTL", "Active-High (1)", "Thanh đoạn c_a -> In 3B ULN2803A -> Qua trở R3 vào Chân 3 LED A."),
+        ("HEX_A_SEG[3]", "OUT", "PIN_138", "3.3V LVTTL", "Active-High (1)", "Thanh đoạn d_a -> In 4B ULN2803A -> Qua trở R4 vào Chân 4 LED A."),
+        ("HEX_A_SEG[4]", "OUT", "PIN_142", "3.3V LVTTL", "Active-High (1)", "Thanh đoạn e_a -> In 5B ULN2803A -> Qua trở R5 vào Chân 5 LED A."),
+        ("HEX_A_SEG[5]", "OUT", "PIN_144", "3.3V LVTTL", "Active-High (1)", "Thanh đoạn f_a -> In 6B ULN2803A -> Qua trở R6 vào Chân 6 LED A."),
+        ("HEX_A_SEG[6]", "OUT", "PIN_143", "3.3V LVTTL", "Active-High (1)", "Thanh đoạn g_a -> In 7B ULN2803A -> Qua trở R7 vào Chân 7 LED A."),
+        ("HEX_A_DIG[0]", "OUT", "PIN_137", "3.3V LVTTL", "Active-High (1)", "Chân chọn dig2_a (Đơn vị) -> Chân 9 Socket LED Làn A."),
+        ("HEX_A_DIG[1]", "OUT", "PIN_141", "3.3V LVTTL", "Active-High (1)", "Chân chọn dig1_a (Hàng chục) -> Chân 8 Socket LED Làn A."),
         
-        # LED 7 đoạn Làn B (127, 125, 121, 119, 113, 111, 115, 112, 110)
-        ("HEX_B_SEG[0]", "OUT", "PIN_127", "3.3V LVTTL", "Active-High (1)", "Thanh đoạn a (Làn B) - Vào In 1B ULN2803G -> Qua trở 330Ω vào Chân 10 của LED."),
-        ("HEX_B_SEG[1]", "OUT", "PIN_125", "3.3V LVTTL", "Active-High (1)", "Thanh đoạn b (Làn B) - Vào In 2B ULN2803G -> Qua trở 330Ω vào Chân 9 của LED."),
-        ("HEX_B_SEG[2]", "OUT", "PIN_121", "3.3V LVTTL", "Active-High (1)", "Thanh đoạn c (Làn B) - Vào In 3B ULN2803G -> Qua trở 330Ω vào Chân 1 của LED."),
-        ("HEX_B_SEG[3]", "OUT", "PIN_119", "3.3V LVTTL", "Active-High (1)", "Thanh đoạn d (Làn B) - Vào In 4B ULN2803G -> Qua trở 330Ω vào Chân 4 của LED."),
-        ("HEX_B_SEG[4]", "OUT", "PIN_113", "3.3V LVTTL", "Active-High (1)", "Thanh đoạn e (Làn B) - Vào In 5B ULN2803G -> Qua trở 330Ω vào Chân 3 của LED."),
-        ("HEX_B_SEG[5]", "OUT", "PIN_111", "3.3V LVTTL", "Active-High (1)", "Thanh đoạn f (Làn B) - Vào In 6B ULN2803G -> Qua trở 330Ω vào Chân 6 của LED."),
-        ("HEX_B_SEG[6]", "OUT", "PIN_115", "3.3V LVTTL", "Active-High (1)", "Thanh đoạn g (Làn B) - Vào In 7B ULN2803G -> Qua trở 330Ω vào Chân 5 của LED."),
-        ("HEX_B_DIG[0]", "OUT", "PIN_110", "3.3V LVTTL", "Active-High (1)", "Cấp nguồn 3.3V (Mức 1) vào Chân 7 (DIG2 Đơn vị) của LED Làn B."),
-        ("HEX_B_DIG[1]", "OUT", "PIN_112", "3.3V LVTTL", "Active-High (1)", "Cấp nguồn 3.3V (Mức 1) vào Chân 8 (DIG1 Chục) của LED Làn B.")
+        # LED 7 đoạn Làn B (111, 113, 119, 121, 125, 127, 110; DIG: 115, 112)
+        ("HEX_B_SEG[0]", "OUT", "PIN_111", "3.3V LVTTL", "Active-High (1)", "Thanh đoạn a_b -> In 1B ULN2803A -> Qua trở R8 vào Chân 1 LED B."),
+        ("HEX_B_SEG[1]", "OUT", "PIN_113", "3.3V LVTTL", "Active-High (1)", "Thanh đoạn b_b -> In 2B ULN2803A -> Qua trở R9 vào Chân 2 LED B."),
+        ("HEX_B_SEG[2]", "OUT", "PIN_119", "3.3V LVTTL", "Active-High (1)", "Thanh đoạn c_b -> In 3B ULN2803A -> Qua trở R10 vào Chân 3 LED B."),
+        ("HEX_B_SEG[3]", "OUT", "PIN_121", "3.3V LVTTL", "Active-High (1)", "Thanh đoạn d_b -> In 4B ULN2803A -> Qua trở R11 vào Chân 4 LED B."),
+        ("HEX_B_SEG[4]", "OUT", "PIN_125", "3.3V LVTTL", "Active-High (1)", "Thanh đoạn e_b -> In 5B ULN2803A -> Qua trở R12 vào Chân 5 LED B."),
+        ("HEX_B_SEG[5]", "OUT", "PIN_127", "3.3V LVTTL", "Active-High (1)", "Thanh đoạn f_b -> In 6B ULN2803A -> Qua trở R13 vào Chân 6 LED B."),
+        ("HEX_B_SEG[6]", "OUT", "PIN_110", "3.3V LVTTL", "Active-High (1)", "Thanh đoạn g_b -> In 7B ULN2803A -> Qua trở R14 vào Chân 7 LED B."),
+        ("HEX_B_DIG[0]", "OUT", "PIN_112", "3.3V LVTTL", "Active-High (1)", "Chân chọn dig2_b (Đơn vị) -> Chân 2 Socket LED Làn B."),
+        ("HEX_B_DIG[1]", "OUT", "PIN_115", "3.3V LVTTL", "Active-High (1)", "Chân chọn dig1_b (Hàng chục) -> Chân 1 Socket LED Làn B.")
     ]
     for idx, (p_name, direct, p_num, std, active, desc) in enumerate(project_pins):
         bg = "F8FAFC" if idx % 2 == 1 else "FFFFFF"
@@ -922,6 +917,6 @@ def build_pinout_document(file_path):
         print(f"File dang mo trong Word, da luu ban cap nhat moi tai: {alt_path}")
 
 if __name__ == "__main__":
-    out_dir = r"c:\Users\handa\OneDrive\Documents\Projects\DoAn2\traffic_light_mini\traffic_light_anode_chung"
+    out_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "docs"))
     target_path = os.path.join(out_dir, "Danh_Sach_Chan_IO_FPGA_Cyclone_IV_Anode_Chung.docx")
     build_pinout_document(target_path)

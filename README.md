@@ -30,34 +30,34 @@ Dự án thiết kế và hiện thực hệ thống điều khiển đèn giao 
 
 Thiết kế tối ưu theo nguyên tắc **Zero-Crossing PCB Routing**: Toàn bộ các chân điều khiển và đèn đều nằm ở **Hàng chân ngoài (Outer row)** của rào cắm trên, giúp đường mạch bắn thẳng tắp ra biên PCB mà không cần dùng via xuyên lớp.
 
-### A. Hàng Rào Trên (Top Header) - Cụm Đèn & Điều Khiển
-| Tín hiệu | Hướng | Chân FPGA | Chức năng |
+### A. Cụm Đèn Giao Thông & Điều Khiển (Khớp 100% Theo Mạch Altium)
+| Tín hiệu | Hướng | Chân FPGA | Chức năng trên bo mạch |
 | :--- | :---: | :---: | :--- |
-| `LEDG[0]` | OUT | **`PIN_39`** | Đèn XANH Làn A |
-| `LEDR[0]` | OUT | **`PIN_43`** | Đèn VÀNG Làn A |
-| `LEDR[1]` | OUT | **`PIN_46`** | Đèn ĐỎ Làn A |
-| `LEDG[1]` | OUT | **`PIN_71`** | Đèn XANH Làn B |
-| `LEDR[2]` | OUT | **`PIN_69`** | Đèn VÀNG Làn B |
-| `LEDR[3]` | OUT | **`PIN_67`** | Đèn ĐỎ Làn B |
-| `KEY[0]` | IN | **`PIN_50`** | Nút nhấn Reset toàn hệ thống |
-| `KEY[1]` | IN | **`PIN_52`** | Nút nhấn Khẩn cấp Làn A |
-| `KEY[2]` | IN | **`PIN_54`** | Nút nhấn Khẩn cấp Làn B |
-| `SW[0]` | IN | **`PIN_58`** | Chân 1 công tắc 3 nấc (Chế độ Ban đêm) |
-| `SW[1]` | IN | **`PIN_60`** | Chân 3 công tắc 3 nấc (Chế độ Tạm dừng Pause) |
-| `CLOCK_50`| IN | **`PIN_24`** | Xung nhịp Master Clock 50 MHz tích hợp trên kit |
+| LEDG[0] | OUT | **PIN_39** | Đèn XANH Làn A (xanh_a) |
+| LEDR[0] | OUT | **PIN_43** | Đèn VÀNG Làn A (ang_a) |
+| LEDR[1] | OUT | **PIN_46** | Đèn ĐỎ Làn A (do_a) |
+| LEDG[1] | OUT | **PIN_50** | Đèn XANH Làn B (xanh_b) |
+| LEDR[2] | OUT | **PIN_52** | Đèn VÀNG Làn B (ang_b) |
+| LEDR[3] | OUT | **PIN_54** | Đèn ĐỎ Làn B (do_b) |
+| KEY[0] | IN | **PIN_58** | Nút nhấn Reset toàn hệ thống (KEY0) |
+| KEY[1] | IN | **PIN_60** | Nút nhấn Khẩn cấp Làn A (KEY1) |
+| KEY[2] | IN | **PIN_65** | Nút nhấn Khẩn cấp Làn B (KEY2) |
+| SW[0] | IN | **PIN_67** | Chân 1 công tắc 3 nấc (Chế độ Ban đêm SW0) |
+| SW[1] | IN | **PIN_69** | Chân 3 công tắc 3 nấc (Chế độ Tạm dừng Pause SW1) |
+| CLOCK_50| IN | **PIN_24** | Xung nhịp Master Clock 50 MHz tích hợp trên kit |
 
-### B. Hàng Rào Dưới (Bottom Header) - Cụm LED 7 Đoạn Đôi Anode Chung (5621AH)
-| Thanh / Chân LED | Chân LED 10P | Nối qua UL2803G | Chân FPGA Làn A | Chân FPGA Làn B |
+### B. Cụm LED 7 Đoạn Đôi Anode Chung (Khớp 100% Theo Mạch Altium)
+| Thanh / Chân LED | Chân Socket LED | Nối qua ULN2803A | Chân FPGA Làn A | Chân FPGA Làn B |
 | :---: | :---: | :---: | :---: | :---: |
-| **Thanh A** | Chân 10 | In 1B $\rightarrow$ Out 1C $\rightarrow$ Trở 330Ω | **`PIN_144`** | **`PIN_127`** |
-| **Thanh B** | Chân 9 | In 2B $\rightarrow$ Out 2C $\rightarrow$ Trở 330Ω | **`PIN_142`** | **`PIN_125`** |
-| **Thanh C** | Chân 1 | In 3B $\rightarrow$ Out 3C $\rightarrow$ Trở 330Ω | **`PIN_138`** | **`PIN_121`** |
-| **Thanh D** | Chân 4 | In 4B $\rightarrow$ Out 4C $\rightarrow$ Trở 330Ω | **`PIN_136`** | **`PIN_119`** |
-| **Thanh E** | Chân 3 | In 5B $\rightarrow$ Out 5C $\rightarrow$ Trở 330Ω | **`PIN_133`** | **`PIN_113`** |
-| **Thanh F** | Chân 6 | In 6B $\rightarrow$ Out 6C $\rightarrow$ Trở 330Ω | **`PIN_129`** | **`PIN_111`** |
-| **Thanh G** | Chân 5 | In 7B $\rightarrow$ Out 7C $\rightarrow$ Trở 330Ω | **`PIN_143`** | **`PIN_115`** |
-| **DIG1 (Chục)** | Chân 8 | Cắm thẳng FPGA (Dương chung 3.3V) | **`PIN_141`** | **`PIN_112`** |
-| **DIG2 (Đơn vị)** | Chân 7 | Cắm thẳng FPGA (Dương chung 3.3V) | **`PIN_137`** | **`PIN_110`** |
+| **Thanh A** | Chân 1 | IN1 $\rightarrow$ OUT1 $\rightarrow$ Trở R1/R8 | **PIN_129** (_a) | **PIN_111** (_b) |
+| **Thanh B** | Chân 2 | IN2 $\rightarrow$ OUT2 $\rightarrow$ Trở R2/R9 | **PIN_133** (_a) | **PIN_113** (_b) |
+| **Thanh C** | Chân 3 | IN3 $\rightarrow$ OUT3 $\rightarrow$ Trở R3/R10 | **PIN_136** (c_a) | **PIN_119** (c_b) |
+| **Thanh D** | Chân 4 | IN4 $\rightarrow$ OUT4 $\rightarrow$ Trở R4/R11 | **PIN_138** (d_a) | **PIN_121** (d_b) |
+| **Thanh E** | Chân 5 | IN5 $\rightarrow$ OUT5 $\rightarrow$ Trở R5/R12 | **PIN_142** (e_a) | **PIN_125** (e_b) |
+| **Thanh F** | Chân 6 | IN6 $\rightarrow$ OUT6 $\rightarrow$ Trở R6/R13 | **PIN_144** (_a) | **PIN_127** (_b) |
+| **Thanh G** | Chân 7 | IN7 $\rightarrow$ OUT7 $\rightarrow$ Trở R7/R14 | **PIN_143** (g_a) | **PIN_110** (g_b) |
+| **DIG1 (Chục)** | Chân 8 | Cắm thẳng FPGA (Anode 3.3V) | **PIN_141** (dig1_a) | **PIN_115** (dig1_b) |
+| **DIG2 (Đơn vị)** | Chân 9 | Cắm thẳng FPGA (Anode 3.3V) | **PIN_137** (dig2_a) | **PIN_112** (dig2_b) |
 
 ---
 
