@@ -20,25 +20,25 @@ Dự án thiết kế và hiện thực hệ thống điều khiển đèn giao 
    - **Nấc Giữa (OFF):** Hệ thống tự động chuyển pha bình thường.
    - **Nấc Gạt Trái (ON 1):** Kích hoạt **Chế độ Ban Đêm** (Tắt LED 7 đoạn, đèn Vàng chớp tắt 1Hz cảnh báo giao thông).
    - **Nấc Gạt Phải (ON 2):** Kích hoạt **Chế độ Tạm Dừng (Pause)** (Đóng băng bộ đếm và trạng thái đèn).
-5. **Đồng hồ đếm lùi 2 chữ số quét đa kênh (Time-Division Multiplexing):**
+5. **Đồng hồ đếm lùi 2 chữ số quét đa kênh:**
    - Tần số quét 1 kHz chống giật lag, chia sẻ bus 7 đoạn giúp tiết kiệm chân I/O.
    - Đệm dòng xả qua mảng Darlington **UL2803G (DIP-18)** bảo vệ cổng I/O FPGA an toàn 100%.
 
 ---
 
-## 📌 2. Sơ Đồ Gán Chân GPIO (Tối Ưu Cho Vẽ Mạch Altium)
+## 📌 2. Sơ Đồ Gán Chân GPIO
 
-Thiết kế tối ưu theo nguyên tắc **Zero-Crossing PCB Routing**: Toàn bộ các chân điều khiển và đèn đều nằm ở **Hàng chân ngoài (Outer row)** của rào cắm trên, giúp đường mạch bắn thẳng tắp ra biên PCB mà không cần dùng via xuyên lớp.
+Thiết kế tối ưu theo nguyên tắc **Zero-Crossing PCB Routing**: Toàn bộ các chân điều khiển và đèn đều nằm ở **Hàng chân ngoài** của rào cắm trên, giúp đường mạch bắn thẳng tắp ra biên PCB mà không cần dùng via xuyên lớp.
 
-### A. Cụm Đèn Giao Thông & Điều Khiển (Khớp 100% Theo Mạch Altium)
+### A. Cụm Đèn Giao Thông & Điều Khiển
 | Tín hiệu | Hướng | Chân FPGA | Chức năng trên bo mạch |
 | :--- | :---: | :---: | :--- |
-| LEDG[0] | OUT | **PIN_39** | Đèn XANH Làn A (xanh_a) |
-| LEDR[0] | OUT | **PIN_43** | Đèn VÀNG Làn A (ang_a) |
-| LEDR[1] | OUT | **PIN_46** | Đèn ĐỎ Làn A (do_a) |
-| LEDG[1] | OUT | **PIN_50** | Đèn XANH Làn B (xanh_b) |
-| LEDR[2] | OUT | **PIN_52** | Đèn VÀNG Làn B (ang_b) |
-| LEDR[3] | OUT | **PIN_54** | Đèn ĐỎ Làn B (do_b) |
+| LEDG[0] | OUT | **PIN_39** | Đèn XANH Làn A |
+| LEDR[0] | OUT | **PIN_43** | Đèn VÀNG Làn A |
+| LEDR[1] | OUT | **PIN_46** | Đèn ĐỎ Làn A |
+| LEDG[1] | OUT | **PIN_50** | Đèn XANH Làn B |
+| LEDR[2] | OUT | **PIN_52** | Đèn VÀNG Làn B |
+| LEDR[3] | OUT | **PIN_54** | Đèn ĐỎ Làn B |
 | KEY[0] | IN | **PIN_58** | Nút nhấn Reset toàn hệ thống (KEY0) |
 | KEY[1] | IN | **PIN_60** | Nút nhấn Khẩn cấp Làn A (KEY1) |
 | KEY[2] | IN | **PIN_65** | Nút nhấn Khẩn cấp Làn B (KEY2) |
@@ -46,18 +46,18 @@ Thiết kế tối ưu theo nguyên tắc **Zero-Crossing PCB Routing**: Toàn b
 | SW[1] | IN | **PIN_69** | Chân 3 công tắc 3 nấc (Chế độ Tạm dừng Pause SW1) |
 | CLOCK_50| IN | **PIN_24** | Xung nhịp Master Clock 50 MHz tích hợp trên kit |
 
-### B. Cụm LED 7 Đoạn Đôi Anode Chung (Khớp 100% Theo Mạch Altium)
+### B. Cụm LED 7 Đoạn Đôi Anode Chung
 | Thanh / Chân LED | Chân Socket LED | Nối qua ULN2803A | Chân FPGA Làn A | Chân FPGA Làn B |
 | :---: | :---: | :---: | :---: | :---: |
-| **Thanh A** | Chân 1 | IN1 $\rightarrow$ OUT1 $\rightarrow$ Trở R1/R8 | **PIN_129** (_a) | **PIN_111** (_b) |
-| **Thanh B** | Chân 2 | IN2 $\rightarrow$ OUT2 $\rightarrow$ Trở R2/R9 | **PIN_133** (_a) | **PIN_113** (_b) |
-| **Thanh C** | Chân 3 | IN3 $\rightarrow$ OUT3 $\rightarrow$ Trở R3/R10 | **PIN_136** (c_a) | **PIN_119** (c_b) |
-| **Thanh D** | Chân 4 | IN4 $\rightarrow$ OUT4 $\rightarrow$ Trở R4/R11 | **PIN_138** (d_a) | **PIN_121** (d_b) |
-| **Thanh E** | Chân 5 | IN5 $\rightarrow$ OUT5 $\rightarrow$ Trở R5/R12 | **PIN_142** (e_a) | **PIN_125** (e_b) |
-| **Thanh F** | Chân 6 | IN6 $\rightarrow$ OUT6 $\rightarrow$ Trở R6/R13 | **PIN_144** (_a) | **PIN_127** (_b) |
-| **Thanh G** | Chân 7 | IN7 $\rightarrow$ OUT7 $\rightarrow$ Trở R7/R14 | **PIN_143** (g_a) | **PIN_110** (g_b) |
-| **DIG1 (Chục)** | Chân 8 | Cắm thẳng FPGA (Anode 3.3V) | **PIN_141** (dig1_a) | **PIN_115** (dig1_b) |
-| **DIG2 (Đơn vị)** | Chân 9 | Cắm thẳng FPGA (Anode 3.3V) | **PIN_137** (dig2_a) | **PIN_112** (dig2_b) |
+| **Thanh A** | Chân 1 | IN1 $\rightarrow$ OUT1 | **PIN_129** | **PIN_111** |
+| **Thanh B** | Chân 2 | IN2 $\rightarrow$ OUT2 | **PIN_133** | **PIN_113** |
+| **Thanh C** | Chân 3 | IN3 $\rightarrow$ OUT3 | **PIN_136** | **PIN_119** |
+| **Thanh D** | Chân 4 | IN4 $\rightarrow$ OUT4 | **PIN_138** | **PIN_121** |
+| **Thanh E** | Chân 5 | IN5 $\rightarrow$ OUT5 | **PIN_142** | **PIN_125** |
+| **Thanh F** | Chân 6 | IN6 $\rightarrow$ OUT6 | **PIN_144** | **PIN_127** |
+| **Thanh G** | Chân 7 | IN7 $\rightarrow$ OUT7 | **PIN_143** | **PIN_110** |
+| **DIG1 (Chục)** | Chân 8 | Cắm thẳng FPGA (Anode 3.3V) | **PIN_141** | **PIN_115** |
+| **DIG2 (Đơn vị)** | Chân 9 | Cắm thẳng FPGA (Anode 3.3V) | **PIN_137** | **PIN_112** |
 
 ---
 
@@ -130,4 +130,4 @@ DoAn2_Traffic_Light_FPGA/
    - **Kịch bản 7:** Ưu tiên xe khẩn cấp Làn B (Ép đèn xanh Làn B).
 
 ---
-*Tác giả: Nguyễn Huy Hân | Sinh viên Đồ Án Chuyên Ngành / Kỹ thuật Máy tính - Điện tử*
+*Tác giả: Nguyễn Huy Hân |Đồ Án Chuyên Ngành*
