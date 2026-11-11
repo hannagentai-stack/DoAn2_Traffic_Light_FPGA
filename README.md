@@ -82,8 +82,7 @@ DoAn2_Traffic_Light_FPGA/
 │   └── tb_traffic_light_top.vhd            # Testbench kiểm thử toàn diện 7 kịch bản tự động
 ├── bitstream/                              # Tệp nạp cấu hình FPGA & chip nhớ Flash (EPCS)
 │   ├── traffic_light_top.sof               # File nạp trực tiếp qua JTAG (SRAM volatile)
-│   ├── traffic_light_top.jic               # File nạp bộ nhớ Flash EPCS4 (Non-volatile, lưu vĩnh viễn)
-│   └── traffic_light_top_epcs4.jic         # Bản sao lưu cấu hình chuẩn EPCS4 (Silicon ID 0x12)
+│   └── traffic_light_top.jic               # File nạp bộ nhớ Flash EPCS4 (Non-volatile, lưu vĩnh viễn)
 ├── docs/                                   # Báo cáo kỹ thuật, sơ đồ chân và tài liệu dự án
 │   ├── Bao_Cao_Giai_Thich_Code_Va_Nguyen_Ly_Module.docx # Báo cáo kỹ thuật chi tiết từng module
 │   ├── Danh_Sach_Chan_IO_FPGA_Cyclone_IV_Anode_Chung.docx # Bảng tra cứu 29 chân I/O & vẽ Altium
