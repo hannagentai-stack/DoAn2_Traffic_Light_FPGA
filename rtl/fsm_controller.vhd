@@ -52,12 +52,13 @@ architecture rtl of fsm_controller is
     -- Giup code de doc, truc quan va Quartus se tu dong ma hoa One-Hot toi uu
     -- =========================================================================
     type kieu_trang_thai is (
-        PHA_1,     -- Pha 1: Lan A XANH (27s), Lan B DO (30s)
-        PHA_2,     -- Pha 2: Lan A VANG (3s),  Lan B DO (3s con lai)
-        PHA_3,     -- Pha 3: Lan A DO (33s),   Lan B XANH (30s)
-        PHA_4,     -- Pha 4: Lan A DO (3s con lai), Lan B VANG (3s)
-        BAN_DEM,   -- Che do dem: Ca 2 lan deu chop den Vang 1 Hz, tat LED 7 doan
-        KHAN_CAP   -- Che do khan cap: Uu tien Lan A bat den XANH, Lan B bat den DO
+        PHA_1,      -- Pha 1: Lan A XANH (25s), Lan B DO (28s)
+        PHA_2,      -- Pha 2: Lan A VANG (3s),  Lan B DO (3s con lai)
+        PHA_3,      -- Pha 3: Lan A DO (33s),   Lan B XANH (30s)
+        PHA_4,      -- Pha 4: Lan A DO (3s con lai), Lan B VANG (3s)
+        BAN_DEM,    -- Che do dem: Ca 2 lan deu chop den Vang 1 Hz, tat LED 7 doan
+        KHAN_CAP,   -- Che do khan cap Lan A: Uu tien Lan A bat den XANH, Lan B bat den DO
+        KHAN_CAP_B  -- Che do khan cap Lan B: Uu tien Lan B bat den XANH, Lan A bat den DO
     );
 
     -- =========================================================================
@@ -112,19 +113,16 @@ begin
         if key_khan_cap_a_n = '0' then
             trang_thai_ke_tiep <= KHAN_CAP;
 
-        -- 2. Uu tien nhi: Nhan nut uu tien xe cuu thuong Lan B
-        elsif key_khan_cap_b_n = '0' and 
-              sw_ban_dem = '0' and 
-              trang_thai_hien_tai /= PHA_3 and 
-              trang_thai_hien_tai /= PHA_4 then
-            trang_thai_ke_tiep <= PHA_3; -- Nhay thang sang Pha 3 de Lan B bat den Xanh
+        -- 2. Uu tien nhi: Nhan nut uu tien xe cuu thuong Lan B (doi xung hoan toan voi Lan A)
+        elsif key_khan_cap_b_n = '0' then
+            trang_thai_ke_tiep <= KHAN_CAP_B;
 
         -- 3. Uu tien ba: Bat cong tac che do ban dem
         elsif sw_ban_dem = '1' then
             trang_thai_ke_tiep <= BAN_DEM;
 
         -- 4. Khi dang o che do Khan cap hoac Ban dem ma nha nut/tat cong tac: Quay ve Pha 1
-        elsif trang_thai_hien_tai = KHAN_CAP or trang_thai_hien_tai = BAN_DEM then
+        elsif trang_thai_hien_tai = KHAN_CAP or trang_thai_hien_tai = KHAN_CAP_B or trang_thai_hien_tai = BAN_DEM then
             trang_thai_ke_tiep <= PHA_1;
 
         -- 5. Kiem tra cong tac tam dung Pause
@@ -226,6 +224,14 @@ begin
                 chon_pha   <= "00";
                 den_xanh_a <= '1'; -- Uu tien bat ngay den XANH Lan A cho xe cuu thuong
                 den_do_b   <= '1'; -- Bat den DO Lan B chan tuyen cat ngang
+
+            -- -----------------------------------------------------------------
+            -- CHE DO KHAN CAP LAN B: Uu tien thong xe tuyen Lan B
+            -- -----------------------------------------------------------------
+            when KHAN_CAP_B =>
+                chon_pha   <= "10";
+                den_do_a   <= '1'; -- Bat den DO Lan A chan tuyen cat ngang
+                den_xanh_b <= '1'; -- Uu tien bat ngay den XANH Lan B cho xe cuu thuong
 
             -- -----------------------------------------------------------------
             -- TRUONG HOP BAT THUONG: An toan nhat la bat den Do ca 2 lan

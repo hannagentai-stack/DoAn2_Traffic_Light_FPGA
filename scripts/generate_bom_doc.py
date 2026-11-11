@@ -154,21 +154,21 @@ def build_bom_document(file_path):
     bom_data = [
         # Nhóm hiển thị
         ("1", "LED 7 đoạn 2 số 0.56\" Anode chung", "5621AH / 3621AH / 5622AH (10 chân)", "2 con", "3 con", "Đồng hồ đếm lùi 2 chữ số (1 con Làn A, 1 con Làn B). Mã có chữ cái A là Anode chung", "8.000 đ"),
-        ("2", "LED đơn 5mm Màu ĐỎ (Red)", "Siêu sáng / Đục 5mm", "2 con", "5 con", "Đèn ĐỎ Làn A (PIN_42) và Làn B (PIN_46)", "500 đ"),
-        ("3", "LED đơn 5mm Màu VÀNG (Yellow)", "Siêu sáng / Đục 5mm", "2 con", "5 con", "Đèn VÀNG Làn A (PIN_39) và Làn B (PIN_44)", "500 đ"),
-        ("4", "LED đơn 5mm Màu XANH LÁ (Green)", "Siêu sáng / Đục 5mm", "2 con", "5 con", "Đèn XANH Làn A (PIN_38) và Làn B (PIN_43)", "500 đ"),
+        ("2", "LED đơn 5mm Màu ĐỎ (Red)", "Siêu sáng / Đục 5mm", "2 con", "5 con", "Đèn ĐỎ Làn A (PIN_46) và Làn B (PIN_54)", "500 đ"),
+        ("3", "LED đơn 5mm Màu VÀNG (Yellow)", "Siêu sáng / Đục 5mm", "2 con", "5 con", "Đèn VÀNG Làn A (PIN_43) và Làn B (PIN_52)", "500 đ"),
+        ("4", "LED đơn 5mm Màu XANH LÁ (Green)", "Siêu sáng / Đục 5mm", "2 con", "5 con", "Đèn XANH Làn A (PIN_39) và Làn B (PIN_50)", "500 đ"),
         
         # Nhóm bán dẫn & đệm công suất
-        ("5", "IC Đệm dòng 8 kênh Darlington", "ULN2803 / ULN2803G / UL2803G (DIP-18)", "2 con", "3 con", "Đệm kéo 14 thanh đoạn a..g xuống GND (1 con Làn A, 1 con Làn B), bảo vệ tuyệt đối cổng I/O FPGA", "4.000 đ"),
-        ("6", "Đế cắm IC 18 chân", "DIP-18 IC Socket", "2 cái", "4 cái", "Hàn lên PCB hoặc cắm lên Breadboard để cắm rút IC ULN2803G", "500 đ"),
+        ("5", "IC Đệm dòng 8 kênh Darlington", "ULN2803A / ULN2803G (DIP-18)", "2 con", "3 con", "Đệm kéo 14 thanh đoạn a..g xuống GND (1 con Làn A, 1 con Làn B), bảo vệ tuyệt đối cổng I/O FPGA", "4.000 đ"),
+        ("6", "Đế cắm IC 18 chân", "DIP-18 IC Socket", "2 cái", "4 cái", "Hàn lên PCB hoặc cắm lên Breadboard để cắm rút IC ULN2803A", "500 đ"),
         
         # Nhóm điện trở
         ("7", "Điện trở 330 Ω (hoặc 220 Ω)", "1/4W (Trở cắm 5 vạch màu)", "20 con", "1 gói (50 con)", "Hạn dòng bảo vệ cho 6 đèn LED giao thông và 14 thanh LED 7 đoạn a..g", "3.000 đ/gói"),
-        ("8", "Điện trở 1k Ω (hoặc 4.7k Ω)", "1/4W", "4 con", "10 con", "Trở kích cực B cho Transistor PNP S8550 (nếu dùng phương án có transistor)", "1.000 đ"),
+        ("8", "Điện trở 10k Ω (Kéo lên dự phòng)", "1/4W", "5 con", "10 con", "Trở kéo lên dự phòng ngoài cho nút nhấn / công tắc (FPGA đã bật Weak Pull-up nội)", "1.000 đ"),
         
         # Nhóm điều khiển
-        ("9", "Nút nhấn nhả 4 chân (Tactile switch)", "6x6x5mm", "3 nút", "5 nút", "Nút Reset (PIN_49), Khẩn cấp Làn A (PIN_50), Khẩn cấp Làn B (PIN_51)", "500 đ"),
-        ("10", "Công tắc cần gạt 3 vị trí ON-OFF-ON", "MTS-103 (3 chân) hoặc MTS-203 (6 chân)", "1 cái", "2 cái", "Tích hợp 3 chế độ: Gạt trái = Ban đêm (PIN_52), Giữa = Tự động bình thường, Gạt phải = Tạm dừng (PIN_53)", "4.000 đ"),
+        ("9", "Nút nhấn nhả 4 chân (Tactile switch)", "6x6x5mm", "3 nút", "5 nút", "Nút Reset (PIN_58), Khẩn cấp Làn A (PIN_60), Khẩn cấp Làn B (PIN_65)", "500 đ"),
+        ("10", "Công tắc cần gạt 3 vị trí ON-OFF-ON", "MTS-103 (3 chân) hoặc MTS-203 (6 chân)", "1 cái", "2 cái", "Tích hợp 3 chế độ: Gạt trái = Ban đêm (PIN_67), Giữa = Tự động bình thường, Gạt phải = Tạm dừng (PIN_69)", "4.000 đ"),
         
         # Nhóm phụ kiện test
         ("11", "Breadboard MB-102 (Bo cắm test)", "830 lỗ (165 x 55 mm)", "1 bo", "1 - 2 bo", "Cắm linh kiện chạy thử nghiệm trước khi hàn mạch in PCB", "25.000 đ"),
@@ -206,10 +206,11 @@ def build_bom_document(file_path):
     # Callout
     add_callout(
         doc,
-        "Khi cắm test nhanh trên Breadboard với LED Anode chung, bạn có thể cắm TRỰC TIẾP các chân FPGA vào LED "
-        "(14 thanh đoạn a..g qua trở 330Ω, 4 chân DIG1/DIG2 cắm trực tiếp vào FPGA). Chân FPGA phát mức 1 (+3.3V) "
-        "để cấp nguồn cho DIG và kéo mức 0 về GND để làm sáng thanh đoạn tương ứng!",
-        title="HƯỚNG DẪN CẮM TEST NHANH TRÊN BREADBOARD:",
+        "HƯỚNG DẪN ĐẤU NỐI VỚI IC ĐỆM ULN2803A VÀ LED ANODE CHUNG: "
+        "Khi cắm mạch với LED 7 đoạn Anode chung, chân FPGA phát mức 1 (+3.3V) cấp nguồn cho DIG1/DIG2 (Anode) "
+        "và phát mức 1 (Active-High) kích ngõ vào IC đệm dòng ULN2803A. Khi nhận mức 1, IC đệm ULN2803A kéo ngõ ra tương ứng "
+        "xuống Mass (GND) để làm sáng thanh đoạn LED qua điện trở hạn dòng 330Ω, giúp bảo vệ an toàn 100% cho chip FPGA!",
+        title="NGUYÊN LÝ ĐIỀU KHIỂN & ĐỆM DÒNG ULN2803A:",
         border_color="0E7490",
         bg_color="F0F9FF"
     )
@@ -260,16 +261,16 @@ def build_bom_document(file_path):
         set_cell_margins(c, 80, 80, 100, 100)
         
     pin_direct_data = [
-        ("Chân 10", "Thanh A", "Trở 330Ω", "PIN_110", "PIN_125", "Thanh ngang trên đỉnh (Mức 0 là sáng)"),
-        ("Chân 9",  "Thanh B", "Trở 330Ω", "PIN_111", "PIN_126", "Thanh dọc trên bên phải (Mức 0 là sáng)"),
-        ("Chân 1",  "Thanh C", "Trở 330Ω", "PIN_112", "PIN_127", "Thanh dọc dưới bên phải (Mức 0 là sáng)"),
-        ("Chân 4",  "Thanh D", "Trở 330Ω", "PIN_113", "PIN_128", "Thanh ngang dưới đáy (Mức 0 là sáng)"),
-        ("Chân 3",  "Thanh E", "Trở 330Ω", "PIN_115", "PIN_129", "Thanh dọc dưới bên trái (né PIN_114)"),
-        ("Chân 6",  "Thanh F", "Trở 330Ω", "PIN_119", "PIN_132", "Thanh dọc trên bên trái (Mức 0 là sáng)"),
-        ("Chân 5",  "Thanh G", "Trở 330Ω", "PIN_120", "PIN_133", "Thanh ngang ở chính giữa (Mức 0 là sáng)"),
+        ("Chân 10", "Thanh A", "Trở 330Ω qua ULN (1B/1C)", "PIN_129", "PIN_111", "Thanh ngang trên đỉnh (Mức 1 FPGA kích sáng)"),
+        ("Chân 9",  "Thanh B", "Trở 330Ω qua ULN (2B/2C)", "PIN_133", "PIN_113", "Thanh dọc trên bên phải (Mức 1 FPGA kích sáng)"),
+        ("Chân 1",  "Thanh C", "Trở 330Ω qua ULN (3B/3C)", "PIN_136", "PIN_119", "Thanh dọc dưới bên phải (Mức 1 FPGA kích sáng)"),
+        ("Chân 4",  "Thanh D", "Trở 330Ω qua ULN (4B/4C)", "PIN_138", "PIN_121", "Thanh ngang dưới đáy (Mức 1 FPGA kích sáng)"),
+        ("Chân 3",  "Thanh E", "Trở 330Ω qua ULN (5B/5C)", "PIN_142", "PIN_125", "Thanh dọc dưới bên trái (Mức 1 FPGA kích sáng)"),
+        ("Chân 6",  "Thanh F", "Trở 330Ω qua ULN (6B/6C)", "PIN_144", "PIN_127", "Thanh dọc trên bên trái (Mức 1 FPGA kích sáng)"),
+        ("Chân 5",  "Thanh G", "Trở 330Ω qua ULN (7B/7C)", "PIN_143", "PIN_110", "Thanh ngang ở chính giữa (Mức 1 FPGA kích sáng)"),
         ("Chân 2",  "Dấu DP",  "Không cắm", "Để trống", "Để trống", "Dấu chấm lẻ (không dùng)"),
-        ("Chân 8",  "DIG1 (Chục)",   "Nối thẳng FPGA", "PIN_124", "PIN_136", "Cực Dương chung Hàng chục (Mức 1 cấp 3.3V)"),
-        ("Chân 7",  "DIG2 (Đơn vị)", "Nối thẳng FPGA", "PIN_121", "PIN_135", "Cực Dương chung Hàng đơn vị (Mức 1 cấp 3.3V)")
+        ("Chân 8",  "DIG1 (Chục)",   "Nối thẳng FPGA", "PIN_141", "PIN_115", "Cực Dương chung Hàng chục (Mức 1 cấp 3.3V)"),
+        ("Chân 7",  "DIG2 (Đơn vị)", "Nối thẳng FPGA", "PIN_137", "PIN_112", "Cực Dương chung Hàng đơn vị (Mức 1 cấp 3.3V)")
     ]
     
     for idx, (p_num, s_name, c_comp, f_a, f_b, n_seg) in enumerate(pin_direct_data):
@@ -301,12 +302,12 @@ def build_bom_document(file_path):
     doc.add_paragraph()
     
     # --------------------------------------------------------------------------
-    # MỤC 3: PHÂN BỔ TỔNG CỘNG 29 CHÂN I/O CỦA HỆ THỐNG
+    # MỤC 3: PHÂN BỔ TỔNG CỘNG 30 CHÂN FPGA CỦA HỆ THỐNG
     # --------------------------------------------------------------------------
     h1 = doc.add_heading(level=1)
     h1.paragraph_format.space_before = Pt(14)
     h1.paragraph_format.space_after = Pt(4)
-    r = h1.add_run("3. Bảng Tổng Hợp 29 Chân Tín Hiệu I/O Hệ Thống (Zero-Crossing)")
+    r = h1.add_run("3. Bảng Tổng Hợp 30 Chân Tín Hiệu FPGA Hệ Thống (Zero-Crossing)")
     r.font.name = 'Segoe UI'
     r.font.bold = True
     r.font.size = Pt(13)
@@ -315,8 +316,8 @@ def build_bom_document(file_path):
     p = doc.add_paragraph()
     p.paragraph_format.space_after = Pt(6)
     p.add_run(
-        "Toàn bộ 29 tín hiệu của hệ thống được phân bổ đều đặn trên 2 hàng rào cắm (Rào Trên và Rào Dưới) "
-        "theo nguyên tắc Zero-Crossing giúp layout mạch in PCB không bị đan chéo đường dây:"
+        "Hệ thống sử dụng tổng cộng 30 chân FPGA bao gồm 1 chân xung nhịp Clock 50MHz và 29 chân I/O ngoại vi "
+        "được phân bổ đều đặn trên các hàng rào cắm theo nguyên tắc Zero-Crossing giúp layout mạch in PCB không bị đan chéo:"
     )
     
     tbl_io = doc.add_table(rows=1, cols=4)
@@ -341,17 +342,18 @@ def build_bom_document(file_path):
         set_cell_margins(c, 80, 80, 100, 100)
         
     io_data = [
-        ("Đèn Giao Thông Làn A (Xanh, Vàng, Đỏ)", "3 chân", "PIN_38, PIN_39, PIN_42", "Rào Cắm Trên (Top Header)"),
-        ("Đèn Giao Thông Làn B (Xanh, Vàng, Đỏ)", "3 chân", "PIN_43, PIN_44, PIN_46", "Rào Cắm Trên (Top Header)"),
-        ("Nút Nhấn Điều Khiển (Reset, Khẩn cấp A, B)", "3 chân", "PIN_49, PIN_50, PIN_51", "Rào Cắm Trên (Top Header)"),
-        ("Công Tắc Gạt (Ban đêm, Tạm dừng Pause)", "2 chân", "PIN_52, PIN_53", "Rào Cắm Trên (Top Header)"),
-        ("LED 7 Đoạn Làn A (7 đoạn a..g + 2 digit)", "9 chân", "PIN_110..120 và PIN_121, 124", "Rào Cắm Dưới (Bottom Header)"),
-        ("LED 7 Đoạn Làn B (7 đoạn a..g + 2 digit)", "9 chân", "PIN_125..133 và PIN_135, 136", "Rào Cắm Dưới (Bottom Header)"),
-        ("Tổng Cộng Tín Hiệu I/O Ngoại Vi", "29 chân", "11 chân Rào Trên + 18 chân Rào Dưới", "Rào Trái để trống 100%")
+        ("Xung Nhịp Master Clock 50MHz", "1 chân", "PIN_24 (CLK0 / GCLK0)", "Chân Clock Toàn Cục Onboard"),
+        ("Đèn Giao Thông Làn A (Xanh, Vàng, Đỏ)", "3 chân", "PIN_39, PIN_43, PIN_46", "Rào Cắm Trên (Top Header)"),
+        ("Đèn Giao Thông Làn B (Xanh, Vàng, Đỏ)", "3 chân", "PIN_50, PIN_52, PIN_54", "Rào Cắm Trên (Top Header)"),
+        ("Nút Nhấn Điều Khiển (Reset, Khẩn cấp A, B)", "3 chân", "PIN_58, PIN_60, PIN_65", "Rào Cắm Trên (Top Header)"),
+        ("Công Tắc Gạt (Ban đêm, Tạm dừng Pause)", "2 chân", "PIN_67, PIN_69", "Rào Cắm Trên (Top Header)"),
+        ("LED 7 Đoạn Làn A (7 đoạn a..g + 2 digit)", "9 chân", "PIN_129..144 (a..g) và PIN_137, 141", "Rào Cắm Dưới (Bottom Header)"),
+        ("LED 7 Đoạn Làn B (7 đoạn a..g + 2 digit)", "9 chân", "PIN_110..127 (a..g) và PIN_112, 115", "Rào Cắm Dưới (Bottom Header)"),
+        ("Tổng Cộng Chân FPGA Sử Dụng", "30 chân", "1 Clock onboard + 11 chân Rào Trên + 18 chân Rào Dưới", "Rào Trái để trống 100%")
     ]
     
     for idx, (grp, count, pins, pos) in enumerate(io_data):
-        bg = "FEF3C7" if idx == 6 else ("F8FAFC" if idx % 2 == 1 else "FFFFFF")
+        bg = "FEF3C7" if idx == 7 else ("F8FAFC" if idx % 2 == 1 else "FFFFFF")
         row = tbl_io.add_row()
         for c_idx, text in enumerate([grp, count, pins, pos]):
             cell = row.cells[c_idx]
@@ -363,7 +365,7 @@ def build_bom_document(file_path):
             r = p.add_run(text)
             r.font.name = 'Segoe UI'
             r.font.size = Pt(8.8)
-            if idx == 6:
+            if idx == 7:
                 r.font.bold = True
                 r.font.color.rgb = RGBColor(180, 83, 9)
             elif c_idx == 0:
@@ -379,6 +381,7 @@ def build_bom_document(file_path):
     print(f"Generated BOM document (Anode chung): {file_path}")
 
 if __name__ == "__main__":
-    out_dir = r"c:\Users\handa\OneDrive\Documents\Projects\DoAn2\traffic_light_mini\traffic_light_anode_chung"
+    out_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "docs"))
+    os.makedirs(out_dir, exist_ok=True)
     target_path = os.path.join(out_dir, "Danh_Sach_Linh_Kien_Do_An_Traffic_Light_Anode_Chung.docx")
     build_bom_document(target_path)

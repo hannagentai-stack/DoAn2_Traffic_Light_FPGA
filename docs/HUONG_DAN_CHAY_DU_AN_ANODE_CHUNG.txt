@@ -3,36 +3,44 @@ HƯỚNG DẪN MỞ VÀ CHẠY DỰ ÁN - PHIÊN BẢN ANODE CHUNG (COMMON ANODE
 DỰ ÁN: HỆ THỐNG ĐIỀU KHIỂN ĐÈN GIAO THÔNG NGÃ TƯ TRÊN FPGA CYCLONE IV
 ================================================================================
 
-1. ĐẶC ĐIỂM CỦA PHIÊN BẢN NÀY:
+1. ĐẶC ĐIỂM KỸ THUẬT CỐT LÕI CỦA PHIÊN BẢN NÀY:
 --------------------------------------------------------------------------------
-- Sử dụng màn hình LED 7 đoạn đôi ANODE CHUNG (Cực Dương chung - mã 5621AH / 3621AH).
-- Mã giải mã seg7_decoder.vhd: Active-Low (Mức '0' là SÁNG, Mức '1' là TẮT).
+- Màn hình hiển thị: LED 7 đoạn đôi ANODE CHUNG (Cực Dương chung - mã 5621AH / 3621AH).
+- Chu trình FSM Moore 4 pha chuẩn giao thông:
+  * Pha 1: Làn A Xanh (25s) | Làn B Đỏ (28s)
+  * Pha 2: Làn A Vàng (3s)  | Làn B Đỏ (3s con lại)
+  * Pha 3: Làn A Đỏ (33s)   | Làn B Xanh (30s)
+  * Pha 4: Làn A Đỏ (3s con lại) | Làn B Vàng (3s)
+- Nguyên lý phân cực & IC đệm dòng Darlington ULN2803A / ULN2803G:
+  * Module seg7_decoder.vhd xuất mức ACTIVE-HIGH (Mức '1' là KÍCH SÁNG, Mức '0' là TẮT).
+  * IC ULN2803A là mảng Darlington đảo dòng (Inverting Current Sink): khi chân FPGA phát mức '1' (3.3V)
+    vào ngõ vào IN, Darlington dẫn bão hòa kéo ngõ ra OUT xuống Mass (GND), hút dòng qua thanh LED làm sáng nét tương ứng!
+  * Khi ở chế độ ban đêm (tat_led = '1'), seg7_decoder.vhd xuất "0000000" để ngắt hoàn toàn 7 thanh LED.
 - Tín hiệu chọn vị trí LED (DIGIT SELECT):
-  * Chân FPGA phát mức '1' (+3.3V) để cấp nguồn cho cực Dương chung của chữ số cần hiển thị.
-  * Khi cắm test trên Breadboard: Nối trực tiếp chân FPGA vào chân 7, 8 của LED.
+  * Chân FPGA phát mức '1' (+3.3V) cấp nguồn Anode chung cho chữ số cần hiển thị (DIG1 = Chục, DIG2 = Đơn vị).
+  * Quét luân phiên 1 kHz bằng kỹ thuật Dynamic Scanning Multiplexing.
 
 --------------------------------------------------------------------------------
 2. CẤU TRÚC THƯ MỤC DỰ ÁN:
 --------------------------------------------------------------------------------
 - traffic_light_top.qpf   : File dự án Quartus Prime
-- traffic_light_top.qsf   : File cấu hình chân, chuẩn logic 3.3V và chip EP4CE6E22C8N
-- traffic_light_top.sdc   : File ràng buộc thời gian Timing Constraints (Clock 50MHz)
-- traffic_light_top.sof   : File nạp bitstream trực tiếp vào RAM FPGA qua cáp USB-Blaster (Nạp chạy ngay)
-- traffic_light_top.jic   : File nạp vào chip nhớ Flash EPCS16 để chạy vĩnh viễn (không mất khi rút nguồn)
-- clk_divider.vhd         : Module chia tần số 50 MHz sang 1Hz và xung chớp vàng
-- fsm_controller.vhd      : Module máy trạng thái FSM Moore 6 trạng thái
-- timer_counter.vhd       : Module bộ đếm lùi thời gian và giải mã BCD
-- seg7_decoder.vhd        : Module giải mã LED 7 đoạn (Active-Low cho Anode chung)
-- traffic_light_top.vhd   : Module Top-level tích hợp toàn hệ thống
-- tb_traffic_light_top.vhd: Testbench mô phỏng kiểm chứng toàn diện 7 kịch bản
-- Chay_Mo_Phong_ModelSim.bat : File kích hoạt tự động chạy mô phỏng ModelSim
-- sim/                    : Thư mục chứa kịch bản mô phỏng ModelSim (run_sim.do, wave.do)
-- Danh_Sach_Linh_Kien_Do_An_Traffic_Light_Anode_Chung.docx : Bảng linh kiện BOM (Tiếng Việt có dấu)
-- Danh_Sach_Chan_IO_FPGA_Cyclone_IV_Anode_Chung.docx       : Bảng tra cứu 29 chân I/O & nối LED 10 chân
-- Bao_Cao_Giai_Thich_Code_Va_Nguyen_Ly_Module.docx         : File báo cáo giải thích mã nguồn chi tiết
+- traffic_light_top.qsf   : File cấu hình 30 chân FPGA, chuẩn logic 3.3V và chip EP4CE6E22C8N
+- traffic_light_top.sdc   : File ràng buộc thời gian Timing Constraints (Clock 50MHz, period 20ns)
+- bitstream/              : Thư mục chứa file nạp FPGA (.sof nạp RAM, .jic nạp Flash EPCS4/EPCS16)
+- rtl/clk_divider.vhd     : Module chia tần số 50 MHz sang 1Hz tick, 1Hz chớp và 1kHz quét LED
+- rtl/fsm_controller.vhd  : Module máy trạng thái FSM Moore 4 pha + Ban đêm + Khẩn cấp đối xứng
+- rtl/timer_counter.vhd   : Module bộ đếm lùi thời gian và giải mã BCD tối ưu không dùng phép chia
+- rtl/seg7_decoder.vhd    : Module giải mã LED 7 đoạn Active-High cho IC đệm ULN2803A
+- rtl/traffic_light_top.vhd: Module Top-level tích hợp toàn hệ thống & Fail-Safe Hardware Interlock
+- sim/tb_traffic_light_top.vhd: Testbench mô phỏng kiểm chứng toàn diện 7 kịch bản tự động
+- sim/Chay_Mo_Phong_ModelSim.bat : File kích hoạt tự động chạy mô phỏng ModelSim 1-click
+- sim/run_sim.do, wave.do : Script macro và định dạng hiển thị dạng sóng ModelSim
+- docs/Danh_Sach_Linh_Kien_Do_An_Traffic_Light_Anode_Chung.docx : Bảng linh kiện BOM
+- docs/Danh_Sach_Chan_IO_FPGA_Cyclone_IV_Anode_Chung.docx       : Bảng tra cứu 30 chân FPGA (1 Clock + 29 I/O)
+- docs/Bao_Cao_Giai_Thich_Code_Va_Nguyen_Ly_Module.docx         : Báo cáo kỹ thuật chi tiết từng module
 
 --------------------------------------------------------------------------------
-3. HƯỚNG DẪN CẮM DÂY TRỰC QUAN THEO SƠ ĐỒ CHÂN LED (HÀNG DƯỚI 1..5 & HÀNG TRÊN 6..10)
+3. HƯỚNG DẪN ĐẤU NỐI DÂY PHẦN CỨNG CHUẨN XÁC 100% THEO QUARTUS (.QSF):
 --------------------------------------------------------------------------------
 Sơ đồ chân LED 7 đoạn đôi 10 chân Anode chung (nhìn trực diện từ mặt trước):
 
@@ -47,57 +55,71 @@ Sơ đồ chân LED 7 đoạn đôi 10 chân Anode chung (nhìn trực diện t�
     +--------------------------+
         1    2    3    4    5
 
-[A] NGUỒN CẤP CHO 2 CON IC ĐỆM DÒNG UL2803G (DIP-18):
-- Chân 9  (GND): Nối vào chân GND của FPGA (Cực âm chung).
-- Chân 10 (COM): Nối vào chân 3.3V (hoặc 5V) của FPGA.
+[A] NGUỒN CẤP CHO 2 CON IC ĐỆM DÒNG ULN2803A / ULN2803G (DIP-18):
+- Chân 9  (GND): Nối vào chân GND của kit FPGA (Cực âm chung).
+- Chân 10 (COM): Nối vào chân 3.3V (hoặc 5V) của kit FPGA (Cathode diode dập xung nội).
 
 [B] HÀNG CHÂN DƯỚI CỦA CON LED (Đếm từ Trái sang Phải: Chân 1 đến 5):
-* Chân 1 (Thanh C): Nối trở 330Ω -> Chân 16 của UL2803 -> Chân 3 của UL2803 nhận:
-  - Làn A: Nối vào PIN_138
-  - Làn B: Nối vào PIN_121
-* Chân 2 (Dấu DP): Bỏ trống (không dùng).
-* Chân 3 (Thanh E): Nối trở 330Ω -> Chân 14 của UL2803 -> Chân 5 của UL2803 nhận:
-  - Làn A: Nối vào PIN_133
-  - Làn B: Nối vào PIN_113
-* Chân 4 (Thanh D): Nối trở 330Ω -> Chân 15 của UL2803 -> Chân 4 của UL2803 nhận:
+* Chân 1 (Thanh C): Nối trở 330Ω -> OUT3 (Chân 16 ULN2803A) <- IN3 (Chân 3 ULN2803A) <- Chân FPGA:
   - Làn A: Nối vào PIN_136
   - Làn B: Nối vào PIN_119
-* Chân 5 (Thanh G): Nối trở 330Ω -> Chân 12 của UL2803 -> Chân 7 của UL2803 nhận:
-  - Làn A: Nối vào PIN_143
-  - Làn B: Nối vào PIN_115
-
-[C] HÀNG CHÂN TRÊN CỦA CON LED (Đếm từ Trái sang Phải: Chân 10 về 6):
-* Chân 10 (Thanh A): Nối trở 330Ω -> Chân 18 của UL2803 -> Chân 1 của UL2803 nhận:
-  - Làn A: Nối vào PIN_144
-  - Làn B: Nối vào PIN_127
-* Chân 9  (Thanh B): Nối trở 330Ω -> Chân 17 của UL2803 -> Chân 2 của UL2803 nhận:
+* Chân 2 (Dấu DP): Bỏ trống (không dùng).
+* Chân 3 (Thanh E): Nối trở 330Ω -> OUT5 (Chân 14 ULN2803A) <- IN5 (Chân 5 ULN2803A) <- Chân FPGA:
   - Làn A: Nối vào PIN_142
   - Làn B: Nối vào PIN_125
-* Chân 8  (D1 - Anode Hàng chục): CẮM THẲNG VÀO FPGA (Không qua UL2803):
-  - Làn A: Nối thẳng vào PIN_141
-  - Làn B: Nối thẳng vào PIN_112
-* Chân 7  (D2 - Anode Hàng đơn vị): CẮM THẲNG VÀO FPGA (Không qua UL2803):
-  - Làn A: Nối thẳng vào PIN_137
-  - Làn B: Nối thẳng vào PIN_110
-* Chân 6  (Thanh F): Nối trở 330Ω -> Chân 13 của UL2803 -> Chân 6 của UL2803 nhận:
+* Chân 4 (Thanh D): Nối trở 330Ω -> OUT4 (Chân 15 ULN2803A) <- IN4 (Chân 4 ULN2803A) <- Chân FPGA:
+  - Làn A: Nối vào PIN_138
+  - Làn B: Nối vào PIN_121
+* Chân 5 (Thanh G): Nối trở 330Ω -> OUT7 (Chân 12 ULN2803A) <- IN7 (Chân 7 ULN2803A) <- Chân FPGA:
+  - Làn A: Nối vào PIN_143
+  - Làn B: Nối vào PIN_110
+
+[C] HÀNG CHÂN TRÊN CỦA CON LED (Đếm từ Phải sang Trái: Chân 6 đến 10):
+* Chân 6  (Thanh F): Nối trở 330Ω -> OUT6 (Chân 13 ULN2803A) <- IN6 (Chân 6 ULN2803A) <- Chân FPGA:
+  - Làn A: Nối vào PIN_144
+  - Làn B: Nối vào PIN_127
+* Chân 7  (D2 - Anode Hàng đơn vị): CẮM THẲNG VÀO FPGA (+3.3V Active-High, không qua ULN):
+  - Làn A: Nối thẳng vào PIN_137 (HEX_A_DIG[0])
+  - Làn B: Nối thẳng vào PIN_112 (HEX_B_DIG[0])
+* Chân 8  (D1 - Anode Hàng chục): CẮM THẲNG VÀO FPGA (+3.3V Active-High, không qua ULN):
+  - Làn A: Nối thẳng vào PIN_141 (HEX_A_DIG[1])
+  - Làn B: Nối thẳng vào PIN_115 (HEX_B_DIG[1])
+* Chân 9  (Thanh B): Nối trở 330Ω -> OUT2 (Chân 17 ULN2803A) <- IN2 (Chân 2 ULN2803A) <- Chân FPGA:
+  - Làn A: Nối vào PIN_133
+  - Làn B: Nối vào PIN_113
+* Chân 10 (Thanh A): Nối trở 330Ω -> OUT1 (Chân 18 ULN2803A) <- IN1 (Chân 1 ULN2803A) <- Chân FPGA:
   - Làn A: Nối vào PIN_129
   - Làn B: Nối vào PIN_111
 
-[D] CỤM ĐÈN GIAO THÔNG VÀ NÚT BẤM (Hàng rào trên - Top Header):
-- Đèn Làn A (Chân âm qua trở 330Ω về GND): Xanh=PIN_39, Vàng=PIN_43, Đỏ=PIN_46
-- Đèn Làn B (Chân âm qua trở 330Ω về GND): Xanh=PIN_71, Vàng=PIN_69, Đỏ=PIN_67
-- Nút nhấn (Bấm nối GND): Reset=PIN_50, Khẩn cấp A=PIN_52, Khẩn cấp B=PIN_54
-- Công tắc cần gạt 3 vị trí ON-OFF-ON (MTS-103 3 chân):
-  + Chân 2 (ở giữa): Nối vào GND (Mass chung).
-  + Chân 1 (ngoài cùng): Nối vào PIN_58 (Gạt sang nấc này = BẬT Chế độ Ban đêm chớp vàng 1Hz).
-  + Chân 3 (ngoài cùng đối diện): Nối vào PIN_60 (Gạt sang nấc này = BẬT Tạm dừng Pause).
-  + Nấc GIỮA (OFF): Cả 2 chân hở mạch -> Hệ thống chạy TỰ ĐỘNG BÌNH THƯỜNG (Auto).
+[D] CỤM ĐÈN GIAO THÔNG VÀ ĐIỀU KHIỂN (Hàng rào trên - Top Header):
+- Đèn Giao Thông Làn A (Active-High '1' là sáng, cực âm qua trở 330Ω về GND):
+  * LED Xanh A : PIN_39 (LEDG[0])
+  * LED Vàng A : PIN_43 (LEDR[0])
+  * LED Đỏ A   : PIN_46 (LEDR[1])
+- Đèn Giao Thông Làn B (Active-High '1' là sáng, cực âm qua trở 330Ω về GND):
+  * LED Xanh B : PIN_50 (LEDG[1])
+  * LED Vàng B : PIN_52 (LEDR[2])
+  * LED Đỏ B   : PIN_54 (LEDR[3])
+- Nút nhấn ngoại vi (Active-Low kèm trở kéo lên nội, bấm nối GND):
+  * Nút Reset toàn hệ thống (KEY0) : PIN_58
+  * Nút Khẩn cấp Làn A (KEY1)      : PIN_60
+  * Nút Khẩn cấp Làn B (KEY2)      : PIN_65
+- Công tắc cần gạt 3 vị trí ON-OFF-ON (MTS-103):
+  * Chân 2 (ở giữa): Nối vào GND (Mass chung).
+  * Chân 1 (ngoài cùng): Nối vào PIN_67 (SW0 - Gạt sang nấc này = BẬT Chế độ Ban đêm chớp vàng 1Hz).
+  * Chân 3 (ngoài cùng đối diện): Nối vào PIN_69 (SW1 - Gạt sang nấc này = BẬT Tạm dừng Pause).
+  * Nấc GIỮA (OFF): Cả 2 chân hở mạch (mức '1' do weak pull-up) -> Hệ thống chạy TỰ ĐỘNG BÌNH THƯỜNG.
+- Xung nhịp Master Clock: PIN_24 (Thạch anh 50MHz onboard).
 
 --------------------------------------------------------------------------------
 4. CÁCH NẠP NHANH VÀO KIT FPGA CYCLONE IV:
 --------------------------------------------------------------------------------
 1. Mở phần mềm Quartus Prime Programmer (Tools -> Programmer).
 2. Cắm cáp USB-Blaster vào máy tính và kit FPGA, chọn Hardware Setup -> USB-Blaster.
-3. Chọn file "traffic_light_top.sof", tích chọn ô "Program/Configure".
-4. Nhấn "Start", nạp trong 2 giây là mạch bắt đầu chạy ngay!
+3. Nạp chạy ngay (RAM):
+   - Chọn "Add File...", chọn file "bitstream/traffic_light_top.sof".
+   - Tích chọn ô "Program/Configure" -> Nhấn "Start" (Mạch chạy ngay sau 2 giây).
+4. Nạp vĩnh viễn (Flash EPCS4 / EPCS16):
+   - Chọn "Add File...", chọn file "bitstream/traffic_light_top.jic".
+   - Tích chọn ô "Program/Configure" ở dòng chip Flash EPCS -> Nhấn "Start".
 ================================================================================

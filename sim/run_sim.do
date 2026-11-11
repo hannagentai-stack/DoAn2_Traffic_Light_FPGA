@@ -19,7 +19,7 @@ if [file exists "../clk_divider.vhd"] {
     set sim_dir "."
 } elseif [file exists "rtl/clk_divider.vhd"] {
     set rtl_dir "rtl"
-    set tb_dir  "tb"
+    set tb_dir  "sim"
     set sim_dir "sim"
 } else {
     set rtl_dir "."
@@ -50,23 +50,25 @@ vcom -93 -work work $tb_dir/tb_traffic_light_top.vhd
 puts "--> Elaborating design with full signal visibility..."
 vsim -t 1ns -voptargs="+acc" work.tb_traffic_light_top
 
-# Open wave window
-catch { view wave }
-catch { view structure }
-catch { view signals }
-
-# 5. Load Waveform Configuration
-puts "--> Loading wave formatting from wave.do..."
-if [file exists "$sim_dir/wave.do"] {
-    do $sim_dir/wave.do
-} elseif [file exists "wave.do"] {
-    do wave.do
+# 5. Load Waveform Configuration (GUI mode only)
+if {![batch_mode]} {
+    catch { view wave }
+    catch { view structure }
+    catch { view signals }
+    puts "--> Loading wave formatting from wave.do..."
+    if [file exists "$sim_dir/wave.do"] {
+        do $sim_dir/wave.do
+    } elseif [file exists "wave.do"] {
+        do wave.do
+    }
 }
 
 # 6. Run Simulation for 250 us (Covers all test scenarios)
 puts "--> Running simulation for 250 us..."
 run 250 us
 
-# 7. Zoom full to view complete test results (GUI mode safe)
-catch { wave zoomfull }
+# 7. Zoom full to view complete test results (GUI mode only)
+if {![batch_mode]} {
+    catch { wave zoomfull }
+}
 puts "--> Simulation complete. Check transcript for assertion results."

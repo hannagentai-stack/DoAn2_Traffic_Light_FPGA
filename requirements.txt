@@ -1,0 +1,2 @@
+# Dependencies for documentation generation scripts
+python-docx>=1.1.0

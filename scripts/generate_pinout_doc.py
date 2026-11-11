@@ -308,8 +308,8 @@ def build_pinout_document(file_path):
     p = doc.add_paragraph()
     p.paragraph_format.space_after = Pt(6)
     p.add_run(
-        "Bảng dưới đây quy định toàn bộ 29 tín hiệu ngõ vào / ngõ ra của thiết kế Top-Level "
-        "(traffic_light_top.vhd) cho LED 7 đoạn Anode chung, kèm theo chân FPGA và vị trí cắm trên các hàng rào GPIO Header:"
+        "Bảng dưới đây quy định toàn bộ 30 chân FPGA (gồm 1 chân Clock toàn cục 50MHz PIN_24 và 29 tín hiệu I/O ngoại vi) "
+        "của thiết kế Top-Level (traffic_light_top.vhd) cho LED 7 đoạn Anode chung kèm IC đệm ULN2803A, kèm theo chân FPGA và vị trí cắm trên các hàng rào GPIO Header:"
     )
     
     tbl_project = doc.add_table(rows=1, cols=6)
@@ -465,20 +465,20 @@ def build_pinout_document(file_path):
 
     led_wiring_data = [
         # HÀNG CHÂN DƯỚI (Chân 1 đến 5 - Đếm từ Trái sang Phải)
-        ("Chân 1",  "Thanh C", "Out 3C (Chân 16)", "Trở 330Ω", "PIN_138 (In 3B)", "PIN_121 (In 3B)", "Thanh dọc dưới bên phải"),
+        ("Chân 1",  "Thanh C", "Out 3C (Chân 16)", "Trở 330Ω", "PIN_136 (In 3B)", "PIN_119 (In 3B)", "Thanh dọc dưới bên phải"),
         ("Chân 2",  "Dấu DP",  "Bỏ trống (Pin 11)", "Không cắm", "Để trống",       "Để trống",       "Dấu chấm lẻ (không dùng)"),
-        ("Chân 3",  "Thanh E", "Out 5C (Chân 14)", "Trở 330Ω", "PIN_133 (In 5B)", "PIN_113 (In 5B)", "Thanh dọc dưới bên trái"),
-        ("Chân 4",  "Thanh D", "Out 4C (Chân 15)", "Trở 330Ω", "PIN_136 (In 4B)", "PIN_119 (In 4B)", "Thanh ngang dưới đáy"),
-        ("Chân 5",  "Thanh G", "Out 7C (Chân 12)", "Trở 330Ω", "PIN_143 (In 7B)", "PIN_115 (In 7B)", "Thanh ngang ở chính giữa"),
+        ("Chân 3",  "Thanh E", "Out 5C (Chân 14)", "Trở 330Ω", "PIN_142 (In 5B)", "PIN_125 (In 5B)", "Thanh dọc dưới bên trái"),
+        ("Chân 4",  "Thanh D", "Out 4C (Chân 15)", "Trở 330Ω", "PIN_138 (In 4B)", "PIN_121 (In 4B)", "Thanh ngang dưới đáy"),
+        ("Chân 5",  "Thanh G", "Out 7C (Chân 12)", "Trở 330Ω", "PIN_143 (In 7B)", "PIN_110 (In 7B)", "Thanh ngang ở chính giữa"),
 
         # HÀNG CHÂN TRÊN (Chân 6 đến 10 - Đếm từ Phải sang Trái)
-        ("Chân 6",  "Thanh F", "Out 6C (Chân 13)", "Trở 330Ω", "PIN_129 (In 6B)", "PIN_111 (In 6B)", "Thanh dọc trên bên trái"),
-        ("Chân 7",  "DIG2 (Đơn vị)", "Không qua ULN", "Nối thẳng FPGA", "PIN_137", "PIN_110", "Cực Dương chung Hàng đơn vị (3.3V)"),
-        ("Chân 8",  "DIG1 (Chục)",   "Không qua ULN", "Nối thẳng FPGA", "PIN_141", "PIN_112", "Cực Dương chung Hàng chục (3.3V)"),
-        ("Chân 9",  "Thanh B", "Out 2C (Chân 17)", "Trở 330Ω", "PIN_142 (In 2B)", "PIN_125 (In 2B)", "Thanh dọc trên bên phải"),
-        ("Chân 10", "Thanh A", "Out 1C (Chân 18)", "Trở 330Ω", "PIN_144 (In 1B)", "PIN_127 (In 1B)", "Thanh ngang trên đỉnh"),
+        ("Chân 6",  "Thanh F", "Out 6C (Chân 13)", "Trở 330Ω", "PIN_144 (In 6B)", "PIN_127 (In 6B)", "Thanh dọc trên bên trái"),
+        ("Chân 7",  "DIG2 (Đơn vị)", "Không qua ULN", "Nối thẳng FPGA", "PIN_137", "PIN_112", "Cực Dương chung Hàng đơn vị (3.3V)"),
+        ("Chân 8",  "DIG1 (Chục)",   "Không qua ULN", "Nối thẳng FPGA", "PIN_141", "PIN_115", "Cực Dương chung Hàng chục (3.3V)"),
+        ("Chân 9",  "Thanh B", "Out 2C (Chân 17)", "Trở 330Ω", "PIN_133 (In 2B)", "PIN_113 (In 2B)", "Thanh dọc trên bên phải"),
+        ("Chân 10", "Thanh A", "Out 1C (Chân 18)", "Trở 330Ω", "PIN_129 (In 1B)", "PIN_111 (In 1B)", "Thanh ngang trên đỉnh"),
 
-        # CẤP NGUỒN CHO IC ULN2803G
+        # CẤP NGUỒN CHO IC ULN2803A
         ("ULN Pin 9", "GND IC ULN",  "Chân 9 (GND)",  "Dây nối GND",   "GND bo FPGA", "GND bo FPGA", "Cực Âm nguồn chung (BẮT BUỘC NỐI GND)"),
         ("ULN Pin 10","COM IC ULN",  "Chân 10 (COM)", "Dây nối VCC",   "+3.3V / +5V", "+3.3V / +5V", "Chân diot dập xung (Nối lên nguồn 3.3V/5V)")
     ]
@@ -532,19 +532,19 @@ def build_pinout_document(file_path):
     p_bb.add_run(
         "Để cắm test mạch chạy mượt mà, không bị rối dây và đảm bảo an toàn tuyệt đối cho Kit FPGA Cyclone IV, "
         "bạn thực hiện cắm linh kiện trên Breadboard theo 4 bước chuẩn hóa sau:\n\n"
-        "BƯỚC 1: ĐẶT IC UL2803G VÀ CẤP NGUỒN\n"
-        "- Cắm 2 con IC UL2803G (DIP-18) nằm ngang vắt qua rãnh giữa của Breadboard (IC1 cho Làn A, IC2 cho Làn B). "
+        "BƯỚC 1: ĐẶT IC ULN2803A / ULN2803G VÀ CẤP NGUỒN\n"
+        "- Cắm 2 con IC ULN2803A (DIP-18) nằm ngang vắt qua rãnh giữa của Breadboard (IC1 cho Làn A, IC2 cho Làn B). "
         "Lưu ý khuyết tròn (chấm chỉ vị trí chân 1) quay sang phía bên tay trái.\n"
         "- Chân 9 của cả 2 IC: Nối dây về thanh Bus GND (-) trên Breadboard, sau đó nối về chân GND của bo FPGA.\n"
         "- Chân 10 của cả 2 IC: Nối dây về thanh Bus VCC (+) trên Breadboard, sau đó nối về chân 3.3V của bo FPGA.\n\n"
-        "BƯỚC 2: NỐI CHÂN TÍN HIỆU TỪ FPGA VÀO INPUT UL2803G (Hàng chân dưới của IC: Chân 1 đến 7)\n"
-        "- Làn A: Nối 7 dây Đực-Đực từ FPGA vào Chân 1..7 của IC1:\n"
-        "  + PIN_110 -> Chân 1 (1B)  |  PIN_111 -> Chân 2 (2B)  |  PIN_112 -> Chân 3 (3B)\n"
-        "  + PIN_113 -> Chân 4 (4B)  |  PIN_115 -> Chân 5 (5B)  |  PIN_119 -> Chân 6 (6B)  |  PIN_120 -> Chân 7 (7B)\n"
-        "- Làn B: Nối 7 dây Đực-Đực từ FPGA vào Chân 1..7 của IC2:\n"
-        "  + PIN_125 -> Chân 1 (1B)  |  PIN_126 -> Chân 2 (2B)  |  PIN_127 -> Chân 3 (3B)\n"
-        "  + PIN_128 -> Chân 4 (4B)  |  PIN_129 -> Chân 5 (5B)  |  PIN_132 -> Chân 6 (6B)  |  PIN_133 -> Chân 7 (7B)\n\n"
-        "BƯỚC 3: NỐI OUTPUT UL2803G QUA ĐIỆN TRỞ 330Ω VÀO CÁC ĐOẠN a..g CỦA LED 7 ĐOẠN (Hàng chân trên: Chân 18 về 12)\n"
+        "BƯỚC 2: NỐI CHÂN TÍN HIỆU TỪ FPGA VÀO INPUT ULN2803A (Hàng chân dưới của IC: Chân 1 đến 7)\n"
+        "- Làn A: Nối 7 dây Đực-Đực từ FPGA vào Chân 1..7 của IC1 (khớp QSF HEX_A_SEG[0..6]):\n"
+        "  + PIN_129 -> Chân 1 (1B)  |  PIN_133 -> Chân 2 (2B)  |  PIN_136 -> Chân 3 (3B)\n"
+        "  + PIN_138 -> Chân 4 (4B)  |  PIN_142 -> Chân 5 (5B)  |  PIN_144 -> Chân 6 (6B)  |  PIN_143 -> Chân 7 (7B)\n"
+        "- Làn B: Nối 7 dây Đực-Đực từ FPGA vào Chân 1..7 của IC2 (khớp QSF HEX_B_SEG[0..6]):\n"
+        "  + PIN_111 -> Chân 1 (1B)  |  PIN_113 -> Chân 2 (2B)  |  PIN_119 -> Chân 3 (3B)\n"
+        "  + PIN_121 -> Chân 4 (4B)  |  PIN_125 -> Chân 5 (5B)  |  PIN_127 -> Chân 6 (6B)  |  PIN_110 -> Chân 7 (7B)\n\n"
+        "BƯỚC 3: NỐI OUTPUT ULN2803A QUA ĐIỆN TRỞ 330Ω VÀO CÁC ĐOẠN a..g CỦA LED 7 ĐOẠN (Hàng chân trên: Chân 18 về 12)\n"
         "- Chân 18 (1C) -> Trở 330Ω -> Chân 10 của LED (Đoạn A)\n"
         "- Chân 17 (2C) -> Trở 330Ω -> Chân 9 của LED (Đoạn B)\n"
         "- Chân 16 (3C) -> Trở 330Ω -> Chân 1 của LED (Đoạn C)\n"
@@ -553,18 +553,18 @@ def build_pinout_document(file_path):
         "- Chân 13 (6C) -> Trở 330Ω -> Chân 6 của LED (Đoạn F)\n"
         "- Chân 12 (7C) -> Trở 330Ω -> Chân 5 của LED (Đoạn G)\n"
         "- Chân 11 (8C) & Chân 2 của LED (DP): Bỏ trống không dùng.\n\n"
-        "BƯỚC 4: NỐI CHÂN ĐIỀU KHIỂN VỊ TRÍ DIG1, DIG2 (CỰC DƯƠNG CHUNG)\n"
-        "- Làn A: Nối thẳng PIN_124 vào Chân 8 của LED (DIG1 - Chục); Nối thẳng PIN_121 vào Chân 7 của LED (DIG2 - Đơn vị).\n"
-        "- Làn B: Nối thẳng PIN_136 vào Chân 8 của LED (DIG1 - Chục); Nối thẳng PIN_135 vào Chân 7 của LED (DIG2 - Đơn vị).\n"
-        "(Cách nối này không cần thêm transistor nào, cắm gọn gàng và chạy ngay lập tức)."
+        "BƯỚC 4: NỐI CHÂN ĐIỀU KHIỂN VỊ TRÍ DIG1, DIG2 (CỰC DƯƠNG CHUNG - ANODE 3.3V)\n"
+        "- Làn A: Nối thẳng PIN_141 vào Chân 8 của LED (DIG1 - Chục); Nối thẳng PIN_137 vào Chân 7 của LED (DIG2 - Đơn vị).\n"
+        "- Làn B: Nối thẳng PIN_115 vào Chân 8 của LED (DIG1 - Chục); Nối thẳng PIN_112 vào Chân 7 của LED (DIG2 - Đơn vị).\n"
+        "(Cách nối này không cần thêm transistor ngoài, cắm gọn gàng và chạy ngay lập tức)."
     )
 
     doc.add_paragraph()
     add_callout(
         doc,
         "Các tín hiệu đã được phân bổ tối ưu theo nguyên tắc 'Zero-Crossing PCB Routing' (Không đan chéo đường mạch):\n"
-        "1. Hàng Rào Trên (Top Header): Dành riêng cho cụm Đèn giao thông và Điều khiển (PIN_38 đến PIN_53).\n"
-        "2. Hàng Rào Dưới (Bottom Header): Dành riêng cho 2 cụm LED 7 đoạn quét động Làn A & B (PIN_110 đến PIN_136).\n"
+        "1. Hàng Rào Trên (Top Header): Dành riêng cho cụm Đèn giao thông và Điều khiển (PIN_39 đến PIN_69).\n"
+        "2. Hàng Rào Dưới (Bottom Header): Dành riêng cho 2 cụm LED 7 đoạn quét động Làn A & B (PIN_110 đến PIN_144).\n"
         "3. Hàng Rào Trái (Left Header): Để trống 100%, không vướng vào cổng USB-C hay các nút bấm onboard.\n"
         "Khi thiết kế Schematic và Layout trên Altium/KiCad/Proteus, các bus tín hiệu sẽ đi thẳng tắp ra linh kiện mà không cần đảo lớp hoặc dùng nhiều via xuyên lớp.",
         title="TỐI ƯU CHO THIẾT KẾ LAYOUT MẠCH IN PCB:",
@@ -614,10 +614,10 @@ def build_pinout_document(file_path):
         set_cell_margins(c, 100, 100, 140, 140)
         
     gpio_groups = [
-        ("Hàng Rào Trên (Top Header) - Đang dùng", "PIN_38, 39, 42, 43, 44, 46, 49, 50, 51, 52, 53", "Dùng cho 6 LED Giao thông (A, B) và 5 nút/công tắc điều khiển. Nhóm gọn gàng."),
-        ("Hàng Rào Trên (Top Header) - Còn trống", "PIN_54, PIN_55, PIN_58, PIN_59", "Các chân GPIO dự phòng tiếp theo trên rào trên, có thể nối thêm còi buzzer, đèn người đi bộ."),
-        ("Hàng Rào Dưới (Bottom Header) - Đang dùng", "PIN_110, 111, 112, 113, 115, 119, 120, 121, 124, 125, 126, 127, 128, 129, 132, 133, 135, 136", "Dùng toàn bộ cho 2 cụm LED 7 đoạn quét động Làn A & Làn B (18 chân liên tiếp cực gọn)."),
-        ("Hàng Rào Dưới (Bottom Header) - Còn trống", "PIN_137, PIN_138, PIN_141, PIN_142, PIN_143, PIN_144", "Các chân dự phòng phía dưới bên phải, có thể dùng để giao tiếp thêm cảm biến siêu âm."),
+        ("Hàng Rào Trên (Top Header) - Đang dùng", "PIN_39, 43, 46, 50, 52, 54, 58, 60, 65, 67, 69", "Dùng cho 6 LED Giao thông (A, B) và 5 nút/công tắc điều khiển. 100% chân nằm hàng ngoài tối ưu Zero-Crossing."),
+        ("Hàng Rào Trên (Top Header) - Dự phòng", "PIN_70, PIN_71, PIN_72, PIN_73, PIN_74...", "Các chân GPIO dự phòng tiếp theo trên rào trên, có thể nối thêm còi buzzer, đèn người đi bộ."),
+        ("Hàng Rào Dưới (Bottom Header) - Đang dùng", "PIN_110, 111, 112, 113, 115, 119, 121, 125, 127 (B) và PIN_129, 133, 136, 137, 138, 141, 142, 143, 144 (A)", "Dùng toàn bộ cho 2 cụm LED 7 đoạn quét động Làn A & Làn B (18 chân kết nối qua ULN2803A và Anode)."),
+        ("Hàng Rào Dưới (Bottom Header) - Dự phòng", "PIN_120, PIN_124, PIN_126, PIN_128, PIN_132, PIN_135", "Các chân dự phòng còn lại trên rào dưới."),
         ("Hàng Rào Trái (Left Header) - Để trống", "PIN_28, PIN_30, PIN_31, PIN_32, PIN_33, PIN_34", "Để trống 100% để tránh vướng vào cổng USB-C và hàng nút nhấn onboard."),
         ("Chân Nguồn trên Rào", "VCC3V3 (3.3V), VCC5V (5V), GND (0V)", "Mỗi hàng rào đều có các chân GND và Nguồn để cấp cho module ngoài.")
     ]
@@ -828,70 +828,63 @@ def build_pinout_document(file_path):
     
     qsf_code = (
         "# ==============================================================================\n"
-        "# GÁN CHÂN PHẦN CỨNG 100% GPIO NGOÀI TỐI ƯU VẼ PCB (ZERO-CROSSING)\n"
-        "# Kit Altera / Intel Cyclone IV E EP4CE6E22C8N (Điện áp chuẩn: 3.3-V LVTTL)\n"
+        "# PIN ASSIGNMENTS - DONG BO CHUAN 100% THEO ALTIUM DESIGNER & QUARTUS (.QSF)\n"
+        "# Kit Altera / Intel Cyclone IV E EP4CE6E22C8N (Dien ap chuan: 3.3-V LVTTL)\n"
         "# ==============================================================================\n"
-        "# 1. MASTER CLOCK 50 MHZ (ONBOARD ACTIVE CRYSTAL OSCILLATOR)\n"
+        "# 1. MASTER CLOCK 50 MHZ (ONBOARD CRYSTAL OSCILLATOR)\n"
         "set_location_assignment PIN_24 -to CLOCK_50\n"
         "set_instance_assignment -name IO_STANDARD \"3.3-V LVTTL\" -to CLOCK_50\n\n"
-        "# 2. TOP HEADER: TOÀN BỘ ĐÈN GIAO THÔNG & ĐIỀU KHIỂN (LIÊN TIẾP TỪ PIN_38 ĐẾN 53)\n"
-        "# --- 6 Đèn giao thông (Active-High: '1' là sáng đèn) ---\n"
-        "# Làn A: Xanh, Vàng, Đỏ\n"
-        "set_location_assignment PIN_38 -to LEDG[0]\n"
-        "set_location_assignment PIN_39 -to LEDR[0]\n"
-        "set_location_assignment PIN_42 -to LEDR[1]\n"
+        "# 2. CỤM ĐÈN GIAO THÔNG LÀN A (Active-High: '1' là sáng đèn)\n"
+        "set_location_assignment PIN_39 -to LEDG[0]\n"
+        "set_location_assignment PIN_43 -to LEDR[0]\n"
+        "set_location_assignment PIN_46 -to LEDR[1]\n"
         "set_instance_assignment -name IO_STANDARD \"3.3-V LVTTL\" -to LEDG[0]\n"
         "set_instance_assignment -name IO_STANDARD \"3.3-V LVTTL\" -to LEDR[0]\n"
         "set_instance_assignment -name IO_STANDARD \"3.3-V LVTTL\" -to LEDR[1]\n\n"
-        "# Làn B: Xanh, Vàng, Đỏ\n"
-        "set_location_assignment PIN_43 -to LEDG[1]\n"
-        "set_location_assignment PIN_44 -to LEDR[2]\n"
-        "set_location_assignment PIN_46 -to LEDR[3]\n"
+        "# 3. CỤM ĐÈN GIAO THÔNG LÀN B (Active-High: '1' là sáng đèn)\n"
+        "set_location_assignment PIN_50 -to LEDG[1]\n"
+        "set_location_assignment PIN_52 -to LEDR[2]\n"
+        "set_location_assignment PIN_54 -to LEDR[3]\n"
         "set_instance_assignment -name IO_STANDARD \"3.3-V LVTTL\" -to LEDG[1]\n"
         "set_instance_assignment -name IO_STANDARD \"3.3-V LVTTL\" -to LEDR[2]\n"
         "set_instance_assignment -name IO_STANDARD \"3.3-V LVTTL\" -to LEDR[3]\n\n"
-        "# --- 3 Nút nhấn điều khiển ngoài (Active-Low: '0' là bấm) ---\n"
-        "# KEY0: Reset hệ thống | KEY1: Khẩn cấp Làn A | KEY2: Khẩn cấp Làn B\n"
-        "set_location_assignment PIN_49 -to KEY[0]\n"
-        "set_location_assignment PIN_50 -to KEY[1]\n"
-        "set_location_assignment PIN_51 -to KEY[2]\n"
-        "set_instance_assignment -name IO_STANDARD \"3.3-V LVTTL\" -to KEY[0]\n"
-        "set_instance_assignment -name IO_STANDARD \"3.3-V LVTTL\" -to KEY[1]\n"
-        "set_instance_assignment -name IO_STANDARD \"3.3-V LVTTL\" -to KEY[2]\n"
-        "set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to KEY[*]\n\n"
-        "# --- 2 Công tắc gạt chế độ ngoài (Active-Low kèm trở kéo lên nội 3.3V) ---\n"
-        "# SW0: Chế độ Ban đêm (Chớp vàng 1Hz) | SW1: Tạm dừng Pause bộ đếm\n"
-        "set_location_assignment PIN_52 -to SW[0]\n"
-        "set_location_assignment PIN_53 -to SW[1]\n"
-        "set_instance_assignment -name IO_STANDARD \"3.3-V LVTTL\" -to SW[0]\n"
-        "set_instance_assignment -name IO_STANDARD \"3.3-V LVTTL\" -to SW[1]\n"
+        "# 4. NGÕ VÀO ĐIỀU KHIỂN: NÚT BẤM & CÔNG TẮC (Active-Low kèm Weak Pull-up)\n"
+        "set_location_assignment PIN_58 -to KEY[0]\n"
+        "set_location_assignment PIN_60 -to KEY[1]\n"
+        "set_location_assignment PIN_65 -to KEY[2]\n"
+        "set_location_assignment PIN_67 -to SW[0]\n"
+        "set_location_assignment PIN_69 -to SW[1]\n"
+        "set_instance_assignment -name IO_STANDARD \"3.3-V LVTTL\" -to KEY[*]\n"
+        "set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to KEY[*]\n"
+        "set_instance_assignment -name IO_STANDARD \"3.3-V LVTTL\" -to SW[*]\n"
         "set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to SW[*]\n\n"
-        "# 3. BOTTOM HEADER: TOÀN BỘ HIỂN THỊ LED 7 ĐOẠN ANODE CHUNG (PIN_110 ĐẾN 136)\n"
-        "# --- LED 7 đoạn quét động Làn A (Active-Low: '0' là sáng thanh đoạn) ---\n"
-        "set_location_assignment PIN_110 -to HEX_A_SEG[0]\n"
-        "set_location_assignment PIN_111 -to HEX_A_SEG[1]\n"
-        "set_location_assignment PIN_112 -to HEX_A_SEG[2]\n"
-        "set_location_assignment PIN_113 -to HEX_A_SEG[3]\n"
-        "set_location_assignment PIN_115 -to HEX_A_SEG[4]\n"
-        "set_location_assignment PIN_119 -to HEX_A_SEG[5]\n"
-        "set_location_assignment PIN_120 -to HEX_A_SEG[6]\n"
+        "# 5. CẶP LED 7 ĐOẠN ĐÔI LÀN A (Anode Chung qua Đệm ULN2803A)\n"
+        "# Segments a..g: a=129, b=133, c=136, d=138, e=142, f=144, g=143\n"
+        "set_location_assignment PIN_129 -to HEX_A_SEG[0]\n"
+        "set_location_assignment PIN_133 -to HEX_A_SEG[1]\n"
+        "set_location_assignment PIN_136 -to HEX_A_SEG[2]\n"
+        "set_location_assignment PIN_138 -to HEX_A_SEG[3]\n"
+        "set_location_assignment PIN_142 -to HEX_A_SEG[4]\n"
+        "set_location_assignment PIN_144 -to HEX_A_SEG[5]\n"
+        "set_location_assignment PIN_143 -to HEX_A_SEG[6]\n"
         "set_instance_assignment -name IO_STANDARD \"3.3-V LVTTL\" -to HEX_A_SEG[*]\n\n"
-        "# Chân chọn vị trí LED Làn A: DIG0=Đơn vị, DIG1=Hàng chục (Mức 1 cấp 3.3V)\n"
-        "set_location_assignment PIN_121 -to HEX_A_DIG[0]\n"
-        "set_location_assignment PIN_124 -to HEX_A_DIG[1]\n"
+        "# Digits: dig2_a (Don vi) = PIN_137, dig1_a (Chuc) = PIN_141\n"
+        "set_location_assignment PIN_137 -to HEX_A_DIG[0]\n"
+        "set_location_assignment PIN_141 -to HEX_A_DIG[1]\n"
         "set_instance_assignment -name IO_STANDARD \"3.3-V LVTTL\" -to HEX_A_DIG[*]\n\n"
-        "# --- LED 7 đoạn quét động Làn B (Active-Low: '0' là sáng thanh đoạn) ---\n"
-        "set_location_assignment PIN_125 -to HEX_B_SEG[0]\n"
-        "set_location_assignment PIN_126 -to HEX_B_SEG[1]\n"
-        "set_location_assignment PIN_127 -to HEX_B_SEG[2]\n"
-        "set_location_assignment PIN_128 -to HEX_B_SEG[3]\n"
-        "set_location_assignment PIN_129 -to HEX_B_SEG[4]\n"
-        "set_location_assignment PIN_132 -to HEX_B_SEG[5]\n"
-        "set_location_assignment PIN_133 -to HEX_B_SEG[6]\n"
+        "# 6. CẶP LED 7 ĐOẠN ĐÔI LÀN B (Anode Chung qua Đệm ULN2803A)\n"
+        "# Segments a..g: a=111, b=113, c=119, d=121, e=125, f=127, g=110\n"
+        "set_location_assignment PIN_111 -to HEX_B_SEG[0]\n"
+        "set_location_assignment PIN_113 -to HEX_B_SEG[1]\n"
+        "set_location_assignment PIN_119 -to HEX_B_SEG[2]\n"
+        "set_location_assignment PIN_121 -to HEX_B_SEG[3]\n"
+        "set_location_assignment PIN_125 -to HEX_B_SEG[4]\n"
+        "set_location_assignment PIN_127 -to HEX_B_SEG[5]\n"
+        "set_location_assignment PIN_110 -to HEX_B_SEG[6]\n"
         "set_instance_assignment -name IO_STANDARD \"3.3-V LVTTL\" -to HEX_B_SEG[*]\n\n"
-        "# Chân chọn vị trí LED Làn B: DIG0=Đơn vị, DIG1=Hàng chục (Mức 1 cấp 3.3V)\n"
-        "set_location_assignment PIN_135 -to HEX_B_DIG[0]\n"
-        "set_location_assignment PIN_136 -to HEX_B_DIG[1]\n"
+        "# Digits: dig2_b (Don vi) = PIN_112, dig1_b (Chuc) = PIN_115\n"
+        "set_location_assignment PIN_112 -to HEX_B_DIG[0]\n"
+        "set_location_assignment PIN_115 -to HEX_B_DIG[1]\n"
         "set_instance_assignment -name IO_STANDARD \"3.3-V LVTTL\" -to HEX_B_DIG[*]\n"
     )
     

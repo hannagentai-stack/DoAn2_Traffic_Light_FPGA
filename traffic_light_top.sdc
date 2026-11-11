@@ -7,7 +7,7 @@
 
 # ------------------------------------------------------------------------------
 # 1. Primary Clock Definition
-#    50.000 MHz Oscillator on PIN_23 (Period = 20.000 ns, 50% Duty Cycle)
+#    50.000 MHz Oscillator on PIN_24 (Period = 20.000 ns, 50% Duty Cycle)
 # ------------------------------------------------------------------------------
 create_clock -name CLOCK_50 -period 20.000 [get_ports CLOCK_50]
 

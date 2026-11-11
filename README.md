@@ -1,6 +1,6 @@
 # Hệ Thống Điều Khiển Đèn Giao Thông Ngã Tư Trên FPGA Cyclone IV
 
-Dự án thiết kế và hiện thực hệ thống điều khiển đèn giao thông ngã tư 2 làn đường độc lập, tích hợp đồng hồ đếm lùi hiển thị trên LED 7 đoạn đôi sử dụng IC đệm dòng **UL2803G** và chip **FPGA Altera / Intel Cyclone IV E EP4CE6E22C8N**.
+Dự án thiết kế và hiện thực hệ thống điều khiển đèn giao thông ngã tư 2 làn đường độc lập, tích hợp đồng hồ đếm lùi hiển thị trên LED 7 đoạn đôi sử dụng IC đệm dòng Darlington **ULN2803A / ULN2803G** và chip **FPGA Altera / Intel Cyclone IV E EP4CE6E22C8N**.
 
 ---
 
@@ -9,26 +9,27 @@ Dự án thiết kế và hiện thực hệ thống điều khiển đèn giao 
 1. **Chu trình FSM Moore 4 pha chuẩn giao thông:**
    - **Pha 1:** Làn A Xanh (25s) | Làn B Đỏ (28s)
    - **Pha 2:** Làn A Vàng (3s)  | Làn B Đỏ (3s)
-   - **Pha 3:** Làn A Đỏ (30s)   | Làn B Xanh (27s)
+   - **Pha 3:** Làn A Đỏ (33s)   | Làn B Xanh (30s)
    - **Pha 4:** Làn A Đỏ (3s)    | Làn B Vàng (3s)
 2. **Khóa liên động an toàn phần cứng (Fail-Safe Hardware Interlock):**
-   - Giám sát tín hiệu FSM thời gian thực. Nếu phát hiện sự cố nguy hiểm (Cả 2 làn cùng bật đèn Xanh), mạch phần cứng lập tức cưỡng chế ngắt toàn bộ đèn xanh và ép sáng 2 đèn đỏ để chống đâm va.
-3. **Chế độ ưu tiên Xe khẩn cấp (Emergency Mode):**
+   - Giám sát tín hiệu FSM thời gian thực. Nếu phát hiện sự cố nguy hiểm (Cả 2 làn cùng bật đèn Xanh hoặc Xanh-Vàng xung đột), mạch phần cứng lập tức cưỡng chế ngắt toàn bộ đèn xanh và ép sáng 2 đèn đỏ để chống đâm va.
+3. **Chế độ ưu tiên Xe khẩn cấp đối xứng (Emergency Mode):**
    - Nút `KEY1`: Ưu tiên xe cứu thương/cứu hỏa Làn A (ép Làn A Xanh, Làn B Đỏ).
    - Nút `KEY2`: Ưu tiên xe cứu thương/cứu hỏa Làn B (ép Làn B Xanh, Làn A Đỏ).
+   - Hệ thống hỗ trợ ưu tiên xe khẩn cấp độc lập cho cả 2 làn (hoạt động ngay cả trong Chế độ Ban đêm hoặc các pha đèn khác nhau).
 4. **Công tắc cần gạt 3 vị trí (MTS-103 ON - OFF - ON):**
    - **Nấc Giữa (OFF):** Hệ thống tự động chuyển pha bình thường.
    - **Nấc Gạt Trái (ON 1):** Kích hoạt **Chế độ Ban Đêm** (Tắt LED 7 đoạn, đèn Vàng chớp tắt 1Hz cảnh báo giao thông).
    - **Nấc Gạt Phải (ON 2):** Kích hoạt **Chế độ Tạm Dừng (Pause)** (Đóng băng bộ đếm và trạng thái đèn).
 5. **Đồng hồ đếm lùi 2 chữ số quét đa kênh:**
    - Tần số quét 1 kHz chống giật lag, chia sẻ bus 7 đoạn giúp tiết kiệm chân I/O.
-   - Đệm dòng xả qua mảng Darlington **UL2803G (DIP-18)** bảo vệ cổng I/O FPGA an toàn 100%.
+   - Đệm dòng xả qua mảng Darlington **ULN2803A / ULN2803G (DIP-18)** bảo vệ cổng I/O FPGA an toàn 100%.
 
 ---
 
-## 📌 2. Sơ Đồ Gán Chân GPIO
+## 📌 2. Sơ Đồ Gán Chân GPIO (30 Chân FPGA Tổng Cộng)
 
-Thiết kế tối ưu theo nguyên tắc **Zero-Crossing PCB Routing**: Toàn bộ các chân điều khiển và đèn đều nằm ở **Hàng chân ngoài** của rào cắm trên, giúp đường mạch bắn thẳng tắp ra biên PCB mà không cần dùng via xuyên lớp.
+Hệ thống sử dụng **30 chân FPGA** bao gồm: **1 chân Clock 50MHz** (PIN_24) và **29 chân I/O ngoại vi** (6 đèn LED giao thông, 3 nút bấm, 2 công tắc gạt, 18 chân cho 2 cụm LED 7 đoạn đôi). Thiết kế tối ưu theo nguyên tắc **Zero-Crossing PCB Routing**: Toàn bộ các chân điều khiển và đèn đều nằm ở **Hàng chân ngoài** của rào cắm trên, giúp đường mạch bắn thẳng tắp ra biên PCB mà không cần dùng via xuyên lớp.
 
 ### A. Cụm Đèn Giao Thông & Điều Khiển
 | Tín hiệu | Hướng | Chân FPGA | Chức năng trên bo mạch |
@@ -71,7 +72,7 @@ DoAn2_Traffic_Light_FPGA/
 │   ├── clk_divider.vhd                     # Module chia tần số (50MHz -> 1Hz, 1kHz, nhấp nháy 1Hz)
 │   ├── fsm_controller.vhd                  # Module máy trạng thái FSM Moore 4 pha giao thông
 │   ├── timer_counter.vhd                   # Module bộ đếm lùi thời gian & giải mã BCD hàng chục/đơn vị
-│   ├── seg7_decoder.vhd                    # Module giải mã 7 đoạn quét động cho IC đệm UL2803G
+│   ├── seg7_decoder.vhd                    # Module giải mã 7 đoạn quét động cho IC đệm ULN2803A / ULN2803G
 │   └── traffic_light_top.vhd               # Top-level tích hợp toàn bộ hệ thống & mạch Fail-Safe Interlock
 ├── sim/                                    # Môi trường mô phỏng ModelSim / QuestaSim
 │   ├── modelsim.ini                        # Cấu hình ánh xạ thư viện ModelSim
@@ -82,10 +83,10 @@ DoAn2_Traffic_Light_FPGA/
 │   └── tb_traffic_light_top.vhd            # Testbench kiểm thử toàn diện 7 kịch bản tự động
 ├── bitstream/                              # Tệp nạp cấu hình FPGA & chip nhớ Flash (EPCS)
 │   ├── traffic_light_top.sof               # File nạp trực tiếp qua JTAG (SRAM volatile)
-│   └── traffic_light_top.jic               # File nạp bộ nhớ Flash EPCS4 (Non-volatile, lưu vĩnh viễn)
+│   └── traffic_light_top.jic               # File nạp bộ nhớ Flash EPCS4 / EPCS16 (Non-volatile, lưu vĩnh viễn)
 ├── docs/                                   # Báo cáo kỹ thuật, sơ đồ chân và tài liệu dự án
 │   ├── Bao_Cao_Giai_Thich_Code_Va_Nguyen_Ly_Module.docx # Báo cáo kỹ thuật chi tiết từng module
-│   ├── Danh_Sach_Chan_IO_FPGA_Cyclone_IV_Anode_Chung.docx # Bảng tra cứu 29 chân I/O & vẽ Altium
+│   ├── Danh_Sach_Chan_IO_FPGA_Cyclone_IV_Anode_Chung.docx # Bảng tra cứu 30 chân FPGA (1 Clock + 29 I/O) & vẽ Altium
 │   ├── Danh_Sach_Linh_Kien_Do_An_Traffic_Light_Anode_Chung.docx # Bảng tổng hợp linh kiện và BOM
 │   ├── HUONG_DAN_CHAY_DU_AN_ANODE_CHUNG.txt# Sổ tay hướng dẫn nhanh đấu nối phần cứng & nạp code
 │   └── DoAn2_Traffic_Light_Anode_Chung.zip # Gói lưu trữ nén toàn bộ dự án
@@ -93,7 +94,7 @@ DoAn2_Traffic_Light_FPGA/
 │   ├── generate_bom_doc.py                 # Script tự động xuất BOM sang định dạng Word (.docx)
 │   └── generate_pinout_doc.py              # Script tự động xuất bảng chân I/O sang Word (.docx)
 ├── traffic_light_top.qpf                   # Quartus Prime Project File
-├── traffic_light_top.qsf                   # Quartus Settings File (29 Pin assignments & 3.3V LVTTL)
+├── traffic_light_top.qsf                   # Quartus Settings File (30 Pin assignments & 3.3V LVTTL)
 ├── traffic_light_top.sdc                   # Ràng buộc thời gian Timing Constraint 50MHz
 ├── .gitignore                              # Cấu hình bỏ qua các file tạm thời, biên dịch, simulation
 └── README.md                               # Hướng dẫn chi tiết & tài liệu tổng quan dự án
@@ -109,9 +110,9 @@ DoAn2_Traffic_Light_FPGA/
 4. **Nạp chạy ngay (RAM):**
    * Nhấn **Add File...** $\rightarrow$ mở thư mục `bitstream/` $\rightarrow$ chọn `traffic_light_top.sof`.
    * Tích chọn ô **Program/Configure** $\rightarrow$ nhấn **Start** (Mạch nạp chạy ngay sau 2 giây).
-5. **Nạp vĩnh viễn (Flash EPCS4):**
+5. **Nạp vĩnh viễn (Flash EPCS4 / EPCS16):**
    * Nhấn **Add File...** $\rightarrow$ mở thư mục `bitstream/` $\rightarrow$ chọn `traffic_light_top.jic`.
-   * Tích chọn ô **Program/Configure** ở dòng `EPCS4` $\rightarrow$ nhấn **Start** (Lưu vĩnh viễn vào ROM, không mất khi ngắt nguồn điện).
+   * Tích chọn ô **Program/Configure** ở dòng `EPCS4` (hoặc `EPCS16` tùy bo kit) $\rightarrow$ nhấn **Start** (Lưu vĩnh viễn vào ROM, không mất khi ngắt nguồn điện).
 
 ---
 

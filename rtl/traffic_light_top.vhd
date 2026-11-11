@@ -94,8 +94,22 @@ architecture structural of traffic_light_top is
     -- =========================================================================
     -- CAC TIN HIEU DUNG CHO BO QUET DYNAMIC SCANNING 1 KHZ
     -- =========================================================================
-    -- Bo dem 50.000 chu ky clock (50 MHz / 50.000 = 1000 Hz = 1 kHz)
-    signal bo_dem_quet     : integer range 0 to 49999 := 0;
+    -- Nguong dem bo quet LED 7 doan:
+    -- Khi chay thuc te tren chip: 50.000 chu ky (50 MHz / 50.000 = 1 kHz doi vi tri, 500 Hz tan so quet)
+    -- Khi mo phong ModelSim: rut ngan con 5 chu ky (0 den 4) de quan sat ro chuyen doi 2 digit
+    function lay_nguong_quet(co_mo_phong : boolean) return natural is
+    begin
+        if co_mo_phong then
+            return 5;     -- 5 chu ky trong mo phong
+        else
+            return 50000; -- 50.000 chu ky tren phan cung
+        end if;
+    end function;
+
+    constant NGUONG_BO_DEM_QUET : natural := lay_nguong_quet(SIMULATION);
+
+    -- Bo dem chu ky clock cho mach quet LED 7 doan
+    signal bo_dem_quet     : natural range 0 to NGUONG_BO_DEM_QUET - 1 := 0;
 
     -- Bit chon vi tri LED: '0' la hien thi hang Don vi, '1' la hien thi hang Chuc
     signal chon_vi_tri_led : std_logic := '0';
@@ -179,7 +193,7 @@ begin
             bo_dem_quet     <= 0;
             chon_vi_tri_led <= '0';
         elsif rising_edge(CLOCK_50) then
-            if bo_dem_quet = 49999 then
+            if bo_dem_quet = NGUONG_BO_DEM_QUET - 1 then
                 bo_dem_quet     <= 0;
                 chon_vi_tri_led <= not chon_vi_tri_led; -- Dao vi tri: 0 sang 1, 1 ve 0
             else
@@ -223,13 +237,17 @@ begin
 
     -- =========================================================================
     -- KHOI 6: MACH KHOA AN TOAN PHAN CUNG (FAIL-SAFE HARDWARE INTERLOCK)
-    -- Giam sat tin hieu den tho tu FSM. Neu xay ra tinh huong nguy hiem (Ca 2 lan deu XANH),
-    -- mach phan cung lap tuc can thiep: Ngat 2 den xanh va ep bat 2 den do de chong dam xe!
+    -- Giam sat tin hieu den tho tu FSM. Neu xay ra tinh huong nguy hiem:
+    --   - Ca 2 lan deu XANH (Dual-Green conflict)
+    --   - Hoac 1 lan XANH trong khi lan kia VANG (Green-Yellow conflict)
+    -- Mach phan cung lap tuc can thiep: Ngat toan bo den xanh/vang va ep bat 2 den do de chong dam xe!
     -- =========================================================================
     process(den_xanh_a_s, den_xanh_b_s, den_vang_a_s, den_vang_b_s, den_do_a_s, den_do_b_s)
     begin
-        -- Kiem tra tinh huong cam: Ca Lan A va Lan B deu bat den XANH
-        if (den_xanh_a_s = '1' and den_xanh_b_s = '1') then
+        -- Kiem tra tinh huong cam: Ca 2 lan deu XANH hoac 1 lan XANH trong khi lan kia VANG
+        if (den_xanh_a_s = '1' and den_xanh_b_s = '1') or
+           (den_xanh_a_s = '1' and den_vang_b_s = '1') or
+           (den_vang_a_s = '1' and den_xanh_b_s = '1') then
             -- Kich hoat che do bao ve nguy cap:
             LEDG(0) <= '0'; -- Ep tat den XANH Lan A
             LEDG(1) <= '0'; -- Ep tat den XANH Lan B
