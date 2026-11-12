@@ -367,11 +367,11 @@ begin
         wait until rising_edge(clk_50m);
         wait for 2.0 us;
 
-        -- Xac minh sau khi nha nut khan cap Lan B, he thong ve lai Pha 1 hop le
-        assert (den_ledg(0) = '1' and den_ledr(3) = '1')
-            report "[ASSERTION ERROR] Giai doan 7: Sau khi nha nut Khan cap Lan B, he thong khong ve Pha 1 hop le!"
+        -- Xac minh sau khi nha nut khan cap Lan B, he thong chuyen sang Pha 3 (giu Xanh Lan B va Do Lan A de bat dau dem 30s)
+        assert (den_ledg(1) = '1' and den_ledr(1) = '1' and den_ledg(0) = '0' and den_ledr(3) = '0')
+            report "[ASSERTION ERROR] Giai doan 7: Sau khi nha nut Khan cap Lan B, he thong phai chuyen sang Pha 3 (Xanh Lan B 30s)!"
             severity error;
-        report "[TESTBENCH] -> Da ep Lan B sang Xanh thanh cong va tro ve Pha 1 hop le!" severity note;
+        report "[TESTBENCH] -> Da ep Lan B sang Xanh thanh cong va chuyen sang Pha 3 (Xanh Lan B tiep tuc dem 30s) sau khi nha nut!" severity note;
 
         -- ---------------------------------------------------------------------
         -- KET THUC TOAN BO KICH BAN MO PHONG

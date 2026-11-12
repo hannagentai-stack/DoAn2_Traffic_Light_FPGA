@@ -121,15 +121,19 @@ begin
         elsif sw_ban_dem = '1' then
             trang_thai_ke_tiep <= BAN_DEM;
 
-        -- 4. Khi dang o che do Khan cap hoac Ban dem ma nha nut/tat cong tac: Quay ve Pha 1
-        elsif trang_thai_hien_tai = KHAN_CAP or trang_thai_hien_tai = KHAN_CAP_B or trang_thai_hien_tai = BAN_DEM then
+        -- 4. Khi dang o che do Khan cap Lan A hoac Ban dem ma nha nut/tat cong tac: Quay ve Pha 1 (Xanh A)
+        elsif trang_thai_hien_tai = KHAN_CAP or trang_thai_hien_tai = BAN_DEM then
             trang_thai_ke_tiep <= PHA_1;
 
-        -- 5. Kiem tra cong tac tam dung Pause
+        -- 5. Khi dang o che do Khan cap Lan B ma nha nut: Chuyen sang Pha 3 (cap tron ven 30s Xanh B cho Lan B)
+        elsif trang_thai_hien_tai = KHAN_CAP_B then
+            trang_thai_ke_tiep <= PHA_3;
+
+        -- 6. Kiem tra cong tac tam dung Pause
         elsif sw_tam_dung = '1' then
             trang_thai_ke_tiep <= trang_thai_hien_tai; -- Dong bang, giu nguyen trang thai
 
-        -- 6. Chu ky hoat dong binh thuong: Chuyen pha khi Timer bao co_het_gio = '1'
+        -- 7. Chu ky hoat dong binh thuong: Chuyen pha khi Timer bao co_het_gio = '1'
         else
             case trang_thai_hien_tai is
                 when PHA_1 =>
