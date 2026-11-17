@@ -49,6 +49,13 @@ architecture sim of tb_traffic_light_top is
 
 begin
 
+    watchdog: process
+    begin
+        wait for 240 us;
+        assert ket_thuc_mo_phong report "FAIL: testbench timeout" severity failure;
+        wait;
+    end process;
+
     -- =========================================================================
     -- GHEP NOI MACH CAN KIEM THU (DUT: DEVICE UNDER TEST)
     -- =========================================================================
@@ -89,11 +96,11 @@ begin
     -- 3. Giam sat noi bo tung lan: Khong bao gio bat ca den Xanh va den Do tren cung mot lan
     assert not (den_ledg(0) = '1' and den_ledr(1) = '1')
         report "[CONCURRENT ASSERTION ERROR] Lan A vi pham: Vua bat den XANH vua bat den DO!"
-        severity error;
+        severity failure;
 
     assert not (den_ledg(1) = '1' and den_ledr(3) = '1')
         report "[CONCURRENT ASSERTION ERROR] Lan B vi pham: Vua bat den XANH vua bat den DO!"
-        severity error;
+        severity failure;
 
     -- =========================================================================
     -- TIEN TRINH PHAT XUNG CLOCK 50 MHZ (CLOCK GENERATOR PROCESS)
@@ -142,14 +149,14 @@ begin
         -- Nha nut Reset ve muc '1' de he thong bat dau chay tu Pha 1
         tin_hieu_key(0) <= '1';
         wait until rising_edge(clk_50m);
-        wait for 2 ns; -- Cho on dinh tin hieu sau suon clock
+        wait for 160 ns; -- Cho dong bo, chong doi va FSM on dinh
 
         -- Kiem tra trang thai khoi dong sau Reset (Pha 1: Lan A Xanh, Lan B Do)
         assert (den_ledg(0) = '1' and den_ledr(3) = '1' and
                 den_ledr(0) = '0' and den_ledr(1) = '0' and
                 den_ledg(1) = '0' and den_ledr(2) = '0')
             report "[ASSERTION ERROR] Giai doan 1: Sau Reset khong khoi tao dung Pha 1 (Lan A Xanh, Lan B Do)!"
-            severity error;
+            severity failure;
         report "[TESTBENCH] -> Reset thanh cong: Khoi tao dung Pha 1 (Lan A Xanh, Lan B Do)." severity note;
 
         -- ---------------------------------------------------------------------
@@ -161,13 +168,13 @@ begin
         wait until rising_edge(clk_50m) and hex_a_dig = "01";
         assert (hex_a_dig = "01" and hex_b_dig = "01")
             report "[ASSERTION ERROR] Dynamic Scanning: Chu so Don vi khong duoc chon dong thoi ca 2 lan!"
-            severity error;
+            severity failure;
         report "[TESTBENCH] -> Dynamic Scanning: Da quet chu so Hang Don vi (HEX_DIG = 01)." severity note;
 
         wait until rising_edge(clk_50m) and hex_a_dig = "10";
         assert (hex_a_dig = "10" and hex_b_dig = "10")
             report "[ASSERTION ERROR] Dynamic Scanning: Chu so Hang Chuc khong duoc chon dong thoi ca 2 lan!"
-            severity error;
+            severity failure;
         report "[TESTBENCH] -> Dynamic Scanning: Da quet chu so Hang Chuc (HEX_DIG = 10)." severity note;
 
         -- Ghi nhan moc bat dau do thoi gian cho chu ky Pha 1 tiep tuc
@@ -179,10 +186,10 @@ begin
         thoi_diem_bat_dau_pha := now;
         assert (thoi_luong_pha >= 24000 ns and thoi_luong_pha <= 25500 ns)
             report "[ASSERTION ERROR] Giai doan 2: Thoi gian Pha 1 sai lech! Thuc te: " & time'image(thoi_luong_pha) & " (Ky vong: ~25 us)"
-            severity error;
+            severity failure;
         assert (den_ledr(0) = '1' and den_ledr(3) = '1' and den_ledg(0) = '0' and den_ledr(1) = '0' and den_ledg(1) = '0' and den_ledr(2) = '0')
             report "[ASSERTION ERROR] Giai doan 2: Trang thai den Pha 2 sai (Phai la Lan A Vang, Lan B Do)!"
-            severity error;
+            severity failure;
         report "[TESTBENCH] -> Da chuyen sang Pha 2: Lan A Vang (3s), Lan B Do (3s con lai). Thoi gian Pha 1: " & time'image(thoi_luong_pha) severity note;
 
         -- Cho chuyen sang Pha 3 (Den Xanh Lan B bat len: den_ledg(1) = '1')
@@ -191,10 +198,10 @@ begin
         thoi_diem_bat_dau_pha := now;
         assert (thoi_luong_pha >= 2900 ns and thoi_luong_pha <= 3100 ns)
             report "[ASSERTION ERROR] Giai doan 2: Thoi gian Pha 2 sai lech! Thuc te: " & time'image(thoi_luong_pha) & " (Ky vong: 3 us)"
-            severity error;
+            severity failure;
         assert (den_ledr(1) = '1' and den_ledg(1) = '1' and den_ledg(0) = '0' and den_ledr(0) = '0' and den_ledr(2) = '0' and den_ledr(3) = '0')
             report "[ASSERTION ERROR] Giai doan 2: Trang thai den Pha 3 sai (Phai la Lan A Do, Lan B Xanh)!"
-            severity error;
+            severity failure;
         report "[TESTBENCH] -> Da chuyen sang Pha 3: Lan A Do (33s), Lan B Xanh (30s). Thoi gian Pha 2: " & time'image(thoi_luong_pha) severity note;
 
         -- Cho chuyen sang Pha 4 (Den Vang Lan B bat len: den_ledr(2) = '1')
@@ -203,10 +210,10 @@ begin
         thoi_diem_bat_dau_pha := now;
         assert (thoi_luong_pha >= 29900 ns and thoi_luong_pha <= 30100 ns)
             report "[ASSERTION ERROR] Giai doan 2: Thoi gian Pha 3 sai lech! Thuc te: " & time'image(thoi_luong_pha) & " (Ky vong: 30 us)"
-            severity error;
+            severity failure;
         assert (den_ledr(1) = '1' and den_ledr(2) = '1' and den_ledg(0) = '0' and den_ledr(0) = '0' and den_ledg(1) = '0' and den_ledr(3) = '0')
             report "[ASSERTION ERROR] Giai doan 2: Trang thai den Pha 4 sai (Phai la Lan A Do, Lan B Vang)!"
-            severity error;
+            severity failure;
         report "[TESTBENCH] -> Da chuyen sang Pha 4: Lan A Do (3s con lai), Lan B Vang (3s). Thoi gian Pha 3: " & time'image(thoi_luong_pha) severity note;
 
         -- Cho quay lai Pha 1 (Den Xanh Lan A bat len: den_ledg(0) = '1')
@@ -215,10 +222,10 @@ begin
         thoi_diem_bat_dau_pha := now;
         assert (thoi_luong_pha >= 2900 ns and thoi_luong_pha <= 3100 ns)
             report "[ASSERTION ERROR] Giai doan 2: Thoi gian Pha 4 sai lech! Thuc te: " & time'image(thoi_luong_pha) & " (Ky vong: 3 us)"
-            severity error;
+            severity failure;
         assert (den_ledg(0) = '1' and den_ledr(3) = '1' and den_ledr(0) = '0' and den_ledr(1) = '0' and den_ledg(1) = '0' and den_ledr(2) = '0')
             report "[ASSERTION ERROR] Giai doan 2: Quay ve Pha 1 that bai!"
-            severity error;
+            severity failure;
         report "[TESTBENCH] -> Da quay ve Pha 1: Lan A Xanh, Lan B Do (Hoan thanh Vong 1). Thoi gian Pha 4: " & time'image(thoi_luong_pha) severity note;
 
         -- ---------------------------------------------------------------------
@@ -231,7 +238,7 @@ begin
         wait until rising_edge(clk_50m) and den_ledg(0) = '1'; -- Quay ve Pha 1
         assert (den_ledg(0) = '1' and den_ledr(3) = '1')
             report "[ASSERTION ERROR] Giai doan 3: Vong 2 khong ket thuc tai Pha 1 on dinh!"
-            severity error;
+            severity failure;
         report "[TESTBENCH] -> Hoan thanh Vong 2 on dinh." severity note;
 
         -- ---------------------------------------------------------------------
@@ -242,17 +249,17 @@ begin
         wait until falling_edge(clk_50m);
         tin_hieu_sw(0) <= '0'; -- Gat cong tac xuong Mass (ON che do ban dem)
         wait until rising_edge(clk_50m);
-        wait for 100 ns;
+        wait for 160 ns;
 
         -- Kiem tra tat man hinh 7 doan khi o che do ban dem (HEX_DIG = "00")
         assert (hex_a_dig = "00" and hex_b_dig = "00")
             report "[ASSERTION ERROR] Giai doan 4: Che do Ban dem phai tat LED 7 doan (HEX_DIG phai bang 00)!"
-            severity error;
+            severity failure;
 
         -- Kiem tra tat ca den Xanh va Do deu phai tat
         assert (den_ledg = "00" and den_ledr(1) = '0' and den_ledr(3) = '0')
             report "[ASSERTION ERROR] Giai doan 4: Che do Ban dem nhung den Xanh hoac Do van sang!"
-            severity error;
+            severity failure;
 
         -- Kiem tra nhip chop tat cua den vang Lan A (den_ledr(0)) va Lan B (den_ledr(2)):
         -- Cho het nua chu ky hien tai neu dang lo do
@@ -270,13 +277,13 @@ begin
 
         assert (thoi_gian_chop_sang >= 480 ns and thoi_gian_chop_sang <= 520 ns)
             report "[ASSERTION ERROR] Giai doan 4: Thoi gian sang den Vang sai lech! Thuc te: " & time'image(thoi_gian_chop_sang) & " (Ky vong: 500 ns)"
-            severity error;
+            severity failure;
         assert (thoi_gian_chop_tat >= 480 ns and thoi_gian_chop_tat <= 520 ns)
             report "[ASSERTION ERROR] Giai doan 4: Thoi gian tat den Vang sai lech! Thuc te: " & time'image(thoi_gian_chop_tat) & " (Ky vong: 500 ns)"
-            severity error;
+            severity failure;
         assert (den_ledr(0) = den_ledr(2))
             report "[ASSERTION ERROR] Giai doan 4: Den Vang Lan A va Lan B khong chop dong pha!"
-            severity error;
+            severity failure;
         report "[TESTBENCH] -> Den Vang chop dung chu ky 1Hz (50% duty cycle, 500ns On / 500ns Off)." severity note;
 
         -- Tat che do ban dem ve lai binh thuong (Keo len '1')
@@ -288,7 +295,7 @@ begin
         -- Xac minh sau khi thoat Ban dem, LED 7 doan duoc bat lai binh thuong
         assert (hex_a_dig /= "00" and hex_b_dig /= "00")
             report "[ASSERTION ERROR] Giai doan 4: Sau khi thoat Ban dem, LED 7 doan chua duoc bat lai!"
-            severity error;
+            severity failure;
         report "[TESTBENCH] -> Thoat che do Ban dem thanh cong, LED 7 doan da bat lai." severity note;
 
         -- ---------------------------------------------------------------------
@@ -306,7 +313,7 @@ begin
         -- Kiem tra den giao thong khong bi chuyen pha trong suot thoi gian tam dung
         assert (den_ledg = ledg_tam_dung and den_ledr = ledr_tam_dung)
             report "[ASSERTION ERROR] Giai doan 5: Che do Tam dung bi loi, den bi doi trang thai trong luc Tam dung!"
-            severity error;
+            severity failure;
 
         wait until falling_edge(clk_50m);
         tin_hieu_sw(1) <= '1'; -- Nha cong tac ve '1' de bo dem chay tiep
@@ -324,12 +331,12 @@ begin
         wait until falling_edge(clk_50m);
         tin_hieu_key(1) <= '0';
         wait until rising_edge(clk_50m);
-        wait for 2 ns;
+        wait for 160 ns;
 
         -- Kiem tra ep ngay lap tuc Lan A sang Xanh va Lan B sang Do
         assert (den_ledg(0) = '1' and den_ledr(3) = '1' and den_ledg(1) = '0' and den_ledr(1) = '0')
             report "[ASSERTION ERROR] Giai doan 6: Khong ep duoc Lan A sang Xanh va Lan B sang Do khi nhan KEY(1)!"
-            severity error;
+            severity failure;
 
         wait for 5.0 us; -- Giu nut trong 5 micro giay
         wait until falling_edge(clk_50m);
@@ -340,7 +347,7 @@ begin
         -- Xac minh sau khi nha nut khan cap Lan A, he thong ve lai Pha 1 hoat dong binh thuong
         assert (den_ledg(0) = '1' and den_ledr(3) = '1')
             report "[ASSERTION ERROR] Giai doan 6: Sau khi nha nut Khan cap Lan A, he thong khong ve Pha 1 hop le!"
-            severity error;
+            severity failure;
         report "[TESTBENCH] -> Da ep Lan A sang Xanh thanh cong va tro ve Pha 1 hop le!" severity note;
 
         -- ---------------------------------------------------------------------
@@ -354,12 +361,12 @@ begin
         wait until falling_edge(clk_50m);
         tin_hieu_key(2) <= '0';
         wait until rising_edge(clk_50m);
-        wait for 2 ns;
+        wait for 160 ns;
 
         -- Kiem tra ep ngay lap tuc Lan B sang Xanh va Lan A sang Do
         assert (den_ledg(1) = '1' and den_ledr(1) = '1' and den_ledg(0) = '0' and den_ledr(3) = '0')
             report "[ASSERTION ERROR] Giai doan 7: Khong ep duoc Lan B sang Xanh va Lan A sang Do khi nhan KEY(2)!"
-            severity error;
+            severity failure;
 
         wait for 3.0 us; -- Giu nut trong 3 micro giay
         wait until falling_edge(clk_50m);
@@ -370,7 +377,7 @@ begin
         -- Xac minh sau khi nha nut khan cap Lan B, he thong chuyen sang Pha 3 (giu Xanh Lan B va Do Lan A de bat dau dem 30s)
         assert (den_ledg(1) = '1' and den_ledr(1) = '1' and den_ledg(0) = '0' and den_ledr(3) = '0')
             report "[ASSERTION ERROR] Giai doan 7: Sau khi nha nut Khan cap Lan B, he thong phai chuyen sang Pha 3 (Xanh Lan B 30s)!"
-            severity error;
+            severity failure;
         report "[TESTBENCH] -> Da ep Lan B sang Xanh thanh cong va chuyen sang Pha 3 (Xanh Lan B tiep tuc dem 30s) sau khi nha nut!" severity note;
 
         -- ---------------------------------------------------------------------
@@ -378,7 +385,7 @@ begin
         -- ---------------------------------------------------------------------
         report "[TESTBENCH] ============================================================" severity note;
         report "[TESTBENCH] KIEM CHUNG TOAN DIEN HOAN TAT: 0 LOI ASSERTION PHAT SINH!" severity note;
-        report "[TESTBENCH] HE THONG DAT 100% YEU CAU AN TOAN VA LOGIC GIAO THONG!" severity note;
+        report "[TESTBENCH] PASS: Tat ca kich ban trong testbench da hoan tat." severity note;
         report "[TESTBENCH] ============================================================" severity note;
         wait for 5.0 us;
         ket_thuc_mo_phong <= true; -- Dat co ket thuc de tat may phat xung clock

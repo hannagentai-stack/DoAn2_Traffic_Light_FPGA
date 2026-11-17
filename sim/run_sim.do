@@ -1,3 +1,7 @@
+# Fail closed on compiler errors or assertions; batch exits with nonzero status.
+onerror {if {[batch_mode]} {quit -f -code 2} else {abort}}
+onbreak {if {[batch_mode]} {quit -f -code 1} else {abort}}
+set BreakOnAssertion 2
 # ==============================================================================
 # ModelSim / QuestaSim Automated Simulation Script
 # Du an   : Thiet Ke He Thong Dieu Khien Den Giao Thong Nga Tu (Cyclone IV)
@@ -66,6 +70,10 @@ if {![batch_mode]} {
 # 6. Run Simulation for 250 us (Covers all test scenarios)
 puts "--> Running simulation for 250 us..."
 run 250 us
+if {[examine -radix binary /tb_traffic_light_top/ket_thuc_mo_phong] ne "TRUE" &&
+    [examine -radix binary /tb_traffic_light_top/ket_thuc_mo_phong] ne "true"} {
+    error "Testbench did not complete"
+}
 
 # 7. Zoom full to view complete test results (GUI mode only)
 if {![batch_mode]} {

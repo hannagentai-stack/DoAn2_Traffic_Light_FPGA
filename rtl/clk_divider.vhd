@@ -28,6 +28,8 @@ entity clk_divider is
         rst_n         : in  std_logic; -- Tin hieu Reset toan he thong, tich cuc muc thap '0' (Active-Low)
         
         -- Tin hieu ra (Output)
+        nap_lai_giay  : in std_logic := '0'; -- Restart second on phase load
+        tam_dung      : in std_logic := '0'; -- Freeze fractional second
         xung_tick_1hz : out std_logic; -- Xung kich rong dung 1 chu ky clock (20ns), phat ra moi giay 1 lan
         xung_chop_1hz : out std_logic  -- Xung vuong doi xung 50% duty (0.5s muc 1, 0.5s muc 0) de chop den vang
     );
@@ -81,8 +83,8 @@ architecture rtl of clk_divider is
     -- Thanh ghi luu trang thai logic cua xung chop 1Hz (khoi tao bang '1')
     signal thanh_ghi_chop : std_logic := '1';
 
-    -- Thanh ghi luu xung kich tick 1Hz (khoi tao bang '0')
-    signal thanh_ghi_tick : std_logic := '0';
+    -- Bo dem giay rieng: nap lai theo pha, dung ca phan le khi Pause.
+    signal dem_giay : natural range 0 to GIOI_HAN_DEM - 1 := 0;
 
 begin
 
@@ -98,7 +100,6 @@ begin
             -- Khi nhan nut Reset (ve 0): Xoa toan bo bo dem va khoi tao lai gia tri ban dau
             thanh_ghi_dem  <= 0;
             thanh_ghi_chop <= '1';
-            thanh_ghi_tick <= '0';
 
         -- 2. Kiem tra suon duong xung clock 50 MHz
         elsif rising_edge(clk_50m) then
@@ -106,19 +107,16 @@ begin
             -- Truong hop A: Bo dem da dem du 1 giay (cham nguong toi da)
             if thanh_ghi_dem = GIOI_HAN_DEM - 1 then
                 thanh_ghi_dem  <= 0;   -- Reset bo dem ve 0 de bat dau giay tiep theo
-                thanh_ghi_tick <= '1'; -- Phat xung tick len muc 1 (CHI TRONG DUNG 1 CHU KY 20ns!)
                 thanh_ghi_chop <= '1'; -- Keo xung chop len muc 1 (bat dau nua chu ky sang)
 
             -- Truong hop B: Bo dem da dem du nua giay
             elsif thanh_ghi_dem = GIOI_HAN_NUA_DEM - 1 then
                 thanh_ghi_dem  <= thanh_ghi_dem + 1; -- Tiep tuc tang bo dem len 1
-                thanh_ghi_tick <= '0';               -- Xung tick phai ve muc 0
                 thanh_ghi_chop <= '0';               -- Ha xung chop ve 0 (bat dau nua chu ky tat)
 
             -- Truong hop C: Qua trinh dem binh thuong giua cac chu ky
             else
                 thanh_ghi_dem  <= thanh_ghi_dem + 1; -- Tang bo dem them 1 don vi
-                thanh_ghi_tick <= '0';               -- Dam bao xung tick giu nguyen muc 0
             end if;
 
         end if;
@@ -127,7 +125,26 @@ begin
     -- =========================================================================
     -- GAN TIN HIEU RA NGOAI CAC CONG OUTPUT CUA MODULE
     -- =========================================================================
-    xung_tick_1hz <= thanh_ghi_tick; -- Dua xung kich 1 chu ky ra khoi dem Timer
+    -- Clock-enable, consumed on the same edge that wraps dem_giay.
+    -- Blink uses its own free-running counter above and is never paused.
+    process(clk_50m, rst_n)
+    begin
+        if rst_n = '0' then
+            dem_giay <= 0;
+        elsif rising_edge(clk_50m) then
+            if nap_lai_giay = '1' then
+                dem_giay <= 0;
+            elsif tam_dung = '0' then
+                if dem_giay = GIOI_HAN_DEM - 1 then
+                    dem_giay <= 0;
+                else
+                    dem_giay <= dem_giay + 1;
+                end if;
+            end if;
+        end if;
+    end process;
+    xung_tick_1hz <= '1' when dem_giay = GIOI_HAN_DEM - 1 and
+                            nap_lai_giay = '0' and tam_dung = '0' and rst_n = '1' else '0'; -- Dua xung kich 1 chu ky ra khoi dem Timer
     xung_chop_1hz <= thanh_ghi_chop; -- Dua xung vuong chop tat 1Hz ra khoi dieu khien den FSM
 
 end architecture rtl;

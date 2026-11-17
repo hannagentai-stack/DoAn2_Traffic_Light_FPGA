@@ -62,6 +62,22 @@ end entity traffic_light_top;
 
 architecture structural of traffic_light_top is
 
+    -- 10 ms stable input qualification at 50 MHz; shortened only for simulation.
+    function debounce_cycles(sim : boolean) return positive is
+    begin
+        if sim then return 3; else return 500000; end if;
+    end function;
+    constant DEBOUNCE_LIMIT : positive := debounce_cycles(SIMULATION);
+    signal reset_meta, reset_sync : std_logic := '0';
+    signal reset_count : natural range 0 to DEBOUNCE_LIMIT - 1 := 0;
+    signal rst_n_s : std_logic := '0';
+    signal control_meta, control_sync, control_clean : std_logic_vector(3 downto 0) := (others => '1');
+    type debounce_counts is array (0 to 3) of natural range 0 to DEBOUNCE_LIMIT - 1;
+    signal control_count : debounce_counts := (others => 0);
+    attribute altera_attribute : string;
+    attribute altera_attribute of reset_meta, reset_sync, control_meta, control_sync : signal is
+        "-name SYNCHRONIZER_IDENTIFICATION FORCED_IF_ASYNCHRONOUS";
+
     -- =========================================================================
     -- CAC DUONG DAY TIN HIEU NOI BO (INTERNAL CONNECTING SIGNALS)
     -- Dong vai tro nhu cac day dong ket noi giua cac IC chuc nang
@@ -120,6 +136,49 @@ architecture structural of traffic_light_top is
 
 begin
 
+    -- KEY0 asserts reset immediately. Release requires two synchronization
+    -- stages followed by a stable high interval (also rejects reset bounce).
+    process(CLOCK_50, KEY(0))
+    begin
+        if KEY(0) = '0' then
+            reset_meta <= '0'; reset_sync <= '0';
+            reset_count <= 0; rst_n_s <= '0';
+        elsif rising_edge(CLOCK_50) then
+            reset_meta <= '1'; reset_sync <= reset_meta;
+            if reset_sync = '0' then
+                reset_count <= 0; rst_n_s <= '0';
+            elsif reset_count = DEBOUNCE_LIMIT - 1 then
+                rst_n_s <= '1';
+            else
+                reset_count <= reset_count + 1;
+            end if;
+        end if;
+    end process;
+
+    -- Each control is qualified independently, on both press and release.
+    process(CLOCK_50, rst_n_s)
+    begin
+        if rst_n_s = '0' then
+            control_meta <= (others => '1');
+            control_sync <= (others => '1');
+            control_clean <= (others => '1');
+            control_count <= (others => 0);
+        elsif rising_edge(CLOCK_50) then
+            control_meta <= SW & KEY(2 downto 1);
+            control_sync <= control_meta;
+            for i in 0 to 3 loop
+                if control_sync(i) = control_clean(i) then
+                    control_count(i) <= 0;
+                elsif control_count(i) = DEBOUNCE_LIMIT - 1 then
+                    control_clean(i) <= control_sync(i);
+                    control_count(i) <= 0;
+                else
+                    control_count(i) <= control_count(i) + 1;
+                end if;
+            end loop;
+        end if;
+    end process;
+
     -- =========================================================================
     -- KHOI 1: GHEP NOI BO CHIA TAN SO (clk_divider)
     -- =========================================================================
@@ -129,7 +188,9 @@ begin
         )
         port map (
             clk_50m       => CLOCK_50,
-            rst_n         => KEY(0),
+            rst_n         => rst_n_s,
+            nap_lai_giay  => nap_pha_s,
+            tam_dung      => sw_tam_dung_s,
             xung_tick_1hz => xung_tick_1hz_s,
             xung_chop_1hz => xung_chop_1hz_s
         );
@@ -137,8 +198,8 @@ begin
     -- Dao logic cong tac de ho tro tro keo len noi (Active-Low):
     -- Khi de ho: SW = '1' -> tin hieu dieu khien = '0' (Khong bat ban dem, khong tam dung)
     -- Khi noi GND: SW = '0' -> tin hieu dieu khien = '1' (Kich hoat ban dem hoac tam dung)
-    sw_ban_dem_s  <= not SW(0);
-    sw_tam_dung_s <= not SW(1);
+    sw_ban_dem_s  <= not control_clean(2);
+    sw_tam_dung_s <= not control_clean(3);
 
     -- =========================================================================
     -- KHOI 2: GHEP NOI BO DIEU KHIEN FSM (fsm_controller)
@@ -146,13 +207,13 @@ begin
     khoi_dieu_khien_fsm: entity work.fsm_controller
         port map (
             clk_50m          => CLOCK_50,
-            rst_n            => KEY(0),
+            rst_n            => rst_n_s,
             xung_chop_1hz    => xung_chop_1hz_s,
             co_het_gio       => co_het_gio_s,
             sw_ban_dem       => sw_ban_dem_s,
             sw_tam_dung      => sw_tam_dung_s,
-            key_khan_cap_a_n => KEY(1),
-            key_khan_cap_b_n => KEY(2),
+            key_khan_cap_a_n => control_clean(0),
+            key_khan_cap_b_n => control_clean(1),
             chon_pha         => chon_pha_s,
             nap_pha          => nap_pha_s,
             tat_seg7         => tat_seg7_s,
@@ -170,7 +231,7 @@ begin
     khoi_dem_thoi_gian: entity work.timer_counter
         port map (
             clk_50m       => CLOCK_50,
-            rst_n         => KEY(0),
+            rst_n         => rst_n_s,
             xung_tick_1hz => xung_tick_1hz_s,
             tam_dung      => sw_tam_dung_s,
             nap_pha       => nap_pha_s,
@@ -187,9 +248,9 @@ begin
     -- Moi chu ky 1 ms (50.000 xung 50MHz), tin hieu chon_vi_tri_led dao trang thai
     -- giup chuyen doi qua lai giua chu so Don vi va chu so Chuc voi toc do cuc nhanh
     -- =========================================================================
-    process(CLOCK_50, KEY(0))
+    process(CLOCK_50, rst_n_s)
     begin
-        if KEY(0) = '0' then
+        if rst_n_s = '0' then
             bo_dem_quet     <= 0;
             chon_vi_tri_led <= '0';
         elsif rising_edge(CLOCK_50) then

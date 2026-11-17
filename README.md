@@ -2,6 +2,8 @@
 
 Dự án thiết kế và hiện thực hệ thống điều khiển đèn giao thông ngã tư 2 làn đường độc lập, tích hợp đồng hồ đếm lùi hiển thị trên LED 7 đoạn đôi sử dụng IC đệm dòng Darlington **ULN2803A / ULN2803G** và chip **FPGA Altera / Intel Cyclone IV E EP4CE6E22C8N**.
 
+> **Cập nhật 17/11/2026:** Đã bổ sung đồng bộ/chống dội, nhả reset an toàn và sửa thời gian khi chuyển chế độ/Pause. Xem [ghi chú độ ổn định và kết quả kiểm chứng](docs/STABILITY_UPDATE.md). Các file nạp trong `bitstream/` đã được tạo lại; tài liệu DOCX/ZIP cũ chưa được cập nhật.
+
 ---
 
 ## 🌟 1. Tính Năng Kỹ Thuật Nổi Bật

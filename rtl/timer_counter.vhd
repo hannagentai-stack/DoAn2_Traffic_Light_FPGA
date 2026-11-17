@@ -27,7 +27,7 @@ entity timer_counter is
         chon_pha     : in  std_logic_vector(1 downto 0);  -- Ma pha hien tai (00: Pha 1, 01: Pha 2, 10: Pha 3, 11: Pha 4)
         
         -- Tin hieu bao ket thuc pha
-        co_het_gio   : out std_logic;                     -- Phat len '1' dung 1 xung clock khi dem het thoi gian
+        co_het_gio   : out std_logic;                     -- Giu muc 1 den khi nap pha tiep theo
         
         -- Tin hieu BCD 4-bit xuat ra khoi giai ma LED 7 doan
         bcd_a_chuc   : out std_logic_vector(3 downto 0);  -- Chu so hang chuc thoi gian Lan A (0 .. 9)
@@ -97,11 +97,11 @@ begin
 
         -- 2. Dong bo theo suon duong xung clock 50 MHz
         elsif rising_edge(clk_50m) then
-            -- Xoa co het gio ve 0 o moi chu ky clock binh thuong (chi giu muc 1 dung 1 chu ky)
-            thanh_ghi_het_gio <= '0';
+            -- Hold expiry until phase reload, including while paused.
 
             -- TH1: Co xung nap thoi gian moi tu FSM (Vua co su kien chuyen pha)
             if nap_pha = '1' then
+                thanh_ghi_het_gio <= '0';
                 case chon_pha is
                     when "00" =>   -- Pha 1: Lan A Xanh, Lan B Do
                         dem_lan_a <= 25;
@@ -159,7 +159,8 @@ begin
     end process;
 
     -- Xuat co bao het gio ra cho FSM
-    co_het_gio <= thanh_ghi_het_gio;
+    -- Mask old expiry during reload so it cannot skip the new phase.
+    co_het_gio <= thanh_ghi_het_gio when nap_pha = '0' else '0';
 
     -- =========================================================================
     -- PROCESS: MACH TO HOP GIAI MA BCD LIEN TUC
