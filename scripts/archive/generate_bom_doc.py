@@ -1,3 +1,4 @@
+# Archived generator; output is historical, not the current documentation.
 """
 --------------------------------------------------------------------------------
 DỰ ÁN: THIẾT KẾ HỆ THỐNG ĐIỀU KHIỂN ĐÈN GIAO THÔNG NGÃ TƯ TRÊN FPGA CYCLONE IV
@@ -381,7 +382,8 @@ def build_bom_document(file_path):
     print(f"Generated BOM document (Anode chung): {file_path}")
 
 if __name__ == "__main__":
-    out_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "docs"))
+    out_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "docs", "archive"))
+    os.makedirs(out_dir, exist_ok=True)
     os.makedirs(out_dir, exist_ok=True)
     target_path = os.path.join(out_dir, "Danh_Sach_Linh_Kien_Do_An_Traffic_Light_Anode_Chung.docx")
     build_bom_document(target_path)

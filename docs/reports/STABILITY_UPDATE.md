@@ -65,5 +65,6 @@ Chọn JIC đúng chip Flash thực tế. Chưa nạp/thử trên bo vật lý; 
 chèn lỗi trên netlist sau tổng hợp hoặc bảo đảm an toàn trước mọi lỗi silicon.
 Mô phỏng RTL không mô hình hóa metastability analog.
 
-Các tài liệu DOCX và gói ZIP cũ trong docs/ là bản trước cập nhật; dùng RTL,
-bitstream hiện tại và ghi chú này cho bản sửa độ ổn định.
+Báo cáo hiện hành gồm BAO_CAO_KY_THUAT.md và bản Word cùng thư mục.
+Tài liệu phần cứng đời trước chuyển sang docs/archive/ để tra cứu lịch sử.
+Gói ZIP hiện hành trong releases/ được tạo lại sau cập nhật tài liệu.

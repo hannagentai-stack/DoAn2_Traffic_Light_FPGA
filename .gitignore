@@ -35,3 +35,6 @@ traffic_light_mini/
 # OS generated
 Thumbs.db
 Desktop.ini
+
+# Local documentation QA and generated build output
+build/

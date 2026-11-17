@@ -1,0 +1,48 @@
+HƯỚNG DẪN CHẠY HỆ THỐNG ĐÈN GIAO THÔNG FPGA
+Cập nhật 17/11/2026 — RTL abff943
+
+1. MỞ DỰ ÁN
+Mở traffic_light_top.qpf ở gốc bằng Quartus Prime Lite 20.1.
+Giữ nguyên .qsf, .sdc và đường dẫn rtl/. Clock 50 MHz tại PIN_24, constraint 20 ns.
+Chạy Full Compilation; giữ SIMULATION=false mặc định khi tạo file nạp.
+
+2. MÔ PHỎNG
+Từ thư mục gốc, trên terminal có ModelSim 20.1:
+vsim -c -do "do sim/run_regression.do; quit -f"
+Từ sim/: vsim -c -do "do run_regression.do; quit -f"
+Để xem waveform GUI: mở ModelSim tại sim/ và chạy do run_sim.do,
+hoặc dùng run_modelsim.bat / Chay_Mo_Phong_ModelSim.bat.
+Bộ đầy đủ gồm 7 kịch bản cơ bản và kiểm tra ổn định bổ sung.
+Lỗi compile/assertion/timeout trả mã khác 0 trong batch.
+
+3. PHÂN CỰC VÀ CHÂN
+KEY0 reset, KEY1 khẩn cấp A, KEY2 khẩn cấp B, SW0 ban đêm, SW1 Pause: Active-Low.
+KEY1/2 và SW0/1 được đồng bộ hai tầng và lọc mức ổn định 10 ms, cả nhấn/nhả.
+KEY0 reset ngay khi xuống thấp, nhả đồng bộ sau lọc 10 ms.
+SEG qua ULN2803A, DIG anode chung và LED giao thông: Active-High.
+Bảng chân FPGA chính thức: docs/hardware/PINOUT.md, lấy trực tiếp từ QSF.
+Không suy ra chân vật lý của mọi mã LED từ bảng chân FPGA.
+
+4. CHẾ ĐỘ
+Pha 1: A xanh 25, B đỏ 28; pha 2: A vàng 3, B đỏ 3.
+Pha 3: A đỏ 33, B xanh 30; pha 4: A đỏ 3, B vàng 3.
+Ưu tiên A > B > ban đêm; yêu cầu đặc biệt có thể vượt Pause.
+Thoát khẩn cấp A hoặc ban đêm về pha 1; thoát khẩn cấp B về pha 3.
+Pause giữ phần lẻ giây và số đếm; nhịp nhấp nháy tiếp tục.
+Quét ở top-level: đổi digit 1 kHz, làm tươi mỗi digit 500 Hz.
+
+5. NẠP FILE
+Trong Quartus Programmer, chọn USB-Blaster.
+SRAM: bitstream/traffic_light_top.sof.
+Flash EPCS4: bitstream/traffic_light_top.jic.
+Flash EPCS16: bitstream/traffic_light_top_epcs16.jic.
+Chọn đúng file JIC theo chip Flash thực tế. Hai JIC dùng SFL EP4CE6.
+Checksum ba file: bitstream/SHA256SUMS.txt.
+
+6. KẾT QUẢ VÀ TÀI LIỆU
+388 LEs (6%), 205 registers, 30 pins. Setup +11,661 ns, hold +0,186 ns.
+Các kiểm thử hiện hành đều PASS; còn 3 cảnh báo Quartus ghi trong báo cáo.
+Chưa thử bo thật hoặc chèn lỗi netlist sau tổng hợp.
+Báo cáo hiện hành: docs/reports/BAO_CAO_KY_THUAT.md và bản Word cùng thư mục.
+Tài liệu phần cứng cũ ở docs/archive/ chỉ dành cho tra cứu lịch sử.
+Gói ZIP hiện hành và checksum nằm trong releases/.
